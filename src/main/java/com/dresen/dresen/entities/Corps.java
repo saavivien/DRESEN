@@ -25,7 +25,7 @@ public class Corps implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idCoprs;
+    private Long id;
     
     @Column (nullable = false, unique = true)
     private String intituleCorps;
@@ -40,16 +40,17 @@ public class Corps implements Serializable {
         this.intituleCorps = intituleCorps;
         this.listCadres = new ArrayList<Cadre>();
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
     
     
 
-    public Long getIdCoprs() {
-        return idCoprs;
-    }
-
-    public void setIdCoprs(Long idCoprs) {
-        this.idCoprs = idCoprs;
-    }
 
     public String getIntituleCorps() {
         return intituleCorps;
@@ -72,7 +73,7 @@ public class Corps implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idCoprs != null ? idCoprs.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -83,7 +84,7 @@ public class Corps implements Serializable {
             return false;
         }
         Corps other = (Corps) object;
-        if ((this.idCoprs == null && other.idCoprs != null) || (this.idCoprs != null && !this.idCoprs.equals(other.idCoprs))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -91,7 +92,7 @@ public class Corps implements Serializable {
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.Corps[ id=" + idCoprs + " ]";
+        return "com.dresen.dresen.data.Corps[ id=" + id + " ]";
     }
     
 }

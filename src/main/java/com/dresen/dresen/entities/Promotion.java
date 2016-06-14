@@ -24,15 +24,15 @@ import javax.persistence.Temporal;
 @Entity
 @NamedQueries({
      @NamedQuery(name = "Promotion.findAllPromotionOpen", query = "SELECT p FROM Promotion p WHERE p.dateFinPromo = NULL"),
-     @NamedQuery(name = "Promotion.findPromotionByIdAgent", query = "SELECT p FROM Promotion p WHERE p.agent.idAgent = :param"),
-     @NamedQuery(name = "Promotion.findPromotionOpenByIdAgent", query = "SELECT p FROM Promotion p WHERE p.agent.idAgent = :param AND p.dateFinPromo= NULL")
+     @NamedQuery(name = "Promotion.findPromotionByIdAgent", query = "SELECT p FROM Promotion p WHERE p.agent.id = :param"),
+     @NamedQuery(name = "Promotion.findPromotionOpenByIdAgent", query = "SELECT p FROM Promotion p WHERE p.agent.id = :param AND p.dateFinPromo= NULL")
 })
 public class Promotion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idPromotion;
+    private Long id;
     
     @Column
     private String numeroPromotion;
@@ -61,17 +61,16 @@ public class Promotion implements Serializable {
 
     public Promotion() {
     }
-    
 
-    
-
-    public Long getIdPromotion() {
-        return idPromotion;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdPromotion(Long idPromotion) {
-        this.idPromotion = idPromotion;
+    public void setId(Long id) {
+        this.id = id;
     }
+    
+
 
     public String getNumeroPromotion() {
         return numeroPromotion;
@@ -120,7 +119,7 @@ public class Promotion implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idPromotion != null ? idPromotion.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -131,12 +130,12 @@ public class Promotion implements Serializable {
             return false;
         }
         Promotion other = (Promotion) object;
-        return !((this.idPromotion == null && other.idPromotion != null) || (this.idPromotion != null && !this.idPromotion.equals(other.idPromotion)));
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.Promotion[ id=" + idPromotion + " ]";
+        return "com.dresen.dresen.data.Promotion[ id=" + id + " ]";
     }
     
 }

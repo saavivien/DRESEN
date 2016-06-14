@@ -243,7 +243,7 @@ public class ContractuelBean {
         rangerContract.setContratuel(contratuel);
         rangerContract.setGradeContract(gradeContract);
         affectation.setAgent(contratuel);
-        affectation.setStructure(structureAttache);
+        affectation.setStructureAttache(structureAttache);
         promotion.setAgent(contratuel);
         promotion.setPoste(poste);
         iRangerContractService.createRangerContract(rangerContract);
@@ -252,7 +252,7 @@ public class ContractuelBean {
         return iContractuelService.createContractuel(contratuel); 
     }
     public Contractuel findContractuelById(){
-        return iContractuelService.findContractuelById(contratuel.getIdAgent()); 
+        return iContractuelService.findContractuelById(contratuel.getId()); 
     }
     public Contractuel updateContractuel(){
         gradeContract = iGradeContractService.findGradeContractById(idGradeContract);
@@ -261,7 +261,7 @@ public class ContractuelBean {
         rangerContract.setContratuel(contratuel);
         rangerContract.setGradeContract(gradeContract);
         affectation.setAgent(contratuel);
-        affectation.setStructure(structureAttache);
+        affectation.setStructureAttache(structureAttache);
         promotion.setAgent(contratuel);
         promotion.setPoste(poste);
         iRangerContractService.createRangerContract(rangerContract);

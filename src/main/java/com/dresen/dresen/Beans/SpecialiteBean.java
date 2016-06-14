@@ -48,7 +48,7 @@ public class SpecialiteBean {
         return iSpecialiteService.createSpecialite(specialite);
     }
     public Specialite findSpecialiteById(){
-        return iSpecialiteService.findSpecialiteById(specialite.getIdSpecialite());
+        return iSpecialiteService.findSpecialiteById(specialite.getId());
     }
     public Specialite updateSpecialite(){
         return iSpecialiteService.updateSpecialite(specialite);

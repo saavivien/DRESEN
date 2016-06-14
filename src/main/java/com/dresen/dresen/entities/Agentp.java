@@ -29,7 +29,7 @@ public class Agentp implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long idAgent;
+    private Long id;
     
     @Column(unique = true)
     private String matricule;
@@ -68,20 +68,17 @@ public class Agentp implements Serializable {
     
     @OneToMany (mappedBy = "agent")
     private List<Promotion> listPromotions;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
   
     
 
-    public Long getIdAgent() {
-        return idAgent;
-    }
-
-    /**
-     *
-     * @param idAgent
-     */
-    public void setIdAgent(Long idAgent) {
-        this.idAgent = idAgent;
-    }
 
     public String getMatricule() {
         return matricule;
@@ -191,12 +188,12 @@ public class Agentp implements Serializable {
             return false;
         }
         final Agentp other = (Agentp) obj;
-        return !(this.idAgent != other.idAgent && (this.idAgent == null || !this.idAgent.equals(other.idAgent)));
+        return !(this.id != other.id && (this.id == null || !this.id.equals(other.id)));
     }
 
     @Override
     public String toString() {
-        return "Agent{" + "idAgent=" + idAgent + ", matricule=" + matricule + ", nom=" + nom + ", prenom=" + prenom + ", dateNaissance=" + dateNaissance + ", dateEntreFonctionPub=" + dateEntreFonctionPub + ", sexe=" + sexe + ", nomJeuneFille=" + nomJeuneFille + '}';
+        return "Agent{" + "idAgent=" + id + ", matricule=" + matricule + ", nom=" + nom + ", prenom=" + prenom + ", dateNaissance=" + dateNaissance + ", dateEntreFonctionPub=" + dateEntreFonctionPub + ", sexe=" + sexe + ", nomJeuneFille=" + nomJeuneFille + '}';
     }
     
     

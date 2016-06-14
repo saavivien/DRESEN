@@ -79,7 +79,7 @@ public class GradeFonctioBean {
         return IGradeFonctioService.createGradeFonctio(gradeFonctio);       
     }
     public GradeFonctio findGradeFonctionById(){
-        return IGradeFonctioService.findGradeFonctioById(gradeFonctio.getIdGradeFonctio());       
+        return IGradeFonctioService.findGradeFonctioById(gradeFonctio.getId());       
     }
     public GradeFonctio updateGradeFonction(){
         cadre = iCadreService.findCadreById(idCadre);

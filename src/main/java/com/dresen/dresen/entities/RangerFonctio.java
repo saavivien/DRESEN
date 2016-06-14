@@ -24,15 +24,15 @@ import javax.persistence.Temporal;
 @Entity
 @NamedQueries({
      @NamedQuery(name = "RangerFonctio.findAllRangerFonctioOpen", query = "SELECT rf FROM RangerFonctio rf WHERE rf.dateFinRangerFonctio = NULL"),
-     @NamedQuery(name = "RangerFonctio.findRangerFonctioByIdAgent", query = "SELECT rf FROM RangerFonctio rf WHERE rf.fonctionnaire.idAgent = :param"),
-     @NamedQuery(name = "RangerFonctio.findRangerFonctioOpenByIdAgent", query = "SELECT rf FROM RangerFonctio rf WHERE rf.fonctionnaire.idAgent = :param AND rf.dateFinRangerFonctio = NULL")
+     @NamedQuery(name = "RangerFonctio.findRangerFonctioByIdAgent", query = "SELECT rf FROM RangerFonctio rf WHERE rf.fonctionnaire.id = :param"),
+     @NamedQuery(name = "RangerFonctio.findRangerFonctioOpenByIdAgent", query = "SELECT rf FROM RangerFonctio rf WHERE rf.fonctionnaire.id = :param AND rf.dateFinRangerFonctio = NULL")
 })
 public class RangerFonctio implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idRangerFonctio;
+    private Long id;
     
     @Column
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -50,9 +50,6 @@ public class RangerFonctio implements Serializable {
 
     public RangerFonctio() {
     }
-    public Long getIdRangerFonctio() {
-        return idRangerFonctio;
-    }
 
     public RangerFonctio(Date dateDebutRangerFonctio, Date dateFinRangerFonctio, Fonctionnaire fonctionnaire, GradeFonctio gradeFonctio) {
         this.dateDebutRangerFonctio = dateDebutRangerFonctio;
@@ -61,11 +58,15 @@ public class RangerFonctio implements Serializable {
         this.gradeFonctio = gradeFonctio;
     }
 
-    
-    
-    public void setIdRangerFonctio(Long idRangerFonctio) {
-        this.idRangerFonctio = idRangerFonctio;
+    public Long getId() {
+        return id;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+  
 
     public Date getDateDebutRangerFonctio() {
         return dateDebutRangerFonctio;
@@ -104,7 +105,7 @@ public class RangerFonctio implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idRangerFonctio != null ? idRangerFonctio.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -115,12 +116,12 @@ public class RangerFonctio implements Serializable {
             return false;
         }
         RangerFonctio other = (RangerFonctio) object;
-        return !((this.idRangerFonctio == null && other.idRangerFonctio != null) || (this.idRangerFonctio != null && !this.idRangerFonctio.equals(other.idRangerFonctio)));
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.RangerFonction[ id=" + idRangerFonctio + " ]";
+        return "com.dresen.dresen.data.RangerFonction[ id=" + id + " ]";
     }
     
 }

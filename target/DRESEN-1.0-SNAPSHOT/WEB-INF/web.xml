@@ -19,7 +19,7 @@
     </session-config>
     <welcome-file-list>        
         <welcome-file>
-            faces/index.xhtml
+            faces/Menu.xhtml
         </welcome-file>
     </welcome-file-list>
     <listener>        

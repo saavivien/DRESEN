@@ -26,7 +26,7 @@ public class Arrondissement implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idArrondissement;
+    private Long id;
     
     @Column (nullable = false, unique = true)
     private String intituleArrondissement;
@@ -51,12 +51,12 @@ public class Arrondissement implements Serializable {
     
     
     
-    public Long getIdArrondissement() {
-        return idArrondissement;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdArrondissement(Long idArrondissement) {
-        this.idArrondissement = idArrondissement;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getIntituleArrondissement() {
@@ -89,7 +89,7 @@ public class Arrondissement implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idArrondissement != null ? idArrondissement.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -100,12 +100,12 @@ public class Arrondissement implements Serializable {
             return false;
         }
         Arrondissement other = (Arrondissement) object;
-        return !((this.idArrondissement == null && other.idArrondissement != null) || (this.idArrondissement != null && !this.idArrondissement.equals(other.idArrondissement)));
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.Arrondissement[ id=" + idArrondissement + " ]";
+        return "com.dresen.dresen.data.Arrondissement[ id=" + id + " ]";
     }
     
 }

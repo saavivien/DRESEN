@@ -135,7 +135,7 @@ public class RangerFonctioBean {
         return iRangerFonctioService.createRangerFonctio(rangerFonctio);
     }
     public RangerFonctio findRangerFonctioById(){
-        return iRangerFonctioService.findRangerFonctioById(rangerFonctio.getIdRangerFonctio());
+        return iRangerFonctioService.findRangerFonctioById(rangerFonctio.getId());
     }
      public RangerFonctio updateRangerFonctio(){
         gradeFonctio = iGradeFonctioService.findGradeFonctioById(idGradeFonctio);
@@ -152,13 +152,13 @@ public class RangerFonctioBean {
         fonctionnaire = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
         rangerFonctio.setFonctionnaire(fonctionnaire);
         rangerFonctio.setGradeFonctio(gradeFonctio);
-        return iRangerFonctioService.findRangerFonctioOpenByIdAgent(rangerFonctio.getFonctionnaire().getIdAgent());
+        return iRangerFonctioService.findRangerFonctioOpenByIdAgent(rangerFonctio.getFonctionnaire().getId());
     }
     public List<RangerFonctio> findAllRangerFonctioOpen(){
         return iRangerFonctioService.findAllRangerFonctioOpen();
     }
     public List<RangerFonctio> findRangerFonctioByIdAgent(){
-        return iRangerFonctioService.findRangerFonctioByIdAgent(rangerFonctio.getFonctionnaire().getIdAgent());
+        return iRangerFonctioService.findRangerFonctioByIdAgent(rangerFonctio.getFonctionnaire().getId());
     }
 
 }

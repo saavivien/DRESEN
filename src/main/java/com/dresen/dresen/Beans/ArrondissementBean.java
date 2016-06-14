@@ -30,6 +30,7 @@ public class ArrondissementBean{
     private IDepartementService iDepartementService;
    
     private Arrondissement arrondissement = new Arrondissement();
+    private Departement departement = new Departement();
     
     private List<Departement> listDepartement;
     private Long idDepartement;
@@ -70,6 +71,15 @@ public class ArrondissementBean{
         this.idDepartement = idDepartement;
     }
 
+    public Departement getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(Departement departement) {
+        this.departement = departement;
+    }
+
+    
     public List<Departement> getListDepartement() {
         return iDepartementService.findAllDepartement();
     }
@@ -80,16 +90,14 @@ public class ArrondissementBean{
     
     
     public Arrondissement createArrondissement(){
-        Departement departement = new Departement();
         departement = iDepartementService.findDepartementById(idDepartement);
         arrondissement.setDepartement(departement);
         return iArrondissementService.createArrondissement(arrondissement);
     }
     public Arrondissement findArrondissementById(){
-        return iArrondissementService.findArrondissementById(arrondissement.getIdArrondissement());
+        return iArrondissementService.findArrondissementById(arrondissement.getId());
     }
     public Arrondissement updateArrondissement(){
-        Departement departement = new Departement();
         departement = iDepartementService.findDepartementById(idDepartement);
         arrondissement.setDepartement(departement);
         return iArrondissementService.updateArrondissement(arrondissement);

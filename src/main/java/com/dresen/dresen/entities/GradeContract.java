@@ -25,7 +25,7 @@ public class GradeContract implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idGradeContract;
+    private Long id;
     
     @Column (nullable = false, unique = true)
     private String intituleGradeContract;
@@ -47,12 +47,12 @@ public class GradeContract implements Serializable {
     @OneToMany (mappedBy = "gradeContract")
     private List<RangerContract> listRangerContracts;
 
-    public Long getIdGradeContract() {
-        return idGradeContract;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdGradeContract(Long idGradeContract) {
-        this.idGradeContract = idGradeContract;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public List<RangerContract> getListRangerContracts() {
@@ -86,7 +86,7 @@ public class GradeContract implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idGradeContract != null ? idGradeContract.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -97,12 +97,12 @@ public class GradeContract implements Serializable {
             return false;
         }
         GradeContract other = (GradeContract) object;
-        return !((this.idGradeContract == null && other.idGradeContract != null) || (this.idGradeContract != null && !this.idGradeContract.equals(other.idGradeContract)));
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.GradeContract[ id=" + idGradeContract + " ]";
+        return "com.dresen.dresen.data.GradeContract[ id=" + id + " ]";
     }
     
 }

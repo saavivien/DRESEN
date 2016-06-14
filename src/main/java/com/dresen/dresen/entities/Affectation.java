@@ -24,8 +24,8 @@ import javax.persistence.Temporal;
 @Entity
 @NamedQueries({
      @NamedQuery(name = "Affectation.findAllAffectationOpen", query = "SELECT a FROM Affectation a WHERE a.dateFinAffect=NULL"),
-     @NamedQuery(name = "Affectation.findAffectationByIdAgent", query = "SELECT a FROM Affectation a WHERE a.agent.idAgent = :param"),
-     @NamedQuery(name = "Affectation.findAffectationOpenByIdAgent", query = "SELECT a FROM Affectation a WHERE a.agent.idAgent = :param AND a.dateFinAffect=NULL")
+     @NamedQuery(name = "Affectation.findAffectationByIdAgent", query = "SELECT a FROM Affectation a WHERE a.agent.id = :param"),
+     @NamedQuery(name = "Affectation.findAffectationOpenByIdAgent", query = "SELECT a FROM Affectation a WHERE a.agent.id = :param AND a.dateFinAffect=NULL")
 }
 )
 public class Affectation implements Serializable {
@@ -33,7 +33,7 @@ public class Affectation implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idAffectation;
+    private Long id;
     
     @Column 
     private String numeroAffectation;
@@ -50,7 +50,7 @@ public class Affectation implements Serializable {
     private Agentp agent;
     
     @ManyToOne
-    private StructureAttache structure;
+    private StructureAttache structureAttache;
 
     public Affectation() {
     }
@@ -82,8 +82,8 @@ public class Affectation implements Serializable {
     
     
 
-    public Long getIdAffectation() {
-        return idAffectation;
+    public Long getId() {
+        return id;
     }
 
     public Agentp getAgent() {
@@ -94,28 +94,29 @@ public class Affectation implements Serializable {
         this.agent = agent;
     }
 
-    public StructureAttache getStructure() {
-        return structure;
+    public StructureAttache getStructureAttache() {
+        return structureAttache;
     }
 
-    public void setStructure(StructureAttache structure) {
-        this.structure = structure;
+    public void setStructureAttache(StructureAttache structureAttache) {
+        this.structureAttache = structureAttache;
     }
+
     
     
 
     /**
      *
-     * @param idAffectation
+     * @param id
      */
-    public void setIdAffectation(Long idAffectation) {
-        this.idAffectation = idAffectation;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idAffectation != null ? idAffectation.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -126,7 +127,7 @@ public class Affectation implements Serializable {
             return false;
         }
         Affectation other = (Affectation) object;
-        return !((this.idAffectation == null && other.idAffectation != null) || (this.idAffectation != null && !this.idAffectation.equals(other.idAffectation)));
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
     
 }

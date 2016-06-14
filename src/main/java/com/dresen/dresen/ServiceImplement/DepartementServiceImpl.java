@@ -73,12 +73,4 @@ public class DepartementServiceImpl implements IDepartementService{
              throw new ServiceException("impossible de lister tous les dépattements");
         }
     }
-    
-    
-public static void main(String []args){
-    Departement dep = new Departement("logone");
-    Departement dep1;
-    DepartementServiceImpl depService = new DepartementServiceImpl();
-    dep1 = depService.createDepartement(dep);
-}
 }

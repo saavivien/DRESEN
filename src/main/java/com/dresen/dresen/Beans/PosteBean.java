@@ -80,7 +80,7 @@ public class PosteBean {
         return iPosteService.createPoste(poste);     
     }
     public Poste findPosteById(){
-        return iPosteService.findPosteById(poste.getIdPoste());     
+        return iPosteService.findPosteById(poste.getId());     
     }
     public Poste updatePoste(){
         return iPosteService.updatePoste(poste);     

@@ -135,7 +135,7 @@ public class RangerContractBean {
         return iRangerContractService.createRangerContract(rangerContract);
     }
     public RangerContract findRangerContractById(){
-        return iRangerContractService.findRangerContractById(rangerContract.getIdRangerContract());
+        return iRangerContractService.findRangerContractById(rangerContract.getId());
     }
     public RangerContract updateRangerContract(){
         gradeContract = iGradeContractService.findGradeContractById(idGradeContract);
@@ -152,13 +152,13 @@ public class RangerContractBean {
         contractuel = iContractuelService.findContractuelById(idContractuel);
         rangerContract.setContratuel(contractuel);
         rangerContract.setGradeContract(gradeContract);
-        return iRangerContractService.findRangerContractOpenByIdAgent(rangerContract.getContratuel().getIdAgent());
+        return iRangerContractService.findRangerContractOpenByIdAgent(rangerContract.getContratuel().getId());
     }
     public List<RangerContract> findAllRangerContractOpen(){
         return iRangerContractService.findAllRangerContractOpen();
     }
     public List<RangerContract> findRangerContractByIdAgent(){
-        return iRangerContractService.findRangerContractByIdAgent(rangerContract.getContratuel().getIdAgent());
+        return iRangerContractService.findRangerContractByIdAgent(rangerContract.getContratuel().getId());
     }
     
 }

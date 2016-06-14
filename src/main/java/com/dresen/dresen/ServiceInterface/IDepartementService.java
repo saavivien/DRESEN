@@ -17,6 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface IDepartementService {
+
+    /**
+     *
+     * @param departement
+     * @return
+     * @throws ServiceException
+     */
     public Departement createDepartement(Departement departement) throws ServiceException;
     public Departement findDepartementById(Long id) throws ServiceException;
     public Departement updateDepartement(Departement departement) throws ServiceException;

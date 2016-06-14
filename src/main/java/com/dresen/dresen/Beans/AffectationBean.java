@@ -161,7 +161,7 @@ public class AffectationBean{
            agent = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
        structureAttache = iStructureService.findStructureAttacheById(idStructure);
        affectation.setAgent(agent);
-       affectation.setStructure(structureAttache);
+       affectation.setStructureAttache(structureAttache);
        Affectation affectationOpened = this.findAffectationOpenByIdAgent();
        if (affectationOpened!=null)
            affectationOpened.setDateFinAffect(affectation.getDateDebutAffect());
@@ -169,7 +169,7 @@ public class AffectationBean{
         
     }
     public Affectation findAffectationById(){
-        return iAffectationService.findAffectationById(affectation.getIdAffectation());
+        return iAffectationService.findAffectationById(affectation.getId());
     }
     public Affectation updateAffectation(){
        Agentp agent = new Agentp();
@@ -179,7 +179,7 @@ public class AffectationBean{
            agent = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
        structureAttache = iStructureService.findStructureAttacheById(idStructure);
        affectation.setAgent(agent);
-       affectation.setStructure(structureAttache);
+       affectation.setStructureAttache(structureAttache);
        return iAffectationService.updateAffectation(affectation);
     }
     public List<Affectation> finAllAffectations(){
@@ -190,14 +190,14 @@ public class AffectationBean{
        agent = iContractuelService.findContractuelById(idContractuel);
        if(agent==null)
            agent = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
-       return iAffectationService.findAffectationByIdAgent(agent.getIdAgent());
+       return iAffectationService.findAffectationByIdAgent(agent.getId());
     }
     public Affectation findAffectationOpenByIdAgent(){
        Agentp agent = new Agentp();
        agent = iContractuelService.findContractuelById(idContractuel);
        if(agent==null)
            agent = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
-       return iAffectationService.findAffectationOpenByIdAgent(agent.getIdAgent());
+       return iAffectationService.findAffectationOpenByIdAgent(agent.getId());
     }
     public List<Affectation> findAllAffectationOpened(){
         return iAffectationService.findAllPromotionOpen();       

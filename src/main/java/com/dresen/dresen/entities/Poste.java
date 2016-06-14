@@ -12,9 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -31,7 +28,7 @@ public class Poste implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idPoste;
+    private Long id;
     
     @Column (nullable = false, unique = true)
     private String intitulePoste;
@@ -40,7 +37,7 @@ public class Poste implements Serializable {
     private List<Promotion> listPromotions;
     
     @OneToMany(mappedBy = "poste")
-    private List<Poste_Structure> listPoste_Structures;
+    private List<PosteStructure> listPoste_Structures;
     
     public Poste() {
     }
@@ -52,17 +49,16 @@ public class Poste implements Serializable {
     public Poste(String intitule) {
         this.intitulePoste = intitule;
     }
-    
-    
-    
 
-    public Long getIdPoste() {
-        return idPoste;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdPoste(Long idPoste) {
-        this.idPoste = idPoste;
+    public void setId(Long id) {
+        this.id = id;
     }
+    
+    
 
     public String getIntitulePoste() {
         return intitulePoste;
@@ -81,11 +77,11 @@ public class Poste implements Serializable {
         this.listPromotions = listPromotions;
     }
 
-    public List<Poste_Structure> getListPoste_Structures() {
+    public List<PosteStructure> getListPoste_Structures() {
         return listPoste_Structures;
     }
 
-    public void setListPoste_Structures(List<Poste_Structure> listPoste_Structures) {
+    public void setListPoste_Structures(List<PosteStructure> listPoste_Structures) {
         this.listPoste_Structures = listPoste_Structures;
     }
 
@@ -98,7 +94,7 @@ public class Poste implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idPoste != null ? idPoste.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -109,7 +105,7 @@ public class Poste implements Serializable {
             return false;
         }
         Poste other = (Poste) object;
-        return !((this.idPoste == null && other.idPoste != null) || (this.idPoste != null && !this.idPoste.equals(other.idPoste)));
+        return !((this.id== null && other.id != null) || (this.id!= null && !this.id.equals(other.id)));
     }
 
     @Override

@@ -243,7 +243,7 @@ public class FonctionnaireBean {
         rangerFonctio.setFonctionnaire(fonctionnaire);
         rangerFonctio.setGradeFonctio(gradeFonctio);
         affectation.setAgent(fonctionnaire);
-        affectation.setStructure(structureAttache);
+        affectation.setStructureAttache(structureAttache);
         promotion.setAgent(fonctionnaire);
         promotion.setPoste(poste);
         iRangerFonctioService.createRangerFonctio(rangerFonctio);
@@ -252,7 +252,7 @@ public class FonctionnaireBean {
         return iFonctionnaireService.createFonctionnaire(fonctionnaire); 
     }
     public Fonctionnaire findFonctionnaireById(){
-        return iFonctionnaireService.findFonctionnaireById(fonctionnaire.getIdAgent()); 
+        return iFonctionnaireService.findFonctionnaireById(fonctionnaire.getId()); 
     }
     public Fonctionnaire updateFonctionnaire(){
         gradeFonctio = iGradeFonctioService.findGradeFonctioById(idGradeFonctio);
@@ -261,7 +261,7 @@ public class FonctionnaireBean {
         rangerFonctio.setFonctionnaire(fonctionnaire);
         rangerFonctio.setGradeFonctio(gradeFonctio);
         affectation.setAgent(fonctionnaire);
-        affectation.setStructure(structureAttache);
+        affectation.setStructureAttache(structureAttache);
         promotion.setAgent(fonctionnaire);
         promotion.setPoste(poste);
         iRangerFonctioService.createRangerFonctio(rangerFonctio);

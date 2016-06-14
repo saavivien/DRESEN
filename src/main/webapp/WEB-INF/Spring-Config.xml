@@ -23,6 +23,9 @@
     <bean id="IRangerFonctioDao" class="com.dresen.dresen.DaoImplement.RangerFonctioDaoImpl"/>
     <bean id="ISpecialiteDao" class="com.dresen.dresen.DaoImplement.SpecialiteDaoImpl"/>
     <bean id="IStructureDao" class="com.dresen.dresen.DaoImplement.StructureDaoImpl"/>
+    <bean id="IPosteStructureDao" class="com.dresen.dresen.DaoImplement.PosteStructureDaoImpl"/>
+    <bean id="ICategorieStructureDao" class="com.dresen.dresen.DaoImplement.CategorieStructureDaoImpl"/>
+
 
     
 <!-- la couche servcie-->
@@ -71,6 +74,13 @@
      <bean id="IStructureService" class="com.dresen.dresen.ServiceImplement.StructureServiceImpl">
         <property name="iStructureDao" ref="IStructureDao"/>
     </bean>
+     <bean id="ICategorieStructureService" class="com.dresen.dresen.ServiceImplement.CategorieStructureServiceImpl">
+        <property name="iCategorieStructureDao" ref="ICategorieStructureDao"/>
+    </bean>
+    <bean id="IPosteStructureService" class="com.dresen.dresen.ServiceImplement.PosteStructureServiceImpl">
+        <property name="iPosteStructureDao" ref="IPosteStructureDao"/>
+    </bean>
+   
    
 <!-- couche de persistance JPA -->
     <bean id="entityManagerFactory"
@@ -119,4 +129,3 @@
 
 
 </beans>
-

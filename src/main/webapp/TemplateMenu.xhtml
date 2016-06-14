@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <head>
+        <title>Application de gestion du personnel des services déconcentrés du MINESEC EXTREME NORD</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>  
+
+        <div>
+            <p:menubar>
+               
+            
+                <p:menuitem value="Bonjour : #{orientationBean}" url="#" /> 
+            <f:facet name="options">  
+                <p:inputText style="margin-right:10px"/>  
+                <p:commandButton value="Deconnexion" action="#{orientationBean}" icon="ui-icon-extlink"/>  
+            </f:facet>  
+            </p:menubar>
+        </div>
+
+        <h:form>          
+            <!--        <p:tabMenu activeIndex="2">  -->
+            <p:menuButton value="Agents">  
+                <p:menuitem value="Affectations" actionListener="#{buttonBean.save}" icon="ui-icon-disk" />  
+                     <p:menuitem value="Retraites" actionListener="#{buttonBean.update}" icon="ui-icon-arrowrefresh-1-w"/>  
+                     <p:menuitem value="Changement de poste" actionListener="#{buttonBean.delete}" icon="ui-icon-close"/>   
+                     <p:menuitem value="Changement de Grade" actionListener="#{buttonBean.delete}" icon="ui-icon-close"/>   
+                     <p:menuitem value="Les contractuels" icon="ui-icon-extlink"/>
+                     <p:menuitem value="Les fonctionnaires" icon="ui-icon-extlink"/>
+            </p:menuButton>  
+            <p:menuButton value="Parcours">  
+                     <p:menuitem value="Departements" action="#{orientationBean.departement()}" ajax="false" icon="ui-icon-disk"/>  
+                     <p:menuitem value="Arrondissements" action="#{orientationBean.arrondissement()}" ajax="false" icon="ui-icon-arrowrefresh-1-w"/> 
+                     <p:menuitem value="Type de Structures D'attaches" action="#{orientationBean.categorieStructure()}" ajax="false" icon="ui-icon-close" />  
+                     <p:menuitem value="Structures D'attaches" action="#{orientationBean.structureAttache()}" ajax="false" icon="ui-icon-close"/>  
+                     <p:separator />  
+                     <p:menuitem value="Postes" icon="ui-icon-extlink"/>
+                     <p:separator /> 
+                     <p:menuitem value="Corps" icon="ui-icon-extlink"/>  
+                     <p:menuitem value="Cadres" icon="ui-icon-extlink"/>  
+                     <p:menuitem value="Spécialités" icon="ui-icon-extlink"/> 
+                     <p:menuitem value="Grade Fonctionnaire" icon="ui-icon-extlink"/> 
+                     <p:separator />  
+                     <p:menuitem value="Grade Contractuel" icon="ui-icon-extlink"/>
+            </p:menuButton>  
+            <p:menuButton value="Import/Export">  
+                     <p:menuitem value="Importer" actionListener="#{buttonBean.save}" icon="ui-icon-disk"/>  
+                     <p:menuitem value="Exporter" actionListener="#{buttonBean.update}" icon="ui-icon-arrowrefresh-1-w"/>  
+            </p:menuButton>  
+        </h:form>
+    </body>
+
+</html>

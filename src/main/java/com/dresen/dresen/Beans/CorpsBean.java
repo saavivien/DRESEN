@@ -48,7 +48,7 @@ public class CorpsBean {
         return iCorpsService.createCorps(corps);
     }
     public Corps findCorpsById(){
-        return iCorpsService.findCorpsById(corps.getIdCoprs());
+        return iCorpsService.findCorpsById(corps.getId());
     }
     public Corps updateCorps(){
         return iCorpsService.updateCorps(corps);

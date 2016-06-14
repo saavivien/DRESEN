@@ -25,7 +25,7 @@ public class Departement implements Serializable {
    // private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idDepartement;
+    private Long id;
     
     @Column (nullable = false, unique = true)
     private String intituleDepartement;
@@ -40,18 +40,15 @@ public class Departement implements Serializable {
 
     public Departement() {
     }
-    
-    
-    
-    
 
-    public Long getIdDepartement() {
-        return idDepartement;
+    public Long getId() {
+        return id;
     }
 
-    public void setId(Long idDepartement) {
-        this.idDepartement = idDepartement;
-    }
+    public void setId(Long id) {
+        this.id = id;
+    }    
+    
 
     public String getIntituleDepartement() {
         return intituleDepartement;
@@ -75,7 +72,7 @@ public class Departement implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idDepartement != null ? idDepartement.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -86,12 +83,12 @@ public class Departement implements Serializable {
             return false;
         }
         Departement other = (Departement) object;
-        return !((this.idDepartement == null && other.idDepartement != null) || (this.idDepartement != null && !this.idDepartement.equals(other.idDepartement)));
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.Departement[ id=" + idDepartement + " ]";
+        return "com.dresen.dresen.data.Departement[ id=" + id + " ]";
     }
     
 }

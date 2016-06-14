@@ -24,7 +24,7 @@ public class GradeFonctio implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idGradeFonctio;
+    private Long id;
     
     @Column (nullable = false, unique = true)
     private String intituleGradeFonctio;
@@ -43,16 +43,16 @@ public class GradeFonctio implements Serializable {
 
     public GradeFonctio() {
     }
-    
-    
 
-    public Long getIdGradeFonctio() {
-        return idGradeFonctio;
+    public Long getId() {
+        return id;
     }
 
-    public void setId(Long idGradeFonctio) {
-        this.idGradeFonctio = idGradeFonctio;
+    public void setId(Long id) {
+        this.id = id;
     }
+    
+    
 
     public String getIntituleGradeFonctio() {
         return intituleGradeFonctio;
@@ -99,7 +99,7 @@ public class GradeFonctio implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idGradeFonctio != null ? idGradeFonctio.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -110,12 +110,12 @@ public class GradeFonctio implements Serializable {
             return false;
         }
         GradeFonctio other = (GradeFonctio) object;
-        return !((this.idGradeFonctio == null && other.idGradeFonctio != null) || (this.idGradeFonctio != null && !this.idGradeFonctio.equals(other.idGradeFonctio)));
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.GradeFonctio[ id=" + idGradeFonctio + " ]";
+        return "com.dresen.dresen.data.GradeFonctio[ id=" + id + " ]";
     }
     
 }

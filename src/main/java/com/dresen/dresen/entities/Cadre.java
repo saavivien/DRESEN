@@ -26,7 +26,7 @@ public class Cadre implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idCadre;
+    private Long id;
     
     @Column (nullable = false, unique = true)
     private String intituleCadre;
@@ -55,15 +55,25 @@ public class Cadre implements Serializable {
     public void setIntituleCadre(String intituleCadre) {
         this.intituleCadre = intituleCadre;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<GradeFonctio> getListGradeFonctios() {
+        return listGradeFonctios;
+    }
+
+    public void setListGradeFonctios(List<GradeFonctio> listGradeFonctios) {
+        this.listGradeFonctios = listGradeFonctios;
+    }
     
 
-    public Long getIdCadre() {
-        return idCadre;
-    }
-
-    public void setId(Long idCadre) {
-        this.idCadre = idCadre;
-    }
+   
 
     public List<GradeFonctio> getListGradeFonctio() {
         return listGradeFonctios;
@@ -88,7 +98,7 @@ public class Cadre implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idCadre != null ? idCadre.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -99,12 +109,12 @@ public class Cadre implements Serializable {
             return false;
         }
         Cadre other = (Cadre) object;
-        return !((this.idCadre == null && other.idCadre != null) || (this.idCadre != null && !this.idCadre.equals(other.idCadre)));
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.Cadre[ id=" + idCadre + " ]";
+        return "com.dresen.dresen.data.Cadre[ id=" + id + " ]";
     }
     
 }

@@ -83,7 +83,7 @@ public class CadreBean{
         return iCadreService.createCadre(cadre);
     }
     public Cadre findCadrebyId(){
-        return iCadreService.findCadreById(cadre.getIdCadre());
+        return iCadreService.findCadreById(cadre.getId());
     }
     public Cadre updateCadre(){
         Corps corps = new Corps();

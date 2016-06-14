@@ -26,7 +26,7 @@ public class StructureAttache implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idStructure;
+    private Long id;
     
     @Column (nullable = false, unique = true)
     private String intituleStructure;
@@ -34,12 +34,12 @@ public class StructureAttache implements Serializable {
     @ManyToOne
     private Arrondissement arrondissement;
     
-    @OneToMany (mappedBy = "structure")
-    private List<Affectation> listAffectation;
+    @ManyToOne
+    private CategorieStructure categorieStructure;
     
-    @OneToMany(mappedBy = "Structure")
-    private List<Poste_Structure> listPoste_Structures;
-
+    @OneToMany (mappedBy = "structureAttache")
+    private List<Affectation> listAffectation;
+   
 
     public StructureAttache(String intituleStructure, Arrondissement arrondissement) {
         this.intituleStructure = intituleStructure;
@@ -49,16 +49,15 @@ public class StructureAttache implements Serializable {
 
     public StructureAttache() {
     }
-      
-    
-    
-    public Long getIdStructure() {
-        return idStructure;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setId(Long idStructure) {
-        this.idStructure = idStructure;
+    public void setId(Long id) {
+        this.id = id;
     }
+      
 
     public String getIntituleStructure() {
         return intituleStructure;
@@ -84,21 +83,19 @@ public class StructureAttache implements Serializable {
         this.listAffectation = listAffectation;
     }
 
-    public List<Poste_Structure> getListPoste_Structures() {
-        return listPoste_Structures;
+    public CategorieStructure getCategorieStructure() {
+        return categorieStructure;
     }
 
-    public void setListPoste_Structures(List<Poste_Structure> listPoste_Structures) {
-        this.listPoste_Structures = listPoste_Structures;
+    public void setCategorieStructure(CategorieStructure categorieStructure) {
+        this.categorieStructure = categorieStructure;
     }
-
-    
     
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idStructure != null ? idStructure.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -109,12 +106,12 @@ public class StructureAttache implements Serializable {
             return false;
         }
         StructureAttache other = (StructureAttache) object;
-        return !((this.idStructure == null && other.idStructure != null) || (this.idStructure != null && !this.idStructure.equals(other.idStructure)));
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.Structure[ id=" + idStructure + " ]";
+        return "com.dresen.dresen.data.Structure[ id=" + id + " ]";
     }
     
 }

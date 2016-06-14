@@ -46,7 +46,7 @@ public class DepartementBean {
         return iDepartementService.createDepartement(departement);
     }
     public Departement findDepartementById(){
-        return iDepartementService.findDepartementById(departement.getIdDepartement());
+        return iDepartementService.findDepartementById(departement.getId());
     }
     public Departement updateDepartement(){
         return iDepartementService.updateDepartement(departement);

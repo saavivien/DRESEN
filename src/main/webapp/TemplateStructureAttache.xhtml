@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Application de gestion du personnel des services déconcentrés du MINESEC EXTREME NORD</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+     <h:body> 
+        <div id="menu">
+            <ui:include src="Menu.xhtml"/>
+        </div>
+         <f:view>
+            <p:dialog widgetVar="dlg" header=" Enregistrer une nouvel nouvelle Structure d'attache " hideEffect="explode" showEffect="explode" modal="true">
+                <h:form enctype="multipart/form-data">
+                     <p:panelGrid columns="2">
+                                <p:outputLabel value="Département:" />       
+                                <p:selectOneMenu  value="#{arrondissementBean.idDepartement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                    <f:selectItems var="custe1" value="#{arrondissementBean.listDepartement}"   itemLabel="#{custe1.intituleDepartement}" itemValue="#{custe1.id}" itemLabelEscaped="true" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Arrondissement:" />       
+                                <p:selectOneMenu  value="#{structureBean.idArrondissement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                    <f:selectItems var="custe2" value="#{structureBean.listArrondissement}"   itemLabel="#{custe2.intituleArrondissement}" itemValue="#{custe2.id}" itemLabelEscaped="true" />
+                                </p:selectOneMenu>
+                                 <p:outputLabel value="Categorie de Structure:" />       
+                                 <p:selectOneMenu  value="#{structureBean.idCategorieStructure}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                     <f:selectItems var="custe3" value="#{structureBean.listCategorieStructure}"   itemLabel="#{custe3.intituleCategorieStructure}" itemValue="#{custe3.id}" itemLabelEscaped="true" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Intitule :" for="intitule" />
+                                <p:inputText id="intitule" value="#{structureBean.structureAttache.intituleStructure}" title="intitulé" />
+                                <h:inputHidden id="number" value="#{structureBean.structureAttache.id}" />
+                    </p:panelGrid>
+                    <p:commandButton value="Enregistrer" action="#{structureBean.createStructure()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
+                </h:form>
+            </p:dialog>
+            <p:dialog widgetVar="dl" header=" Modifier une structure d'attache" hideEffect="fold" showEffect="explode" resizable="true">
+                <h:form id="formModifier" enctype="multipart/form-data">                
+                    <p:panelGrid columns="2" id="panelGModifier">
+                                <p:outputLabel value="Département:" />       
+                                <p:selectOneMenu  value="#{arrondissementBean.idDepartement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                    <f:selectItems var="custe1" value="#{arrondissementBean.listDepartement}"   itemLabel="#{custe1.intituleDepartement}" itemValue="#{custe1.id}" itemLabelEscaped="true" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Arrondissement:" />       
+                                <p:selectOneMenu  value="#{structureBean.idArrondissement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                    <f:selectItems var="custe2" value="#{structureBean.listArrondissement}"   itemLabel="#{custe2.intituleArrondissement}" itemValue="#{custe2.id}" itemLabelEscaped="true" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Categorie de Structure:" />       
+                                <p:selectOneMenu  value="#{structureBean.idCategorieStructure}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                     <f:selectItems var="custe3" value="#{structureBean.listCategorieStructure}"   itemLabel="#{custe3.intituleCategorieStructure}" itemValue="#{custe3.id}" itemLabelEscaped="true" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Intitule :" for="intitule" />
+                                <p:inputText id="intitule" value="#{structureBean.structureAttache.intituleStructure}" title="intitulé" />
+                                <h:inputHidden id="number" value="#{structureBean.structureAttache.id}" />
+                    </p:panelGrid>
+                    <p:commandButton value="Modifier" action="#{structureBean.updateStructure()}"  oncomplete="PF('dl').hide()" update=":tableForm:table" />
+                </h:form>
+            </p:dialog> 
+        </f:view>
+        
+        
+        <f:view>
+            <h:form id='tableForm'>
+                
+                <p:dataTable value="#{structureBean.findAllStructure()}" var="item" paginator="true" rows="5" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{structureBean.structureAttache}" rowKey="#{item.id}">
+                             <f:facet name="header">
+                                La liste des Structures d'attache
+                             </f:facet>
+                    
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Structure"/>
+                                </f:facet>
+                                <h:outputText value="#{item.intituleStructure}"/>
+                            </p:column>
+                    
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Arrondissement"/>
+                                </f:facet>
+                                <h:outputText value="#{item.arrondissement.intituleArrondissement}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Département"/>
+                                </f:facet>
+                                <h:outputText value="#{item.arrondissement.departement.intituleDepartement}"/>
+                            </p:column>
+                    
+                      
+                </p:dataTable>
+                <p:toolbar>
+                    <f:facet name="left">
+                        <p:commandButton type="push" onclick="PF('dlg').show()" value="Nouvelle Structure" icon="ui-icon-disk"/>
+                        <p:commandButton  onclick="PF('dl').show()" value="Modifier Structuret" update=":formModifier:panelGModifier" icon="ui-icon-arrowrefresh-1-w"/>
+                      
+                        <span class="ui-separator">
+                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                        </span>
+                        <p:commandButton type="push" title="Save" image="ui-icon-disk" />
+                        <p:commandButton type="push" title="Update" icon="ui-icon-arrowrefresh-1-w"/>
+                        <p:commandButton type="push" title="Print" image="ui-icon-print"/>
+                    </f:facet>
+                </p:toolbar>
+            </h:form>
+        </f:view>
+     </h:body>
+</html>

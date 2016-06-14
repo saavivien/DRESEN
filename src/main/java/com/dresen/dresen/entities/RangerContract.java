@@ -24,15 +24,15 @@ import javax.persistence.Temporal;
 @Entity
 @NamedQueries({
      @NamedQuery(name = "RangerContract.findAllRangerContractOpen", query = "SELECT rc FROM RangerContract rc WHERE rc.dateFinRangerContract = NULL"),
-     @NamedQuery(name = "RangerContract.findRangerContractByIdAgent", query = "SELECT rc FROM RangerContract rc WHERE rc.contractuel.idAgent = :param"),
-     @NamedQuery(name = "RangerContract.findRangerContractOpenByIdAgent", query = "SELECT rc FROM RangerContract rc WHERE rc.contractuel.idAgent = :param AND rc.dateFinRangerContract = NULL")
+     @NamedQuery(name = "RangerContract.findRangerContractByIdAgent", query = "SELECT rc FROM RangerContract rc WHERE rc.contractuel.id = :param"),
+     @NamedQuery(name = "RangerContract.findRangerContractOpenByIdAgent", query = "SELECT rc FROM RangerContract rc WHERE rc.contractuel.id = :param AND rc.dateFinRangerContract = NULL")
 })
 public class RangerContract implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idRangerContract;
+    private Long id;
     
     @Column
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -57,16 +57,40 @@ public class RangerContract implements Serializable {
         this.contractuel = contratuel;
         this.gradeContract = gradeContract;
     }
-    
-    
 
-    public Long getIdRangerContract() {
-        return idRangerContract;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdRangerContract(Long idRangerContract) {
-        this.idRangerContract = idRangerContract;
+    public void setId(Long id) {
+        this.id = id;
     }
+
+    public Date getDateDebutRangerContract() {
+        return dateDebutRangerContract;
+    }
+
+    public void setDateDebutRangerContract(Date dateDebutRangerContract) {
+        this.dateDebutRangerContract = dateDebutRangerContract;
+    }
+
+    public Date getDateFinRangerContract() {
+        return dateFinRangerContract;
+    }
+
+    public void setDateFinRangerContract(Date dateFinRangerContract) {
+        this.dateFinRangerContract = dateFinRangerContract;
+    }
+
+    public Contractuel getContractuel() {
+        return contractuel;
+    }
+
+    public void setContractuel(Contractuel contractuel) {
+        this.contractuel = contractuel;
+    }
+    
+    
 
     public Date getDateDebutRanger() {
         return dateDebutRangerContract;
@@ -106,7 +130,7 @@ public class RangerContract implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idRangerContract != null ? idRangerContract.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -117,7 +141,7 @@ public class RangerContract implements Serializable {
             return false;
         }
         RangerContract other = (RangerContract) object;
-        return !((this.idRangerContract == null && other.idRangerContract != null) || (this.idRangerContract != null && !this.idRangerContract.equals(other.idRangerContract)));
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     

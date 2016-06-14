@@ -24,7 +24,7 @@ public class Specialite implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idSpecialite;
+    private Long id;
     
     @Column (nullable = false, unique = true)
     private String intituleSpecialite;
@@ -34,16 +34,15 @@ public class Specialite implements Serializable {
 
     public Specialite() {
     }
-    
-    
 
-    public Long getIdSpecialite() {
-        return idSpecialite;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdSpecialite(Long idSpecialite) {
-        this.idSpecialite = idSpecialite;
+    public void setId(Long id) {
+        this.id = id;
     }
+    
 
     public String getIntituleSpecialite() {
         return intituleSpecialite;
@@ -68,7 +67,7 @@ public class Specialite implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idSpecialite != null ? idSpecialite.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -79,7 +78,7 @@ public class Specialite implements Serializable {
             return false;
         }
         Specialite other = (Specialite) object;
-        if ((this.idSpecialite == null && other.idSpecialite != null) || (this.idSpecialite != null && !this.idSpecialite.equals(other.idSpecialite))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -87,7 +86,7 @@ public class Specialite implements Serializable {
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.Specialite[ id=" + idSpecialite + " ]";
+        return "com.dresen.dresen.data.Specialite[ id=" + id + " ]";
     }
     
 }

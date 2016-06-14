@@ -46,7 +46,7 @@ public class GradeContractBean {
         return iGradeContractService.createGradeContract(gradeContract);
     }
     public GradeContract findGradeContractbyId(){
-        return iGradeContractService.findGradeContractById(gradeContract.getIdGradeContract());
+        return iGradeContractService.findGradeContractById(gradeContract.getId());
     }
      public GradeContract updateGradeContract(){
         return iGradeContractService.updateGradeContract(gradeContract);
