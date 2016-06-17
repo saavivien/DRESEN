@@ -45,6 +45,9 @@ public class OrientationBean {
     public String promotion(){
         return "Promotion";
     }
+     public String poste(){
+        return "Poste";
+    }
     public String structureAttache(){
         return "StructureAttache";
     }

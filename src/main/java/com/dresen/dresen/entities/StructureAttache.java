@@ -30,6 +30,8 @@ public class StructureAttache implements Serializable {
     
     @Column (nullable = false, unique = true)
     private String intituleStructure;
+    @Column (nullable = false, unique = true)
+    private String codeStructure;
     
     @ManyToOne
     private Arrondissement arrondissement;
@@ -90,8 +92,17 @@ public class StructureAttache implements Serializable {
     public void setCategorieStructure(CategorieStructure categorieStructure) {
         this.categorieStructure = categorieStructure;
     }
+
+    public String getCodeStructure() {
+        return codeStructure;
+    }
+
+    public void setCodeStructure(String codeStructure) {
+        this.codeStructure = codeStructure;
+    }
     
 
+    
     @Override
     public int hashCode() {
         int hash = 0;

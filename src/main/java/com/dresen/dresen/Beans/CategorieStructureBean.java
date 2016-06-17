@@ -22,7 +22,7 @@ public class CategorieStructureBean {
     @ManagedProperty(value = "#{ICategorieStructureService}")
     private ICategorieStructureService iCategorieStructureService;
     
-    private CategorieStructure CategorieSturcture = new CategorieStructure();
+    private CategorieStructure categorieSturcture = new CategorieStructure();
 
     public ICategorieStructureService getiCategorieStructureService() {
         return iCategorieStructureService;
@@ -33,27 +33,29 @@ public class CategorieStructureBean {
     }
 
     public CategorieStructure getCategorieSturcture() {
-        return CategorieSturcture;
+        return categorieSturcture;
     }
 
-    public void setCategorieSturcture(CategorieStructure CategorieSturcture) {
-        this.CategorieSturcture = CategorieSturcture;
+    public void setCategorieSturcture(CategorieStructure categorieSturcture) {
+        this.categorieSturcture = categorieSturcture;
     }
 
     public CategorieStructureBean() {
     }
     
     public CategorieStructure createCategorieStructure(){
-        return iCategorieStructureService.createCategorieStructure(CategorieSturcture);
+        return iCategorieStructureService.createCategorieStructure(categorieSturcture);
     }
     public CategorieStructure updateCategorieStructure(){
-        return iCategorieStructureService.updateCategorieStructure(CategorieSturcture);
+        return iCategorieStructureService.updateCategorieStructure(categorieSturcture);
     }
     public CategorieStructure findCategorieStructurebyId(){
-        return iCategorieStructureService.findCategorieStructureById(CategorieSturcture.getId());
+        return iCategorieStructureService.findCategorieStructureById(categorieSturcture.getId());
     }
     public List<CategorieStructure> findAllCategorieStructure(){
         return iCategorieStructureService.findAllCategorieStructure();
     }
+    
+    
     
 }

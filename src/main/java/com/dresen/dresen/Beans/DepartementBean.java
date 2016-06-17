@@ -54,6 +54,9 @@ public class DepartementBean {
      public List<Departement> findAllDepartement(){
         return iDepartementService.findAllDepartement();
     }
-    
-    
+
+    public void reset(){
+        this.departement.setIntituleDepartement("");
+        this.setDepartement(null);
+    }
 }

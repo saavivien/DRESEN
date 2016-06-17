@@ -19,6 +19,7 @@ public interface IArrondissementService {
     public Arrondissement createArrondissement(Arrondissement arrondissement) throws ServiceException;
     public Arrondissement findArrondissementById(Long id) throws ServiceException;
     public Arrondissement updateArrondissement(Arrondissement arrondissement) throws ServiceException;
-    public List<Arrondissement> findAllArrondissement() throws ServiceException;    
+    public List<Arrondissement> findAllArrondissement() throws ServiceException;
+    public List<Arrondissement> findArrondissementByIdDepart(long idDepart) throws ServiceException;  
 }
 

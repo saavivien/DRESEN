@@ -74,11 +74,11 @@
      <bean id="IStructureService" class="com.dresen.dresen.ServiceImplement.StructureServiceImpl">
         <property name="iStructureDao" ref="IStructureDao"/>
     </bean>
-     <bean id="ICategorieStructureService" class="com.dresen.dresen.ServiceImplement.CategorieStructureServiceImpl">
-        <property name="iCategorieStructureDao" ref="ICategorieStructureDao"/>
-    </bean>
     <bean id="IPosteStructureService" class="com.dresen.dresen.ServiceImplement.PosteStructureServiceImpl">
         <property name="iPosteStructureDao" ref="IPosteStructureDao"/>
+    </bean>
+    <bean id="ICategorieStructureService" class="com.dresen.dresen.ServiceImplement.CategorieStructureServiceImpl">
+        <property name="iCategorieStructureDao" ref="ICategorieStructureDao"/>
     </bean>
    
    

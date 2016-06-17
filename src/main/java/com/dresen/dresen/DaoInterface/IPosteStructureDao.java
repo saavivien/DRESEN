@@ -5,12 +5,16 @@
  */
 package com.dresen.dresen.DaoInterface;
 
+import com.douwe.generic.dao.DataAccessException;
 import com.douwe.generic.dao.IDao;
 import com.dresen.dresen.entities.PosteStructure;
+import java.util.List;
 /**
  *
  * @author Vivien Saa
  */
 public interface IPosteStructureDao extends IDao<PosteStructure, Long>{
-    
+    public List<PosteStructure> findPosteStructureByPoste(long idPoste) throws DataAccessException;
+    public PosteStructure deletePosteStructureByPoste(long idAgent) throws DataAccessException;
+    public List<PosteStructure> findPosteStructureByCategorieStructure(long idCategorie) throws DataAccessException;
 }

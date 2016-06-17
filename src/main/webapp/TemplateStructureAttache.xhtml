@@ -11,7 +11,7 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
-        <title>Application de gestion du personnel des services déconcentrés du MINESEC EXTREME NORD</title>
+        <title>Application de gestion du personnel des services dÃ©concentrÃ©s du MINESEC EXTREME NORD</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
      <h:body> 
@@ -20,14 +20,16 @@ and open the template in the editor.
         </div>
          <f:view>
             <p:dialog widgetVar="dlg" header=" Enregistrer une nouvel nouvelle Structure d'attache " hideEffect="explode" showEffect="explode" modal="true">
-                <h:form enctype="multipart/form-data">
-                     <p:panelGrid columns="2">
-                                <p:outputLabel value="Département:" />       
-                                <p:selectOneMenu  value="#{arrondissementBean.idDepartement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
-                                    <f:selectItems var="custe1" value="#{arrondissementBean.listDepartement}"   itemLabel="#{custe1.intituleDepartement}" itemValue="#{custe1.id}" itemLabelEscaped="true" />
+                <h:form id="formAjouter" >
+                     <p:panelGrid id="panelAjouter" columns="2">
+                                <p:outputLabel value="DÃ©partement:" />       
+                                <p:selectOneMenu id="depart" value="#{structureBean.idDepartement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                    <p:ajax listener="#{structureBean.changeListArr()}" update="arrond"/>
+                                    <f:selectItem itemLabel="Selectioner le département" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems var="custe1" value="#{structureBean.listDepartement}"   itemLabel="#{custe1.intituleDepartement}" itemValue="#{custe1.id}" itemLabelEscaped="true" />
                                 </p:selectOneMenu>
                                 <p:outputLabel value="Arrondissement:" />       
-                                <p:selectOneMenu  value="#{structureBean.idArrondissement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                <p:selectOneMenu id="arrond" value="#{structureBean.idArrondissement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
                                     <f:selectItems var="custe2" value="#{structureBean.listArrondissement}"   itemLabel="#{custe2.intituleArrondissement}" itemValue="#{custe2.id}" itemLabelEscaped="true" />
                                 </p:selectOneMenu>
                                  <p:outputLabel value="Categorie de Structure:" />       
@@ -35,16 +37,19 @@ and open the template in the editor.
                                      <f:selectItems var="custe3" value="#{structureBean.listCategorieStructure}"   itemLabel="#{custe3.intituleCategorieStructure}" itemValue="#{custe3.id}" itemLabelEscaped="true" />
                                 </p:selectOneMenu>
                                 <p:outputLabel value="Intitule :" for="intitule" />
-                                <p:inputText id="intitule" value="#{structureBean.structureAttache.intituleStructure}" title="intitulé" />
+                                <p:inputText id="intitule" value="#{structureBean.structureAttache.intituleStructure}" title="intitulÃ©" />
+                                <p:outputLabel value="Code/Abréviation :" for="abrev" />
+                                <p:inputText id="abrev" value="#{structureBean.structureAttache.codeStructure}" title="abrev" required="true"/>
                                 <h:inputHidden id="number" value="#{structureBean.structureAttache.id}" />
+                                <p:commandButton value="Enregistrer" action="#{structureBean.createStructure()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table" ajax="true" />
                     </p:panelGrid>
-                    <p:commandButton value="Enregistrer" action="#{structureBean.createStructure()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
+                    
                 </h:form>
             </p:dialog>
             <p:dialog widgetVar="dl" header=" Modifier une structure d'attache" hideEffect="fold" showEffect="explode" resizable="true">
                 <h:form id="formModifier" enctype="multipart/form-data">                
                     <p:panelGrid columns="2" id="panelGModifier">
-                                <p:outputLabel value="Département:" />       
+                                <p:outputLabel value="DÃ©partement:" />       
                                 <p:selectOneMenu  value="#{arrondissementBean.idDepartement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
                                     <f:selectItems var="custe1" value="#{arrondissementBean.listDepartement}"   itemLabel="#{custe1.intituleDepartement}" itemValue="#{custe1.id}" itemLabelEscaped="true" />
                                 </p:selectOneMenu>
@@ -57,7 +62,9 @@ and open the template in the editor.
                                      <f:selectItems var="custe3" value="#{structureBean.listCategorieStructure}"   itemLabel="#{custe3.intituleCategorieStructure}" itemValue="#{custe3.id}" itemLabelEscaped="true" />
                                 </p:selectOneMenu>
                                 <p:outputLabel value="Intitule :" for="intitule" />
-                                <p:inputText id="intitule" value="#{structureBean.structureAttache.intituleStructure}" title="intitulé" />
+                                <p:inputText id="intitule" value="#{structureBean.structureAttache.intituleStructure}" title="intitulÃ©" />
+                                <p:outputLabel value="Code/Abréviation :" for="abrev" />
+                                <p:inputText id="abrev" value="#{structureBean.structureAttache.codeStructure}" title="abrev" required="true"/>
                                 <h:inputHidden id="number" value="#{structureBean.structureAttache.id}" />
                     </p:panelGrid>
                     <p:commandButton value="Modifier" action="#{structureBean.updateStructure()}"  oncomplete="PF('dl').hide()" update=":tableForm:table" />
@@ -80,6 +87,12 @@ and open the template in the editor.
                                 </f:facet>
                                 <h:outputText value="#{item.intituleStructure}"/>
                             </p:column>
+                           <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Code/Abréviation Structure"/>
+                                </f:facet>
+                                <h:outputText value="#{item.codeStructure}"/>
+                            </p:column>
                     
                             <p:column>
                                 <f:facet name="header">
@@ -90,7 +103,7 @@ and open the template in the editor.
 
                             <p:column>
                                 <f:facet name="header">
-                                    <h:outputText value="Département"/>
+                                    <h:outputText value="DÃ©partement"/>
                                 </f:facet>
                                 <h:outputText value="#{item.arrondissement.departement.intituleDepartement}"/>
                             </p:column>

@@ -16,7 +16,7 @@ and open the template in the editor.
     </head>
     <body>  
 
-        <div>
+   <!--     <div>
             <p:menubar>
                
             
@@ -27,29 +27,29 @@ and open the template in the editor.
             </f:facet>  
             </p:menubar>
         </div>
-
+-->
         <h:form>          
             <!--        <p:tabMenu activeIndex="2">  -->
             <p:menuButton value="Agents">  
-                <p:menuitem value="Affectations" actionListener="#{buttonBean.save}" icon="ui-icon-disk" />  
-                     <p:menuitem value="Retraites" actionListener="#{buttonBean.update}" icon="ui-icon-arrowrefresh-1-w"/>  
-                     <p:menuitem value="Changement de poste" actionListener="#{buttonBean.delete}" icon="ui-icon-close"/>   
-                     <p:menuitem value="Changement de Grade" actionListener="#{buttonBean.delete}" icon="ui-icon-close"/>   
+                <p:menuitem value="Affectations" actionListener="#{buttonBean.save}" icon="ui-icon-extlink" />  
+                     <p:menuitem value="Retraites" actionListener="#{buttonBean.update}" icon="ui-icon-extlink"/>  
+                     <p:menuitem value="Changer un poste" actionListener="#{buttonBean.delete}" icon="ui-icon-extlink"/>   
+                     <p:menuitem value="Changer un Grade" actionListener="#{buttonBean.delete}" icon="ui-icon-extlink"/>   
                      <p:menuitem value="Les contractuels" icon="ui-icon-extlink"/>
                      <p:menuitem value="Les fonctionnaires" icon="ui-icon-extlink"/>
             </p:menuButton>  
             <p:menuButton value="Parcours">  
-                     <p:menuitem value="Departements" action="#{orientationBean.departement()}" ajax="false" icon="ui-icon-disk"/>  
-                     <p:menuitem value="Arrondissements" action="#{orientationBean.arrondissement()}" ajax="false" icon="ui-icon-arrowrefresh-1-w"/> 
-                     <p:menuitem value="Type de Structures D'attaches" action="#{orientationBean.categorieStructure()}" ajax="false" icon="ui-icon-close" />  
-                     <p:menuitem value="Structures D'attaches" action="#{orientationBean.structureAttache()}" ajax="false" icon="ui-icon-close"/>  
+                     <p:menuitem value="Departements" action="#{orientationBean.departement()}" ajax="false" icon="ui-icon-extlink"/>  
+                     <p:menuitem value="Arrondissements" action="#{orientationBean.arrondissement()}" ajax="false" icon="ui-icon-extlink"/> 
+                     <p:menuitem value="Catégorie Structures" action="#{orientationBean.categorieStructure()}" ajax="false" icon="ui-icon-extlink" />  
+                     <p:menuitem value="Structures D'attaches" action="#{orientationBean.structureAttache()}" ajax="false" icon="ui-icon-extlink"/>  
                      <p:separator />  
-                     <p:menuitem value="Postes" icon="ui-icon-extlink"/>
+                     <p:menuitem value="Postes/Fonctions" action="#{orientationBean.poste()}" ajax="false" icon=""/>
                      <p:separator /> 
-                     <p:menuitem value="Corps" icon="ui-icon-extlink"/>  
+                     <p:menuitem value="Corps" icon=""/>  
                      <p:menuitem value="Cadres" icon="ui-icon-extlink"/>  
-                     <p:menuitem value="Spécialités" icon="ui-icon-extlink"/> 
                      <p:menuitem value="Grade Fonctionnaire" icon="ui-icon-extlink"/> 
+                     <p:menuitem value="Spécialités" icon="ui-icon-extlink"/> 
                      <p:separator />  
                      <p:menuitem value="Grade Contractuel" icon="ui-icon-extlink"/>
             </p:menuButton>  

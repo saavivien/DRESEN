@@ -21,16 +21,15 @@ and open the template in the editor.
         <f:view>
 
             <p:dialog widgetVar="dlg" header=" Enregistrer un nouveau type de structure" hideEffect="explode" showEffect="explode" modal="true">
-                <h:form enctype="multipart/form-data">
-                    <p:panelGrid columns="2">
+                <h:form id="formAjouter" enctype="multipart/form-data">
+                    <p:panelGrid id="panelAjouter" columns="2">
                                 <p:outputLabel value="intitulé du type de Structure:" for="intitule" />
                                 <p:inputText id="intitule" value="#{categorieStructureBean.categorieSturcture.intituleCategorieStructure}" title="Intitule" />
-                                <h:inputHidden id="number" value="#{categorieStructureBean.categorieSturcture.id}" />
                     </p:panelGrid>
                     <p:commandButton value="Enregistrer" action="#{categorieStructureBean.createCategorieStructure()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
                 </h:form>
             </p:dialog>
-            <p:dialog widgetVar="dl" header=" Modifier un type de structure" hideEffect="fold" showEffect="explode" resizable="true">
+            <p:dialog widgetVar="dl" header=" Modifier un type de structure" hideEffect="fold" showEffect="explode" resizable="true" modal="true">
                 <h:form id="formModifier" enctype="multipart/form-data">                
                     <p:panelGrid columns="2" id="panelGModifier">
                                 <p:outputLabel value="intitulé du type de Structure:" for="intitule" />
@@ -46,7 +45,7 @@ and open the template in the editor.
         <f:view>
             <h:form id='tableForm'>
                 
-                <p:dataTable value="#{categorieStructureBean.findAllCategorieStructure()}" var="item" paginator="true" rows="5" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{categorieStructureBean.categorieSturcture}" rowKey="#{item.id}">
+                <p:dataTable value="#{categorieStructureBean.findAllCategorieStructure()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{categorieStructureBean.categorieSturcture}" rowKey="#{item.id}">
                              <f:facet name="header">
                                 La liste des catégories de Structure
                              </f:facet>
@@ -61,7 +60,9 @@ and open the template in the editor.
                 </p:dataTable>
                 <p:toolbar>
                     <f:facet name="left">
-                        <p:commandButton type="push" onclick="PF('dlg').show()" value="Nouvelle catégorie de Structure" icon="ui-icon-disk"/>
+                        <p:commandButton type="push" onclick="PF('dlg').show();" value="Nouvelle catégorie de Structure" icon="ui-icon-disk">
+                            <p:ajax update=":formAjouter:panelAjouter" resetValues="true" />
+                        </p:commandButton>
                         <p:commandButton  onclick="PF('dl').show()" value="Modifier une catégorie de Structure" update=":formModifier:panelGModifier" icon="ui-icon-arrowrefresh-1-w"/>
                       
                         <span class="ui-separator">

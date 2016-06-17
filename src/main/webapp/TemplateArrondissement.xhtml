@@ -20,20 +20,19 @@ and open the template in the editor.
         </div>
          <f:view>
             <p:dialog widgetVar="dlg" header=" Enregistrer un nouvel Arrondissement" hideEffect="explode" showEffect="explode" modal="true">
-                <h:form enctype="multipart/form-data">
-                     <p:panelGrid columns="2">
+                <h:form id="formAjouter" enctype="multipart/form-data">
+                     <p:panelGrid id="panelAjouter" columns="2">
                                 <p:outputLabel value="Département:" />       
                                 <p:selectOneMenu  value="#{arrondissementBean.idDepartement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
                                     <f:selectItems var="custe" value="#{arrondissementBean.listDepartement}"   itemLabel="#{custe.intituleDepartement}" itemValue="#{custe.id}" itemLabelEscaped="true" />
                                 </p:selectOneMenu>
                                 <p:outputLabel value="Intitule :" for="intitule" />
                                 <p:inputText id="intitule" value="#{arrondissementBean.arrondissement.intituleArrondissement}" title="intitulé" />
-                                <h:inputHidden id="number" value="#{arrondissementBean.arrondissement.id}" />
                     </p:panelGrid>
                     <p:commandButton value="Enregistrer" action="#{arrondissementBean.createArrondissement()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
                 </h:form>
             </p:dialog>
-            <p:dialog widgetVar="dl" header=" Modifier un Arrondissement" hideEffect="fold" showEffect="explode" resizable="true">
+            <p:dialog widgetVar="dl" header=" Modifier un Arrondissement" hideEffect="fold" showEffect="explode" resizable="true" modal="true">
                 <h:form id="formModifier" enctype="multipart/form-data">                
                     <p:panelGrid columns="2" id="panelGModifier">
                                 <p:outputLabel value="Département:" />       
@@ -54,7 +53,7 @@ and open the template in the editor.
         <f:view>
             <h:form id='tableForm'>
                 
-                <p:dataTable value="#{arrondissementBean.findAllArrondissement()}" var="item" paginator="true" rows="5" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{arrondissementBean.arrondissement}" rowKey="#{item.id}">
+                <p:dataTable value="#{arrondissementBean.findAllArrondissement()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{arrondissementBean.arrondissement}" rowKey="#{item.id}">
                              <f:facet name="header">
                                 La liste des Arrondissements
                              </f:facet>
@@ -76,7 +75,9 @@ and open the template in the editor.
                 </p:dataTable>
                 <p:toolbar>
                     <f:facet name="left">
-                        <p:commandButton type="push" onclick="PF('dlg').show()" value="Nouvel arrondissement" icon="ui-icon-disk"/>
+                        <p:commandButton type="push" onclick="PF('dlg').show();" value="Nouvel arrondissement" icon="ui-icon-disk">
+                            <p:ajax update=":formAjouter:panelAjouter" resetValues="true" />
+                        </p:commandButton>
                         <p:commandButton  onclick="PF('dl').show()" value="Modifier arrondissement" update=":formModifier:panelGModifier" icon="ui-icon-arrowrefresh-1-w"/>
                       
                         <span class="ui-separator">

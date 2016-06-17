@@ -20,5 +20,6 @@ public interface ICategorieStructureService {
     public CategorieStructure findCategorieStructureById(Long id) throws ServiceException;
     public CategorieStructure updateCategorieStructure(CategorieStructure categorieStructure) throws ServiceException;
     public List<CategorieStructure> findAllCategorieStructure() throws ServiceException;
+    public CategorieStructure findCategorieStructureByName(String name)throws ServiceException;
     
 }

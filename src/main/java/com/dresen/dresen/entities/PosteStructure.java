@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
@@ -18,6 +20,11 @@ import javax.persistence.ManyToOne;
  * this entity is usefull in order to create a link between a type of structure and various posts a structure has
  */
 @Entity
+@NamedQueries({
+     @NamedQuery(name = "PosteStructure.findPosteStructureByPoste", query = "SELECT ps FROM PosteStructure ps WHERE ps.poste.id = :param"),
+     @NamedQuery(name = "PosteStructure.deletePosteStructureByPoste", query = "DELETE FROM PosteStructure ps WHERE poste.id = :param"),
+     @NamedQuery(name = "PosteStructure.findPosteStructureByCategorieStructure", query = "SELECT ps FROM PosteStructure ps WHERE ps.categorieStructure.id = :param")
+})
 public class PosteStructure implements Serializable {
 
     private static final long serialVersionUID = 1L;

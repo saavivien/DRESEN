@@ -12,13 +12,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
  *
  * @author Vivien Saa
+ * Cette classe permet de regrouper les structures d'attaches en catégorie de structure ie. les délégations départementales les lycées etc.
  */
 @Entity
+@NamedQueries({
+     @NamedQuery(name = "CategorieStructure.findCategorieStructureByName", query = "SELECT cs FROM CategorieStructure cs WHERE cs.intituleCategorieStructure = :param")
+})
 public class CategorieStructure implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -91,7 +97,9 @@ public class CategorieStructure implements Serializable {
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.entities.TypeStructure[ id=" + id + " ]";
+        return intituleCategorieStructure;
     }
+
+
     
 }

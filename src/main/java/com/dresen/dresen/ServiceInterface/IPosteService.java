@@ -20,6 +20,6 @@ public interface IPosteService {
     public Poste findPosteById(Long id) throws ServiceException;
     public Poste updatePoste(Poste Poste) throws ServiceException;
     public List<Poste> findAllPoste() throws ServiceException;
-    public List<Poste> findPosteByStructure(long idStructure)throws ServiceException;
+    public Poste findPosteByName(String name)throws ServiceException;
     
 }

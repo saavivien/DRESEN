@@ -54,5 +54,6 @@ public class GradeContractBean {
       public List<GradeContract> findAllGradeContract(){
         return iGradeContractService.findAllGradeContract();
     }
+      
     
 }

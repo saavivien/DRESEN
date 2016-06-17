@@ -13,8 +13,10 @@ import com.dresen.dresen.entities.CategorieStructure;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import com.dresen.dresen.ServiceInterface.ICategorieStructureService;
+import com.dresen.dresen.ServiceInterface.IDepartementService;
+import com.dresen.dresen.entities.Departement;
+import javax.faces.bean.RequestScoped;
 
 /**
  *
@@ -29,18 +31,24 @@ public class StructureBean {
     @ManagedProperty(value = "#{IArrondissementService}")
     private IArrondissementService iArrondissementService;
     
-    @ManagedProperty(value = "#{ICategorieStructuretService}")
+    @ManagedProperty(value = "#{ICategorieStructureService}")
     private ICategorieStructureService iCategorieStructureService;
     
+    @ManagedProperty(value  ="#{IDepartementService}")
+    private IDepartementService iDepartementService;
+    
+    private long idDepartement;
     private long idArrondissement;
     private long idCategorieStructure;
     private StructureAttache structureAttache = new StructureAttache();
     private List<Arrondissement> listArrondissement;
+    private List<Departement> listDepartement;
     private List<CategorieStructure> listCategorieStructure;
     private Arrondissement arrondissement = new Arrondissement();
     private CategorieStructure CategorieStructure = new CategorieStructure();
 
     public StructureBean() {
+        idDepartement = 0L;
         idArrondissement = 0L;
         idCategorieStructure = 0L;
     }
@@ -51,6 +59,30 @@ public class StructureBean {
 
     public void setiCategorieStructureService(ICategorieStructureService iCategorieStructureService) {
         this.iCategorieStructureService = iCategorieStructureService;
+    }
+
+    public long getIdDepartement() {
+        return idDepartement;
+    }
+
+    public void setIdDepartement(long idDepartement) {
+        this.idDepartement = idDepartement;
+    }
+
+    public IDepartementService getiDepartementService() {
+        return iDepartementService;
+    }
+
+    public void setiDepartementService(IDepartementService iDepartementService) {
+        this.iDepartementService = iDepartementService;
+    }
+
+    public List<Departement> getListDepartement() {
+        return iDepartementService.findAllDepartement();
+    }
+
+    public void setListDepartement(List<Departement> listDepartement) {
+        this.listDepartement = listDepartement;
     }
 
     
@@ -106,7 +138,7 @@ public class StructureBean {
     }
 
     public List<Arrondissement> getListArrondissement() {
-        return iArrondissementService.findAllArrondissement();
+        return iArrondissementService.findArrondissementByIdDepart(idDepartement);
     }
 
     public void setListArrondissement(List<Arrondissement> listArrondissement) {
@@ -128,9 +160,12 @@ public class StructureBean {
     public void setCategorieStructure(CategorieStructure CategorieStructure) {
         this.CategorieStructure = CategorieStructure;
     }
-    
+    public void changeListArr(){
+        listArrondissement=iArrondissementService.findArrondissementByIdDepart(idDepartement);
+    }
     
     public StructureAttache createStructure(){
+        System.out.println("vvsssssssssvsssssssssssssssssssssssvv why don't you work");
         arrondissement = iArrondissementService.findArrondissementById(idArrondissement);
         CategorieStructure = iCategorieStructureService.findCategorieStructureById(idCategorieStructure);
         structureAttache.setCategorieStructure(CategorieStructure);

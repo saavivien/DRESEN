@@ -5,6 +5,7 @@
  */
 package com.dresen.dresen.DaoInterface;
 
+import com.douwe.generic.dao.DataAccessException;
 import com.douwe.generic.dao.IDao;
 import com.dresen.dresen.entities.CategorieStructure;
 
@@ -13,5 +14,7 @@ import com.dresen.dresen.entities.CategorieStructure;
  * @author Vivien Saa
  */
 public interface ICategorieStructureDao extends IDao<CategorieStructure, Long>{
+        public CategorieStructure findCategorieStructureByName(String name)throws DataAccessException;
+
     
 }

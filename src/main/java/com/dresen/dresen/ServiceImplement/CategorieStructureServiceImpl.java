@@ -72,5 +72,15 @@ public class CategorieStructureServiceImpl implements ICategorieStructureService
             throw new ServiceException("impossible de trouver la liste la Catégorie de Structure");
         }    
     }
+
+    public CategorieStructure findCategorieStructureByName(String name) throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iCategorieStructureDao.findCategorieStructureByName(name);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(CategorieStructureServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible de trouver la liste la Catégorie de Structure");
+        }    
+    }
     
 }

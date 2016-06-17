@@ -72,5 +72,15 @@ public class ArrondissementServiceImpl implements IArrondissementService{
             throw new ServiceException("impossible rechercher la liste des arrondissements");
         }        
     }
+
+    public List<Arrondissement> findArrondissementByIdDepart(long idDepart) throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iArrondissementDao.findArrondissementByIdDepart(idDepart);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(ArrondissementServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible rechercher la liste des arrondissements du département");
+        }        
+    }
     
 }
