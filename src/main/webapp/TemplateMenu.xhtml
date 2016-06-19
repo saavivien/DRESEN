@@ -46,12 +46,12 @@ and open the template in the editor.
                      <p:separator />  
                      <p:menuitem value="Postes/Fonctions" action="#{orientationBean.poste()}" ajax="false" icon=""/>
                      <p:separator /> 
-                     <p:menuitem value="Corps" icon=""/>  
-                     <p:menuitem value="Cadres" icon="ui-icon-extlink"/>  
+                     <p:menuitem value="Corps" action="#{orientationBean.corps()}" icon="" />  
+                     <p:menuitem value="Cadres" action="#{orientationBean.cadre()}" icon="ui-icon-extlink"/>  
                      <p:menuitem value="Grade Fonctionnaire" icon="ui-icon-extlink"/> 
-                     <p:menuitem value="Spécialités" icon="ui-icon-extlink"/> 
+                     <p:menuitem value="Spécialités" action="#{orientationBean.specialite()}" icon="ui-icon-extlink"/> 
                      <p:separator />  
-                     <p:menuitem value="Grade Contractuel" icon="ui-icon-extlink"/>
+                     <p:menuitem value="Grade Contractuel" action="#{orientationBean.gradeContract()}" icon="ui-icon-extlink"/>
             </p:menuButton>  
             <p:menuButton value="Import/Export">  
                      <p:menuitem value="Importer" actionListener="#{buttonBean.save}" icon="ui-icon-disk"/>  

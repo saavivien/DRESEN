@@ -53,7 +53,7 @@ public class CorpsBean {
     public Corps updateCorps(){
         return iCorpsService.updateCorps(corps);
     }
-    public List<Corps> findAll(){
+    public List<Corps> findAllCorps(){
         return iCorpsService.findAllCorps();
     }
 }

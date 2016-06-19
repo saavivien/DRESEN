@@ -46,7 +46,7 @@ and open the template in the editor.
         <f:view>
             <h:form id='tableForm'>
                 
-                        <p:dataTable value="#{departementBean.findAllDepartement()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{departementBean.departement}" rowKey="#{item.id}">
+                <p:dataTable value="#{departementBean.findAllDepartement()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{departementBean.departement}" rowKey="#{item.id}">
                              <f:facet name="header">
                                 La liste des Départements
                              </f:facet>

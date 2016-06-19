@@ -21,14 +21,22 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean
 @RequestScoped
 public class CadreBean{
+    
     @ManagedProperty(value = "#{ICadreService}")
     private ICadreService iCadreService;
+    
     @ManagedProperty(value = "#{ICorpsService}")
     private ICorpsService iCorpsService;
     
     private long idCorps;
     private List<Corps> listCorps;
+    private Corps corps = new Corps();
     private Cadre cadre = new Cadre();
+    
+    
+    public CadreBean() {
+        idCorps = 0L;
+    }
 
     public ICadreService getiCadreService() {
         return iCadreService;
@@ -38,13 +46,14 @@ public class CadreBean{
         this.iCadreService = iCadreService;
     }
 
-    public ICorpsService getiCorpsService() {
-        return iCorpsService;
+    public Corps getCorps() {
+        return corps;
     }
 
-    public void setiCorpsService(ICorpsService iCorpsService) {
-        this.iCorpsService = iCorpsService;
+    public void setCorps(Corps corps) {
+        this.corps = corps;
     }
+
 
     public long getIdCorps() {
         return idCorps;
@@ -52,6 +61,14 @@ public class CadreBean{
 
     public void setIdCorps(long idCorps) {
         this.idCorps = idCorps;
+    }
+
+    public ICorpsService getiCorpsService() {
+        return iCorpsService;
+    }
+
+    public void setiCorpsService(ICorpsService iCorpsService) {
+        this.iCorpsService = iCorpsService;
     }
     
     
@@ -70,14 +87,8 @@ public class CadreBean{
     public void setCadre(Cadre cadre) {
         this.cadre = cadre;
     }
-
-    public CadreBean() {
-        idCorps = 0L;
-    }
-    
     
     public Cadre createCadre(){
-        Corps corps = new Corps();
         corps = iCorpsService.findCorpsById(idCorps);
         cadre.setCorps(corps);
         return iCadreService.createCadre(cadre);
@@ -86,7 +97,6 @@ public class CadreBean{
         return iCadreService.findCadreById(cadre.getId());
     }
     public Cadre updateCadre(){
-        Corps corps = new Corps();
         corps = iCorpsService.findCorpsById(idCorps);
         cadre.setCorps(corps);
         return iCadreService.updateCadre(cadre);

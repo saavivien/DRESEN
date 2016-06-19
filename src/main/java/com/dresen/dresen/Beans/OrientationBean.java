@@ -54,4 +54,10 @@ public class OrientationBean {
     public String categorieStructure(){
         return "CategorieStructure";
     }
+    public String gradeFonctio(){
+        return "GradeFonctio";
+    }
+    public String gradeContract(){
+        return "GradeContractuel";
+    }
 }

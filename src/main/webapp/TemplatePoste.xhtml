@@ -29,7 +29,7 @@ and open the template in the editor.
                                 <p:inputText id="code" value="#{posteBean.poste.code}" title="code" />
                                 <p:outputLabel value="Cocher le(s) type(s) de structure concernée(s) par le poste:" />
                                 <p:selectManyCheckbox value="#{posteBean.listCategorieStructureSelectedString}" layout="pageDirection">  
-                                    <f:selectItems value="#{posteBean.listCategorieStructure}"/>  
+                                    <f:selectItems var="categorie" itemLabel="#{categorie.intituleCategorieStructure}" value="#{posteBean.listCategorieStructure}"/>  
                                 </p:selectManyCheckbox>  
                     </p:panelGrid>
                     <p:commandButton value="Enregistrer" action="#{posteBean.createPoste()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
@@ -44,7 +44,7 @@ and open the template in the editor.
                                 <p:inputText id="code" value="#{posteBean.poste.code}" title="code" />
                                 <p:outputLabel value="Cocher le(s) type(s) de structure concernée(s) par le poste:" />
                                 <p:selectManyCheckbox value="#{posteBean.listCategorieStructureSelectedString}" layout="pageDirection" >  
-                                      <f:selectItems value="#{posteBean.listCategorieStructure}" />  
+                                      <f:selectItems var="categorie" itemLabel="#{categorie.intituleCategorieStructure}" value="#{posteBean.listCategorieStructure}"/>
                                 </p:selectManyCheckbox>
                                 <h:inputHidden id="number" value="#{posteBean.poste.id}" />
                     </p:panelGrid>

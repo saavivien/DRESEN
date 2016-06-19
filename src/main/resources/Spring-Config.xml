@@ -35,7 +35,7 @@
     <bean id="IArrondissementService" class="com.dresen.dresen.ServiceImplement.ArrondissementServiceImpl">
         <property name="iArrondissementDao" ref="IArrondissementDao"/>
     </bean>
-    <bean id="ICadretService" class="com.dresen.dresen.ServiceImplement.CadreServiceImpl">
+    <bean id="ICadreService" class="com.dresen.dresen.ServiceImplement.CadreServiceImpl">
         <property name="iCadreDao" ref="ICadreDao"/>
     </bean>
     <bean id="IContractuelService" class="com.dresen.dresen.ServiceImplement.ContractuelServiceImpl">
