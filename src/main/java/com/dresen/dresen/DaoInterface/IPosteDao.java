@@ -8,6 +8,7 @@ package com.dresen.dresen.DaoInterface;
 import com.douwe.generic.dao.DataAccessException;
 import com.douwe.generic.dao.IDao;
 import com.dresen.dresen.entities.Poste;
+import java.util.List;
 
 /**
  *
@@ -15,5 +16,6 @@ import com.dresen.dresen.entities.Poste;
  */
 public interface IPosteDao extends IDao<Poste, Long>{
     public Poste findPosteByName(String name)throws DataAccessException;
+    public List<Poste> findPosteByCategorieStructure(long idCategorieStructure)throws DataAccessException;
     
 }

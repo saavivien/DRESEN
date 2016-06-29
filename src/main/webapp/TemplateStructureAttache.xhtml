@@ -23,54 +23,55 @@ and open the template in the editor.
                 <h:form id="formAjouter" >
                      <p:panelGrid id="panelAjouter" columns="2">
                                 <p:outputLabel value="Département:" />       
-                                <p:selectOneMenu id="depart" value="#{structureBean.idDepartement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
-                                    <p:ajax listener="#{structureBean.changeListArr()}" update="arrond"/>
-                                    <f:selectItem itemLabel="Selectioner le département" itemValue="" noSelectionOption="true" />
+                                <p:selectOneMenu id="depart" value="#{structureBean.idDepartement}"  label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                    <p:ajax  event="change" update="arrond" />
+                                    <f:selectItem itemLabel="Selectioner le département" itemValue="" noSelectionOption="true"  />
                                     <f:selectItems var="custe1" value="#{structureBean.listDepartement}"   itemLabel="#{custe1.intituleDepartement}" itemValue="#{custe1.id}" itemLabelEscaped="true" />
                                 </p:selectOneMenu>
                                 <p:outputLabel value="Arrondissement:" />       
-                                <p:selectOneMenu id="arrond" value="#{structureBean.idArrondissement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                <p:selectOneMenu id="arrond" value="#{structureBean.idArrondissement}" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
                                     <f:selectItems var="custe2" value="#{structureBean.listArrondissement}"   itemLabel="#{custe2.intituleArrondissement}" itemValue="#{custe2.id}" itemLabelEscaped="true" />
                                 </p:selectOneMenu>
                                  <p:outputLabel value="Categorie de Structure:" />       
-                                 <p:selectOneMenu  value="#{structureBean.idCategorieStructure}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                 <p:selectOneMenu value="#{structureBean.idCategorieStructure}" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                     <f:selectItem itemLabel="Selectioner la catégorie" itemValue="" noSelectionOption="true"  />
                                      <f:selectItems var="custe3" value="#{structureBean.listCategorieStructure}"   itemLabel="#{custe3.intituleCategorieStructure}" itemValue="#{custe3.id}" itemLabelEscaped="true" />
                                 </p:selectOneMenu>
                                 <p:outputLabel value="Intitule :" for="intitule" />
-                                <p:inputText id="intitule" value="#{structureBean.structureAttache.intituleStructure}" title="intitulé" />
+                                  <p:inputText id="intitule" value="#{structureBean.structureAttache.intituleStructure}" title="intitulé" />
                                 <p:outputLabel value="Code/Abréviation :" for="abrev" />
-                                <p:inputText id="abrev" value="#{structureBean.structureAttache.codeStructure}" title="abrev"/>
-                                <h:inputHidden id="number" value="#{structureBean.structureAttache.id}" />
-                                <p:commandButton value="Enregistrer" action="#{structureBean.createStructure()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table" id="bout" />
+                                <p:inputText id="abrev" value="#{structureBean.structureAttache.codeStructure}" title="abrev" required="true"/>
+                                <p:commandButton value="Enregistrer" action="#{structureBean.createStructure()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table" id="bout1" ajax="false" />
                     </p:panelGrid>
                     
                     
                 </h:form>
             </p:dialog>
-            <p:dialog widgetVar="dl" header=" Modifier une structure d'attache" hideEffect="fold" showEffect="explode" resizable="true">
+             <p:dialog widgetVar="dl" header=" Modifier une structure d'attache" hideEffect="fold" showEffect="explode" resizable="true" modal="true">
                 <h:form id="formModifier" enctype="multipart/form-data">                
                     <p:panelGrid id="panelGModifier" columns="2">
                                 <p:outputLabel value="Département:" />       
                                 <p:selectOneMenu id="depart" value="#{structureBean.idDepartement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
-                                    <p:ajax listener="#{structureBean.changeListArr()}" update="arrond"/>
+                                    <p:ajax  event="change" update="arrond" />
                                     <f:selectItem itemLabel="Selectioner le département" itemValue="" noSelectionOption="true" />
                                     <f:selectItems var="custe1" value="#{structureBean.listDepartement}"   itemLabel="#{custe1.intituleDepartement}" itemValue="#{custe1.id}" itemLabelEscaped="true" />
                                 </p:selectOneMenu>
                                 <p:outputLabel value="Arrondissement:" />       
-                                <p:selectOneMenu id="arrond" value="#{structureBean.idArrondissement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                <p:selectOneMenu id="arrond" value="#{structureBean.idArrondissement}" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
                                     <f:selectItems var="custe2" value="#{structureBean.listArrondissement}"   itemLabel="#{custe2.intituleArrondissement}" itemValue="#{custe2.id}" itemLabelEscaped="true" />
                                 </p:selectOneMenu>
                                  <p:outputLabel value="Categorie de Structure:" />       
-                                 <p:selectOneMenu  value="#{structureBean.idCategorieStructure}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                 <p:selectOneMenu  value="#{structureBean.idCategorieStructure}" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                     <f:selectItem itemLabel="Selectionner la catégorie" itemValue="" noSelectionOption="true"  />
                                      <f:selectItems var="custe3" value="#{structureBean.listCategorieStructure}"   itemLabel="#{custe3.intituleCategorieStructure}" itemValue="#{custe3.id}" itemLabelEscaped="true" />
                                 </p:selectOneMenu>
                                 <p:outputLabel value="Intitule :" for="intitule" />
-                                <p:inputText id="intitule" value="#{structureBean.structureAttache.intituleStructure}" title="intitulÃ©" />
+                                <p:inputText id="intitule" value="#{structureBean.structureAttache.intituleStructure}" title="intitulé" />
                                 <p:outputLabel value="Code/Abréviation :" for="abrev" />
                                 <p:inputText id="abrev" value="#{structureBean.structureAttache.codeStructure}" title="abrev" required="true"/>
                                 <h:inputHidden id="number" value="#{structureBean.structureAttache.id}" />
+                                <p:commandButton value="Modifier" action="#{structureBean.updateStructure()}"  oncomplete="PF('dl').hide()" update=":tableForm:table" id="bout1" ajax="false" />
                     </p:panelGrid>
-                    <p:commandButton value="Modifier" action="#{structureBean.updateStructure()}"  oncomplete="PF('dl').hide()" update=":tableForm:table" />
                 </h:form>
             </p:dialog> 
         </f:view>
@@ -78,48 +79,79 @@ and open the template in the editor.
         
         <f:view>
             <h:form id='tableForm'>
+                <p:contextMenu for="table">  
+                    <p:menuitem value="New" actionListener="#{structureBean.initStruct()}" update=":formAjouter:panelAjouter" oncomplete="PF('dlg').show()" /> 
+                    <p:menuitem value="Update" actionListener="#{structureBean.updateStruct()}" update=":formModifier:panelGModifier" oncomplete="PF('dl').show()"/>  
+                </p:contextMenu>  
                 
-                <p:dataTable value="#{structureBean.findAllStructure()}" var="item" paginator="true" rows="5" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{structureBean.structureAttache}" rowKey="#{item.id}">
-                             <f:facet name="header">
-                                La liste des Structures d'attache
-                             </f:facet>
-                    
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Structure"/>
-                                </f:facet>
-                                <h:outputText value="#{item.intituleStructure}"/>
-                            </p:column>
-                           <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Code/Abréviation Structure"/>
-                                </f:facet>
-                                <h:outputText value="#{item.codeStructure}"/>
-                            </p:column>
-                    
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Arrondissement"/>
-                                </f:facet>
-                                <h:outputText value="#{item.arrondissement.intituleArrondissement}"/>
-                            </p:column>
+                <p:dataTable value="#{structureBean.findAllStructure()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{structureBean.structureAttache}" rowKey="#{item.id}">
+                    <f:facet name="header">
+                        La liste des Structures d'attache
+                    </f:facet>
 
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Département"/>
-                                </f:facet>
-                                <h:outputText value="#{item.arrondissement.departement.intituleDepartement}"/>
-                            </p:column>
-                    
-                      
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Structure"/>
+                        </f:facet> 
+                        <h:outputText value="#{item.intituleStructure}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Code/Abréviation Structure"/>
+                        </f:facet>
+                        <h:outputText value="#{item.codeStructure}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Catégorie Structure"/>
+                        </f:facet>
+                        <h:outputText value="#{item.categorieStructure}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Arrondissement"/>
+                        </f:facet>
+                        <h:outputText value="#{item.arrondissement.intituleArrondissement}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Département"/>
+                        </f:facet>
+                        <h:outputText value="#{item.arrondissement.departement.intituleDepartement}"/>
+                    </p:column>
+
+
                 </p:dataTable>
+                
+                 <h:panelGrid columns="2">  
+                    <p:panel header="Export All Data">  
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/excel.png" />  
+                            <p:dataExporter type="xls" target="table" fileName="listArrondissement" />  
+                        </h:commandLink>  
+
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/pdf.png" />  
+                            <p:dataExporter type="pdf" target="table" fileName="listArrondissement"/>  
+                        </h:commandLink>  
+                    </p:panel> 
+                    <p:panel header="Export Page Data">  
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/excel.png" />  
+                            <p:dataExporter type="xls" target="table" fileName="listArrondissement" pageOnly="true"/>  
+                        </h:commandLink>  
+
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/pdf.png" />  
+                            <p:dataExporter type="pdf" target="table" fileName="listArrondissement" pageOnly="true"/>  
+                        </h:commandLink>  
+                    </p:panel>  
+                </h:panelGrid>  
                 <p:toolbar>
                     <f:facet name="left">
-                        <p:commandButton type="push" onclick="PF('dlg').show();" value="Nouvelle Structure" icon="ui-icon-disk">
-                            <p:ajax update=":formAjouter:panelAjouter" resetValues="true" />
-                        </p:commandButton>
-                        <p:commandButton  onclick="PF('dl').show()" value="Modifier Structure" update=":formModifier:panelGModifier" icon="ui-icon-arrowrefresh-1-w"/>
-                      
+                        <p:commandButton type="push"  actionListener="#{structureBean.initStruct()}"  onclick="PF('dlg').show();" value="Nouvelle Structure" icon="ui-icon-disk" />                
                         <span class="ui-separator">
                             <span class="ui-icon ui-icon-grip-dotted-vertical" />
                         </span>

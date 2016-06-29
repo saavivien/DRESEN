@@ -33,9 +33,9 @@ public class PosteBean {
     private IPosteStructureService iPosteStructureService;
     
     private Poste poste = new Poste();
-    private PosteStructure posteStructure;
+    private PosteStructure posteStructure;  
     private CategorieStructure categorieStructure = new CategorieStructure();
-    
+    private List<PosteStructure> listPosteStructures;
     private List<CategorieStructure> listCategorieStructure;
     private List<String> listCategorieStructureSelectedString = new ArrayList<String>();
     
@@ -61,7 +61,24 @@ public class PosteBean {
         this.iPosteStructureService = iPosteStructureService;
     }
 
-    
+    public List<PosteStructure> getListPosteStructures() {
+        return iPosteStructureService.findPosteStructureByPoste(poste.getId());
+    }
+
+    public void setListPosteStructures(List<PosteStructure> listPosteStructures) {
+        this.listPosteStructures = listPosteStructures;
+    }
+    /**
+     * this to built up a string containing the list of structure of this post in order to display it in the datatable
+     * @return 
+     */
+    public String listStructure() {
+        String listStructure = "";
+        for(PosteStructure lisPos:listPosteStructures){
+            listStructure = listStructure+", "+lisPos.getCategorieStructure().getIntituleCategorieStructure();
+         } 
+        return listStructure;
+    }
 
     public Poste getPoste() {
         return poste;
@@ -118,6 +135,22 @@ public class PosteBean {
     public void setListCategorieStructureSelectedString(List<String> listCategorieStructureSelectedString) {
         this.listCategorieStructureSelectedString = listCategorieStructureSelectedString;
     }
+    
+    /*
+    this is aim to initialize the oneMenu to nothing before updating
+//    */
+//    public void updatePoste(){
+//        if (structureAttache==null) {
+//            idDepartement = 0L;
+//            idCategorieStructure = 0L;
+//            arrondissement = null;
+//        } else {
+//            arrondissement = structureAttache.getArrondissement();
+//            idDepartement = arrondissement.getDepartement().getId();
+//            idCategorieStructure = structureAttache.getCategorieStructure().getId();
+//        }
+//    }
+    
     
     public Poste createPoste(){
         iPosteService.createPoste(poste);

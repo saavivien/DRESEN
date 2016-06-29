@@ -5,13 +5,16 @@
  */
 package com.dresen.dresen.DaoInterface;
 
+import com.douwe.generic.dao.DataAccessException;
 import com.douwe.generic.dao.IDao;
 import com.dresen.dresen.entities.Cadre;
+import java.util.List;
 
 /**
  *
  * @author Vivien Saa
  */
 public interface ICadreDao extends IDao<Cadre, Long>{
+    public List<Cadre> findCadreByIdCorps(long idCorps) throws DataAccessException;
     
 }

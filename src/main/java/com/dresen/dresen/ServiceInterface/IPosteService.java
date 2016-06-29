@@ -21,5 +21,5 @@ public interface IPosteService {
     public Poste updatePoste(Poste Poste) throws ServiceException;
     public List<Poste> findAllPoste() throws ServiceException;
     public Poste findPosteByName(String name)throws ServiceException;
-    
+    public List<Poste> findPosteByCategorieStructure(long idCategorieStructure) throws ServiceException;
 }

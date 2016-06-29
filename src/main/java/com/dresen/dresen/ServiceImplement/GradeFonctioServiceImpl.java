@@ -71,5 +71,15 @@ public class GradeFonctioServiceImpl implements IGradeFonctioService{
             throw new ServiceException("impossible rechercher la liste des gradesFonctionnaires");
         }        
     }
+
+    public List<GradeFonctio> findGradeFonctioByIdCadre(long idCadre) throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iGradeFonctioDao.findGradeFonctioByIdCadre(idCadre);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(GradeFonctioServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible de lister les grade Fonctionnaires liés au cadre");
+        }
+    }
     
 }

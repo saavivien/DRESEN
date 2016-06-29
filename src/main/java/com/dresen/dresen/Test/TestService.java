@@ -14,6 +14,9 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.dresen.dresen.ServiceInterface.ICategorieStructureService;
+import com.dresen.dresen.ServiceInterface.IStructureService;
+import com.dresen.dresen.entities.StructureAttache;
+import static java.nio.file.Files.find;
 
 /**
  *
@@ -73,12 +76,21 @@ public class TestService {
 ////               
 //    }
     
-    public static void main(String[] args) {
+//    public static void main(String[] args) {
+//        System.out.println( "Hello World!" );
+//        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");  
+//        ICategorieStructureService iCategorieStructureService = ctx.getBean("ICategorieStructureService", ICategorieStructureService.class);
+//        List<CategorieStructure> lisAff1;
+//        lisAff1 = iCategorieStructureService.findAllCategorieStructure();
+//        System.out.println(lisAff1.get(0).getIntituleCategorieStructure());
+//    }
+
+ public static void main(String[] args) {
         System.out.println( "Hello World!" );
         ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");  
-        ICategorieStructureService iCategorieStructureService = ctx.getBean("ICategorieStructureService", ICategorieStructureService.class);
-        List<CategorieStructure> lisAff1;
-        lisAff1 = iCategorieStructureService.findAllCategorieStructure();
-        System.out.println(lisAff1.get(0).getIntituleCategorieStructure());
+        IStructureService iStructureService = ctx.getBean("IStructureService", IStructureService.class);
+        List<StructureAttache> listStructureAttache = iStructureService.findStructureAttacheByCategorieAndArrondissement(1, 5);
+        for(StructureAttache sa:listStructureAttache)
+               System.out.println("intitulé de la structure: "+sa.getIntituleStructure());
     }
 }

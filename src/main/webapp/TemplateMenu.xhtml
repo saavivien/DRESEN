@@ -36,19 +36,19 @@ and open the template in the editor.
                      <p:menuitem value="Changer un poste" actionListener="#{buttonBean.delete}" icon="ui-icon-extlink"/>   
                      <p:menuitem value="Changer un Grade" actionListener="#{buttonBean.delete}" icon="ui-icon-extlink"/>   
                      <p:menuitem value="Les contractuels" icon="ui-icon-extlink"/>
-                     <p:menuitem value="Les fonctionnaires" icon="ui-icon-extlink"/>
+                     <p:menuitem value="Les fonctionnaires" action="#{orientationBean.ajouterFonctionnaire()}" icon="ui-icon-extlink"/>
             </p:menuButton>  
             <p:menuButton value="Parcours">  
                      <p:menuitem value="Departements" action="#{orientationBean.departement()}" ajax="false" icon="ui-icon-extlink"/>  
                      <p:menuitem value="Arrondissements" action="#{orientationBean.arrondissement()}" ajax="false" icon="ui-icon-extlink"/> 
                      <p:menuitem value="Catégorie Structures" action="#{orientationBean.categorieStructure()}" ajax="false" icon="ui-icon-extlink" />  
-                     <p:menuitem value="Structures D'attaches" action="#{orientationBean.structureAttache()}" ajax="false" icon="ui-icon-extlink"/>  
+                     <p:menuitem value="Structures d'attaches" action="#{orientationBean.structureAttache()}" ajax="false" icon="ui-icon-extlink"/>  
                      <p:separator />  
                      <p:menuitem value="Postes/Fonctions" action="#{orientationBean.poste()}" ajax="false" icon=""/>
                      <p:separator /> 
                      <p:menuitem value="Corps" action="#{orientationBean.corps()}" icon="" />  
                      <p:menuitem value="Cadres" action="#{orientationBean.cadre()}" icon="ui-icon-extlink"/>  
-                     <p:menuitem value="Grade Fonctionnaire" icon="ui-icon-extlink"/> 
+                     <p:menuitem value="Grade Fonctionnaire" action="#{orientationBean.gradeFonctio()}" icon="ui-icon-extlink"/> 
                      <p:menuitem value="Spécialités" action="#{orientationBean.specialite()}" icon="ui-icon-extlink"/> 
                      <p:separator />  
                      <p:menuitem value="Grade Contractuel" action="#{orientationBean.gradeContract()}" icon="ui-icon-extlink"/>

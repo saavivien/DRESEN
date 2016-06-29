@@ -80,5 +80,15 @@ public class PosteServiceImpl implements IPosteService{
             throw new ServiceException("impossible rechercher la liste des postes");
         }       
     }
-    
+
+    public List<Poste> findPosteByCategorieStructure(long idCategorieStructure) throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iPosteDao.findPosteByCategorieStructure(idCategorieStructure);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(PosteServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible rechercher la liste des postes correspondant à la catégorie");
+        }
+    }
+
 }

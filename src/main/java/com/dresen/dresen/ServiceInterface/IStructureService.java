@@ -20,6 +20,5 @@ public interface IStructureService {
     public StructureAttache findStructureAttacheById(Long id) throws ServiceException;
     public StructureAttache updateStructureAttache(StructureAttache structureAttache) throws ServiceException;
     public List<StructureAttache> findAllStructureAttache() throws ServiceException;
-    
-    
+    public List<StructureAttache> findStructureAttacheByCategorieAndArrondissement(long idArrondissement, long idCategorie) throws ServiceException;   
 }

@@ -16,37 +16,39 @@ import javax.faces.bean.ManagedProperty;
 import com.dresen.dresen.ServiceInterface.ICategorieStructureService;
 import com.dresen.dresen.ServiceInterface.IDepartementService;
 import com.dresen.dresen.entities.Departement;
-import javax.faces.bean.RequestScoped;
+import java.io.Serializable;
+import javax.faces.bean.ViewScoped;
 
 /**
  *
  * @author Vivien Saa
  */
 @ManagedBean
-@RequestScoped
-public class StructureBean {
+@ViewScoped
+public class StructureBean implements Serializable{
     @ManagedProperty(value = "#{IStructureService}")
     private IStructureService iStructureService;
-    
+  
     @ManagedProperty(value = "#{IArrondissementService}")
     private IArrondissementService iArrondissementService;
+    private List<Arrondissement> listArrondissement;
+    private Arrondissement arrondissement;
     
     @ManagedProperty(value = "#{ICategorieStructureService}")
     private ICategorieStructureService iCategorieStructureService;
+    private List<CategorieStructure> listCategorieStructure;
+    private CategorieStructure categorieStructure;
     
     @ManagedProperty(value  ="#{IDepartementService}")
     private IDepartementService iDepartementService;
-    
+    private List<Departement> listDepartement;
+    private String intituleStructure;
+    private String codeStructure;
     private long idDepartement;
     private long idArrondissement;
     private long idCategorieStructure;
-    private StructureAttache structureAttache = new StructureAttache();
-    private List<Arrondissement> listArrondissement;
-    private List<Departement> listDepartement;
-    private List<CategorieStructure> listCategorieStructure;
-    private Arrondissement arrondissement = new Arrondissement();
-    private CategorieStructure CategorieStructure = new CategorieStructure();
-
+    private StructureAttache structureAttache;
+   
     public StructureBean() {
         idDepartement = 0L;
         idArrondissement = 0L;
@@ -69,6 +71,15 @@ public class StructureBean {
         this.idDepartement = idDepartement;
     }
 
+    public StructureAttache getStructureAttache() {
+        return structureAttache;
+    }
+
+    public void setStructureAttache(StructureAttache structureAttache) {
+        this.structureAttache = structureAttache;
+    }
+    
+
     public IDepartementService getiDepartementService() {
         return iDepartementService;
     }
@@ -84,8 +95,6 @@ public class StructureBean {
     public void setListDepartement(List<Departement> listDepartement) {
         this.listDepartement = listDepartement;
     }
-
-    
 
     public long getIdCategorieStructure() {
         return idCategorieStructure;
@@ -103,8 +112,6 @@ public class StructureBean {
         this.listCategorieStructure = listCategorieStructure;
     }
     
-    
-
     public IStructureService getiStructureService() {
         return iStructureService;
     }
@@ -129,12 +136,20 @@ public class StructureBean {
         this.idArrondissement = idArrondissement;
     }
 
-    public StructureAttache getStructureAttache() {
-        return structureAttache;
+    public String getIntituleStructure() {
+        return intituleStructure;
     }
 
-    public void setStructureAttache(StructureAttache structureAttache) {
-        this.structureAttache = structureAttache;
+    public void setIntituleStructure(String intituleStructure) {
+        this.intituleStructure = intituleStructure;
+    }
+
+    public String getCodeStructure() {
+        return codeStructure;
+    }
+
+    public void setCodeStructure(String codeStructure) {
+        this.codeStructure = codeStructure;
     }
 
     public List<Arrondissement> getListArrondissement() {
@@ -154,33 +169,62 @@ public class StructureBean {
     }
 
     public CategorieStructure getCategorieStructure() {
-        return CategorieStructure;
+        return categorieStructure;
     }
 
-    public void setCategorieStructure(CategorieStructure CategorieStructure) {
-        this.CategorieStructure = CategorieStructure;
+    public void setCategorieStructure(CategorieStructure categorieStructure) {
+        this.categorieStructure = categorieStructure;
     }
-    public void changeListArr(){
-        listArrondissement=iArrondissementService.findArrondissementByIdDepart(idDepartement);
+    /*
+    this is to initialize the entity structureAttache before creating another
+    */
+    public void initStruct(){
+        idDepartement = 0L;
+        idCategorieStructure = 0L;
+        arrondissement = null;
+        structureAttache = new StructureAttache();   
     }
-    
-    public StructureAttache createStructure(){
-        System.out.println("vvsssssssssvsssssssssssssssssssssssvv why don't you work");
-        arrondissement = iArrondissementService.findArrondissementById(idArrondissement);
-        CategorieStructure = iCategorieStructureService.findCategorieStructureById(idCategorieStructure);
-        structureAttache.setCategorieStructure(CategorieStructure);
-        structureAttache.setArrondissement(arrondissement);
-        return iStructureService.createStructureAttache(structureAttache);
+    /*
+    this is aim to initialize the oneMenu to nothing before updating
+    */
+    public void updateStruct(){
+        if (structureAttache==null) {
+            idDepartement = 0L;
+            idCategorieStructure = 0L;
+            arrondissement = null;
+        } else {
+            arrondissement = structureAttache.getArrondissement();
+            idDepartement = arrondissement.getDepartement().getId();
+            idCategorieStructure = structureAttache.getCategorieStructure().getId();
+        }
+    }
+
+    public StructureAttache createStructure()throws Exception{
+        try {
+            arrondissement = iArrondissementService.findArrondissementById(idArrondissement);
+            categorieStructure = iCategorieStructureService.findCategorieStructureById(idCategorieStructure);
+            structureAttache.setCategorieStructure(categorieStructure);
+            structureAttache.setArrondissement(arrondissement);
+            return iStructureService.createStructureAttache(structureAttache);
+        } catch (Exception e) {
+            System.out.println("impossible d'ajouter cette structure" + e);
+            throw e;
+        }
     }
     public StructureAttache findStructureById(){
         return iStructureService.findStructureAttacheById(structureAttache.getId());
     } 
-    public StructureAttache updateStructure(){
-        arrondissement = iArrondissementService.findArrondissementById(idArrondissement);
-        CategorieStructure = iCategorieStructureService.findCategorieStructureById(idCategorieStructure);
-        structureAttache.setCategorieStructure(CategorieStructure);
-        structureAttache.setArrondissement(arrondissement);
-        return iStructureService.updateStructureAttache(structureAttache);
+    public StructureAttache updateStructure()throws Exception{
+        try {
+            arrondissement = iArrondissementService.findArrondissementById(idArrondissement);
+            categorieStructure = iCategorieStructureService.findCategorieStructureById(idCategorieStructure);
+            structureAttache.setCategorieStructure(categorieStructure);
+            structureAttache.setArrondissement(arrondissement);
+            return iStructureService.updateStructureAttache(structureAttache);
+        } catch (Exception e) {
+            System.out.println("impossible de mettre à jour cette structure" + e);
+            throw e;
+        }
     }
     public List<StructureAttache> findAllStructure(){
         return iStructureService.findAllStructureAttache();

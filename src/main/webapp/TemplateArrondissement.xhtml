@@ -24,6 +24,7 @@ and open the template in the editor.
                      <p:panelGrid id="panelAjouter" columns="2">
                                 <p:outputLabel value="Département:" />       
                                 <p:selectOneMenu  value="#{arrondissementBean.idDepartement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                    <f:selectItem itemLabel="Selectionner le département" itemValue="" noSelectionOption="true"  />
                                     <f:selectItems var="custe" value="#{arrondissementBean.listDepartement}"   itemLabel="#{custe.intituleDepartement}" itemValue="#{custe.id}" itemLabelEscaped="true" />
                                 </p:selectOneMenu>
                                 <p:outputLabel value="Intitule :" for="intitule" />
@@ -37,6 +38,7 @@ and open the template in the editor.
                     <p:panelGrid columns="2" id="panelGModifier">
                                 <p:outputLabel value="Département:" />       
                                 <p:selectOneMenu  value="#{arrondissementBean.idDepartement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                    <f:selectItem itemLabel="Selectionner le département" itemValue="" noSelectionOption="true"  />
                                     <f:selectItems var="custe" value="#{arrondissementBean.listDepartement}"   itemLabel="#{custe.intituleDepartement}" itemValue="#{custe.id}" itemLabelEscaped="true" />
                                 </p:selectOneMenu>
                                
@@ -52,6 +54,10 @@ and open the template in the editor.
         
         <f:view>
             <h:form id='tableForm'>
+                <p:contextMenu for="table">  
+                    <p:menuitem value="New"  oncomplete="PF('dlg').show()"/>
+                    <p:menuitem value="Update" update=":formModifier:panelGModifier" oncomplete="PF('dl').show()"/>  
+                </p:contextMenu> 
                 
                 <p:dataTable value="#{arrondissementBean.findAllArrondissement()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{arrondissementBean.arrondissement}" rowKey="#{item.id}">
                              <f:facet name="header">
@@ -73,19 +79,45 @@ and open the template in the editor.
                             </p:column>
                       
                 </p:dataTable>
+                <h:panelGrid columns="2">  
+                    <p:panel header="Export All Data">  
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/excel.png" />  
+                            <p:dataExporter type="xls" target="table" fileName="listArrondissement" />  
+                        </h:commandLink>  
+
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/pdf.png" />  
+                            <p:dataExporter type="pdf" target="table" fileName="listArrondissement"/>  
+                        </h:commandLink>  
+                    </p:panel> 
+                    <p:panel header="Export Page Data">  
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/excel.png" />  
+                            <p:dataExporter type="xls" target="table" fileName="listArrondissement" pageOnly="true"/>  
+                        </h:commandLink>  
+
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/pdf.png" />  
+                            <p:dataExporter type="pdf" target="table" fileName="listArrondissement" pageOnly="true"/>  
+                        </h:commandLink>  
+                    </p:panel>  
+                </h:panelGrid>  
+                
+                
+                
+                
                 <p:toolbar>
                     <f:facet name="left">
                         <p:commandButton type="push" onclick="PF('dlg').show();" value="Nouvel arrondissement" icon="ui-icon-disk">
                             <p:ajax update=":formAjouter:panelAjouter" resetValues="true" />
-                        </p:commandButton>
-                        <p:commandButton  onclick="PF('dl').show()" value="Modifier arrondissement" update=":formModifier:panelGModifier" icon="ui-icon-arrowrefresh-1-w"/>
-                      
+                        </p:commandButton>                      
                         <span class="ui-separator">
                             <span class="ui-icon ui-icon-grip-dotted-vertical" />
                         </span>
-                        <p:commandButton type="push" title="Save" image="ui-icon-disk" />
+                        <p:commandButton type="push" title="Save" icon="ui-icon-disk" />
                         <p:commandButton type="push" title="Update" icon="ui-icon-arrowrefresh-1-w"/>
-                        <p:commandButton type="push" title="Print" image="ui-icon-print"/>
+                        <p:commandButton type="push" title="Print" icon="ui-icon-print"/>
                     </f:facet>
                 </p:toolbar>
             </h:form>

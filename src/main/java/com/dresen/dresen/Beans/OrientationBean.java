@@ -55,9 +55,16 @@ public class OrientationBean {
         return "CategorieStructure";
     }
     public String gradeFonctio(){
-        return "GradeFonctio";
+        return "GradeFonctionnaire";
     }
     public String gradeContract(){
         return "GradeContractuel";
+    }
+    
+    
+    //// MENU AGENT
+    
+    public String ajouterFonctionnaire(){
+        return "AjouterFonctionnaire";
     }
 }

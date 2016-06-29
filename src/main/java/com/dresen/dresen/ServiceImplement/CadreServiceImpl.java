@@ -72,5 +72,14 @@ public class CadreServiceImpl implements ICadreService{
             throw new ServiceException("impossible rechercher la liste des cadres");
         }        
     }    
+
+    public List<Cadre> findCadreByIdCorps(long idCorps) throws ServiceException {
+       try{// throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+           return iCadreDao.findCadreByIdCorps(idCorps);
+       }catch(DataAccessException ex){
+           Logger.getLogger(CadreServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+           throw new ServiceException("impossible rechercher la liste des cadres du coprs");
+       }
+    }
     
 }

@@ -44,6 +44,10 @@ and open the template in the editor.
         
         <f:view>
             <h:form id='tableForm'>
+                <p:contextMenu for="table">  
+                    <p:menuitem value="New"  oncomplete="PF('dlg').show()"/>
+                    <p:menuitem value="Update" update=":formModifier:panelGModifier" oncomplete="PF('dl').show()"/>  
+                </p:contextMenu> 
                 
                 <p:dataTable value="#{categorieStructureBean.findAllCategorieStructure()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{categorieStructureBean.categorieSturcture}" rowKey="#{item.id}">
                              <f:facet name="header">
@@ -63,7 +67,6 @@ and open the template in the editor.
                         <p:commandButton type="push" onclick="PF('dlg').show();" value="Nouvelle catégorie de Structure" icon="ui-icon-disk">
                             <p:ajax update=":formAjouter:panelAjouter" resetValues="true" />
                         </p:commandButton>
-                        <p:commandButton  onclick="PF('dl').show()" value="Modifier une catégorie de Structure" update=":formModifier:panelGModifier" icon="ui-icon-arrowrefresh-1-w"/>
                       
                         <span class="ui-separator">
                             <span class="ui-icon ui-icon-grip-dotted-vertical" />

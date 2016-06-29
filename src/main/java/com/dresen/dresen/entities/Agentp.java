@@ -34,6 +34,9 @@ public class Agentp implements Serializable {
     @Column(unique = true)
     private String matricule;
     
+    @Column(unique = true, nullable = false)
+    private int cni;
+    
     @Column
     private String nom;
     
@@ -43,6 +46,9 @@ public class Agentp implements Serializable {
     @Column
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateNaissance;
+    
+    @Column
+    private String lieuNaissance;
     
     @Column
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -76,9 +82,16 @@ public class Agentp implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-  
-    
 
+    public int getCni() {
+        return cni;
+    }
+
+    public void setCni(int cni) {
+        this.cni = cni;
+    }
+  
+   
 
     public String getMatricule() {
         return matricule;
@@ -175,6 +188,16 @@ public class Agentp implements Serializable {
     public void setListPromotions(List<Promotion> listPromotions) {
         this.listPromotions = listPromotions;
     }
+
+    public String getLieuNaissance() {
+        return lieuNaissance;
+    }
+
+    public void setLieuNaissance(String lieuNaissance) {
+        this.lieuNaissance = lieuNaissance;
+    }
+    
+    
 
     @Override
     public boolean equals(Object obj) {

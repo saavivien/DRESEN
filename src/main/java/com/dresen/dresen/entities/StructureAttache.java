@@ -6,7 +6,6 @@
 package com.dresen.dresen.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -21,6 +22,9 @@ import javax.persistence.OneToMany;
  * @author Vivien Saa
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "StructureAttache.findStructureAttacheByCategorieAndArrondissement", query = "SELECT sa FROM StructureAttache sa WHERE sa.arrondissement.id = :param1 AND sa.categorieStructure.id = :param2")       
+})
 public class StructureAttache implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,6 +34,7 @@ public class StructureAttache implements Serializable {
     
     @Column (nullable = false, unique = true)
     private String intituleStructure;
+    
     @Column (nullable = false, unique = true)
     private String codeStructure;
     
@@ -42,13 +47,6 @@ public class StructureAttache implements Serializable {
     @OneToMany (mappedBy = "structureAttache")
     private List<Affectation> listAffectation;
    
-
-    public StructureAttache(String intituleStructure, Arrondissement arrondissement) {
-        this.intituleStructure = intituleStructure;
-        this.arrondissement = arrondissement;
-        this.listAffectation = new ArrayList<Affectation>();
-    }
-
     public StructureAttache() {
     }
 
@@ -111,14 +109,33 @@ public class StructureAttache implements Serializable {
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof StructureAttache)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        StructureAttache other = (StructureAttache) object;
-        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final StructureAttache other = (StructureAttache) obj;
+        if ((this.intituleStructure == null) ? (other.intituleStructure != null) : !this.intituleStructure.equals(other.intituleStructure)) {
+            return false;
+        }
+        if ((this.codeStructure == null) ? (other.codeStructure != null) : !this.codeStructure.equals(other.codeStructure)) {
+            return false;
+        }
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+            return false;
+        }
+        if (this.arrondissement != other.arrondissement && (this.arrondissement == null || !this.arrondissement.equals(other.arrondissement))) {
+            return false;
+        }
+        return !(this.categorieStructure != other.categorieStructure && (this.categorieStructure == null || !this.categorieStructure.equals(other.categorieStructure)));
     }
+
+   
 
     @Override
     public String toString() {

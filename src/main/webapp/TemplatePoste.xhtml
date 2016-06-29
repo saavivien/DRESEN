@@ -57,31 +57,40 @@ and open the template in the editor.
         <f:view>
             <h:form id='tableForm'>
                 
+                <p:contextMenu for="table">  
+                    <p:menuitem value="New" actionListener="#{gradeFonctioBean.initGradeFonc()}" update=":formAjouter:panelAjouter" oncomplete="PF('dlg').show()" /> 
+                    <p:menuitem value="Update" actionListener="#{gradeFonctioBean.updateGradeFonc()}" update=":formModifier:panelGModifier" oncomplete="PF('dl').show()"/>  
+                </p:contextMenu>  
                 <p:dataTable value="#{posteBean.findAllPoste()}" var="item" paginator="true" rows="5" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{posteBean.poste}" rowKey="#{item.id}">
-                             <f:facet name="header">
-                                La liste des Postes
-                             </f:facet>
-              
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Nom du poste"/>
-                                </f:facet>
-                                <h:outputText value="#{item.intitulePoste}"/>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="code du poste"/>
-                                </f:facet>
-                                <h:outputText value="#{item.code}"/>
-                            </p:column>
-                      
-                        </p:dataTable>
+                    <f:facet name="header">
+                        La liste des Postes
+                    </f:facet>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nom du poste"/>
+                        </f:facet>
+                        <h:outputText value="#{item.intitulePoste}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="code du poste"/>
+                        </f:facet>
+                        <h:outputText value="#{item.code}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="code du poste"/>
+                        </f:facet>
+                        <h:outputText value="#{posteBean.listStructure()}"/>
+                    </p:column>
+
+                </p:dataTable>
                 <p:toolbar>
                     <f:facet name="left">
                         <p:commandButton type="push" onclick="PF('dlg').show();" value="Nouveau poste" icon="ui-icon-disk">
                             <p:ajax update=":formAjouter:panelAjouter" resetValues="true" />
                         </p:commandButton>
-                        <p:commandButton  onclick="PF('dl').show()" value="Modifier poste" update=":formModifier:panelGModifier" icon="ui-icon-arrowrefresh-1-w"/>
                       
                         <span class="ui-separator">
                             <span class="ui-icon ui-icon-grip-dotted-vertical" />

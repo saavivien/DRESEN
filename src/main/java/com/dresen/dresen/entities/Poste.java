@@ -23,7 +23,8 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQueries({
-     @NamedQuery(name = "Poste.findPosteByName", query = "SELECT p FROM Poste p WHERE p.intitulePoste = :Param")
+     @NamedQuery(name = "Poste.findPosteByName", query = "SELECT p FROM Poste p WHERE p.intitulePoste = :Param"),
+     @NamedQuery(name = "Poste.findPosteByCategorieStructure", query = "SELECT p FROM Poste p, PosteStructure ps JOIN p.listPosteStructures p_ps WHERE p_ps.categorieStructure.id = :param")   
 })
 public class Poste implements Serializable {
 
@@ -42,7 +43,7 @@ public class Poste implements Serializable {
     private List<Promotion> listPromotions;
     
     @OneToMany(mappedBy = "poste")
-    private List<PosteStructure> listPoste_Structures;
+    private List<PosteStructure> listPosteStructures;
     
     public Poste() {
     }
@@ -81,13 +82,15 @@ public class Poste implements Serializable {
         this.listPromotions = listPromotions;
     }
 
-    public List<PosteStructure> getListPoste_Structures() {
-        return listPoste_Structures;
+    public List<PosteStructure> getListPosteStructures() {
+        return listPosteStructures;
     }
 
-    public void setListPoste_Structures(List<PosteStructure> listPoste_Structures) {
-        this.listPoste_Structures = listPoste_Structures;
+    public void setListPosteStructures(List<PosteStructure> listPosteStructures) {
+        this.listPosteStructures = listPosteStructures;
     }
+
+   
 
   
 

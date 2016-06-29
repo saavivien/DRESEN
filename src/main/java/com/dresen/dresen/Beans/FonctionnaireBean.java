@@ -6,31 +6,50 @@
 package com.dresen.dresen.Beans;
 
 import com.dresen.dresen.ServiceInterface.IAffectationService;
+import com.dresen.dresen.ServiceInterface.IArrondissementService;
+import com.dresen.dresen.ServiceInterface.ICadreService;
+import com.dresen.dresen.ServiceInterface.ICategorieStructureService;
+import com.dresen.dresen.ServiceInterface.ICorpsService;
+import com.dresen.dresen.ServiceInterface.IDepartementService;
 import com.dresen.dresen.ServiceInterface.IFonctionnaireService;
 import com.dresen.dresen.ServiceInterface.IGradeFonctioService;
 import com.dresen.dresen.ServiceInterface.IPosteService;
 import com.dresen.dresen.ServiceInterface.IPromotionService;
 import com.dresen.dresen.ServiceInterface.IRangerFonctioService;
+import com.dresen.dresen.ServiceInterface.ISpecialiteService;
 import com.dresen.dresen.ServiceInterface.IStructureService;
 import com.dresen.dresen.entities.Affectation;
+import com.dresen.dresen.entities.Arrondissement;
+import com.dresen.dresen.entities.Cadre;
+import com.dresen.dresen.entities.CategorieStructure;
+import com.dresen.dresen.entities.Corps;
+import com.dresen.dresen.entities.Departement;
 import com.dresen.dresen.entities.Fonctionnaire;
 import com.dresen.dresen.entities.GradeFonctio;
 import com.dresen.dresen.entities.Poste;
 import com.dresen.dresen.entities.Promotion;
 import com.dresen.dresen.entities.RangerFonctio;
+import com.dresen.dresen.entities.Sexe;
+import com.dresen.dresen.entities.Specialite;
 import com.dresen.dresen.entities.StructureAttache;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
+import org.primefaces.event.FlowEvent;
 
 /**
  *
  * @author Vivien Saa
  */
 @ManagedBean
-@RequestScoped
-public class FonctionnaireBean {
+@ViewScoped
+public class FonctionnaireBean implements Serializable{
     @ManagedProperty(value = "#{IFonctionnaireService}")
     private IFonctionnaireService iFonctionnaireService;
     @ManagedProperty(value = "#{IGradeFonctioService}")
@@ -45,6 +64,18 @@ public class FonctionnaireBean {
     private IAffectationService iAffectationService;
     @ManagedProperty(value = "#{IStructureService}")
     private IStructureService iStructureService;
+    @ManagedProperty(value = "#{ISpecialiteService}")
+    private ISpecialiteService iSpecialiteService;
+    @ManagedProperty(value = "#{ICorpsService}")
+    private ICorpsService iCorpsService;
+    @ManagedProperty(value = "#{ICadreService}")
+    private ICadreService iCadreService;
+    @ManagedProperty(value = "#{IDepartementService}")
+    private IDepartementService iDepartementService;
+    @ManagedProperty(value = "#{IArrondissementService}")
+    private IArrondissementService iArrondissementService;
+    @ManagedProperty(value = "#{ICategorieStructureService}")
+    private ICategorieStructureService iCategorieStructureService;
     
     private Fonctionnaire fonctionnaire = new Fonctionnaire();
     private GradeFonctio gradeFonctio = new GradeFonctio();
@@ -53,17 +84,27 @@ public class FonctionnaireBean {
     private Poste poste = new Poste();
     private Affectation affectation = new Affectation();
     private StructureAttache structureAttache = new StructureAttache();
+    private boolean skip;    
+    private static Logger logger = Logger.getLogger(FonctionnaireBean.class.getName());  
+  
 
-    List<GradeFonctio> listGradeFonctio;
-    List<Poste> listPoste;
-    List<StructureAttache> listStructureAttache;
-    private long idGradeFonctio, idRangerFonctio, idStructure, idPoste;
+    private List<Corps> listCorps;
+    private List<Cadre> listCadre;
+    private List<GradeFonctio> listGradeFonctio;
+    private List<Specialite> listSpecialite;
+    private List<Departement> listDepartement;
+    private List<Arrondissement> listArrondissement;  
+    private List<CategorieStructure> listCategorieStructure;
+    private List<StructureAttache> listStructureAttache;
+    private List<Poste> listPoste;
+    private long idGradeFonctio, idRangerFonctio, idStructure, idPoste, idSpecialite, idCorps, idCadre, idDepartement, idArrondissement, idCategorieStructure;
+    private Cadre cadre;
+    private Corps corps;
+    private Arrondissement arrondissement;
+    private Departement departement;
+    private CategorieStructure categorieStructure;
     
     public FonctionnaireBean(){
-        idGradeFonctio = 0L;
-        idRangerFonctio = 0L;
-        idStructure = 0L;
-        idPoste = 0L;
     }
 
     public IFonctionnaireService getiFonctionnaireService() {
@@ -91,7 +132,7 @@ public class FonctionnaireBean {
     }
 
     public List<GradeFonctio> getListGradeFonctio() {
-        return iGradeFonctioService.findAllGradeFonctio();
+        return iGradeFonctioService.findGradeFonctioByIdCadre(idCadre);
     }
 
     public void setListGradeFonctio(List<GradeFonctio> listGradeFonctio) {
@@ -102,7 +143,7 @@ public class FonctionnaireBean {
         return idGradeFonctio;
     }
 
-    public void setIdGradeFonction(long idGradeFonctio) {
+    public void setIdGradeFonctio(long idGradeFonctio) {
         this.idGradeFonctio = idGradeFonctio;
     }
 
@@ -186,6 +227,14 @@ public class FonctionnaireBean {
         this.poste = poste;
     }
 
+    public long getIdCadre() {
+        return idCadre;
+    }
+
+    public void setIdCadre(long idCadre) {
+        this.idCadre = idCadre;
+    }
+
     public Affectation getAffectation() {
         return affectation;
     }
@@ -203,15 +252,79 @@ public class FonctionnaireBean {
     }
 
     public List<Poste> getListPoste() {
-        return iPosteService.findAllPoste();
+        return iPosteService.findPosteByCategorieStructure(idCategorieStructure);
     }
 
     public void setListPoste(List<Poste> listPoste) {
         this.listPoste = listPoste;
     }
+    
+      public long getIdArrondissement() {
+        return idArrondissement;
+    }
+
+    public void setIdArrondissement(long idArrondissement) {
+        this.idArrondissement = idArrondissement;
+    }
 
     public List<StructureAttache> getListStructureAttache() {
-        return iStructureService.findAllStructureAttache();
+        return iStructureService.findStructureAttacheByCategorieAndArrondissement(idArrondissement, idCategorieStructure);
+    }
+
+    public boolean isSkip() {
+        return skip;
+    }
+
+    public void setSkip(boolean skip) {
+        this.skip = skip;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        FonctionnaireBean.logger = logger;
+    }
+
+    public Cadre getCadre() {
+        return cadre;
+    }
+
+    public void setCadre(Cadre cadre) {
+        this.cadre = cadre;
+    }
+
+    public Corps getCorps() {
+        return corps;
+    }
+
+    public void setCorps(Corps corps) {
+        this.corps = corps;
+    }
+
+    public Arrondissement getArrondissement() {
+        return arrondissement;
+    }
+
+    public void setArrondissement(Arrondissement arrondissement) {
+        this.arrondissement = arrondissement;
+    }
+
+    public Departement getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(Departement departement) {
+        this.departement = departement;
+    }
+
+    public CategorieStructure getCategorieStructure() {
+        return categorieStructure;
+    }
+
+    public void setCategorieStructure(CategorieStructure categorieStructure) {
+        this.categorieStructure = categorieStructure;
     }
 
     public void setListStructureAttache(List<StructureAttache> listStructureAttache) {
@@ -221,10 +334,149 @@ public class FonctionnaireBean {
     public long getIdStructure() {
         return idStructure;
     }
-
-    public void setIdStructure(long idStructure) {
+     public void setIdStructure(long idStructure) {
         this.idStructure = idStructure;
     }
+
+    public IDepartementService getiDepartementService() {
+        return iDepartementService;
+    }
+
+    public void setiDepartementService(IDepartementService iDepartementService) {
+        this.iDepartementService = iDepartementService;
+    }
+
+    public IArrondissementService getiArrondissementService() {
+        return iArrondissementService;
+    }
+
+    public void setiArrondissementService(IArrondissementService iArrondissementService) {
+        this.iArrondissementService = iArrondissementService;
+    }
+
+    public ICategorieStructureService getiCategorieStructureService() {
+        return iCategorieStructureService;
+    }
+
+    public void setiCategorieStructureService(ICategorieStructureService iCategorieStructureService) {
+        this.iCategorieStructureService = iCategorieStructureService;
+    }
+
+    public List<Departement> getListDepartement() {
+        return iDepartementService.findAllDepartement();
+    }
+
+    public void setListDepartement(List<Departement> listDepartement) {
+        this.listDepartement = listDepartement;
+    }
+
+    public List<Arrondissement> getListArrondissement() {
+        return iArrondissementService.findArrondissementByIdDepart(idDepartement);
+    }
+
+    public void setListArrondissement(List<Arrondissement> listArrondissement) {
+        this.listArrondissement = listArrondissement;
+    }
+
+    public List<CategorieStructure> getListCategorieStructure() {
+        return iCategorieStructureService.findAllCategorieStructure();
+    }
+
+    public void setListCategorieStructure(List<CategorieStructure> listCategorieStructure) {
+        this.listCategorieStructure = listCategorieStructure;
+    }
+
+    public long getIdDepartement() {
+        return idDepartement;
+    }
+
+    public void setIdDepartement(long idDepartement) {
+        this.idDepartement = idDepartement;
+    }
+
+    public long getIdCategorieStructure() {
+        return idCategorieStructure;
+    }
+
+    public void setIdCategorieStructure(long idCategorieStructure) {
+        this.idCategorieStructure = idCategorieStructure;
+    }
+     
+     
+
+    public IStructureService getiStructureService() {
+        return iStructureService;
+    }
+
+    public void setiStructureService(IStructureService iStructureService) {
+        this.iStructureService = iStructureService;
+    }
+
+    public ISpecialiteService getiSpecialiteService() {
+        return iSpecialiteService;
+    }
+
+    public void setiSpecialiteService(ISpecialiteService iSpecialiteService) {
+        this.iSpecialiteService = iSpecialiteService;
+    }
+
+    public ICorpsService getiCorpsService() {
+        return iCorpsService;
+    }
+
+    public void setiCorpsService(ICorpsService iCorpsService) {
+        this.iCorpsService = iCorpsService;
+    }
+
+    public ICadreService getiCadreService() {
+        return iCadreService;
+    }
+
+    public void setiCadreService(ICadreService iCadreService) {
+        this.iCadreService = iCadreService;
+    }
+
+    public List<Specialite> getListSpecialite() {
+        return iSpecialiteService.findAllSpecialite();
+    }
+
+    public void setListSpecialite(List<Specialite> listSpecialite) {
+        this.listSpecialite = listSpecialite;
+    }
+
+    public long getIdSpecialite() {
+        return idSpecialite;
+    }
+
+    public void setIdSpecialite(long idSpecialite) {
+        this.idSpecialite = idSpecialite;
+    }
+
+
+    public long getIdCorps() {
+        return idCorps;
+    }
+
+    public void setIdCorps(long idCorps) {
+        this.idCorps = idCorps;
+    }
+
+    public List<Corps> getListCorps() {
+        return iCorpsService.findAllCorps();
+    }
+
+    public void setListCorps(List<Corps> listCorps) {
+        this.listCorps = listCorps;
+    }
+
+    public List<Cadre> getListCadre() {
+        return iCadreService.findCadreByIdCorps(idCorps);
+    }
+
+    public void setListCadre(List<Cadre> listCadre) {
+        this.listCadre = listCadre;
+    }
+
 
     public long getIdPoste() {
         return idPoste;
@@ -235,6 +487,80 @@ public class FonctionnaireBean {
     }
     
     
+     public List<Sexe> sexes(){
+        List<Sexe> listSexe = new ArrayList<Sexe>();
+        listSexe.addAll(Arrays.asList(Sexe.values()));
+        return listSexe;
+    }
+     
+      /*
+    this is to reinitialize the entity fonctionnaire before creating another
+    */
+    public void initFonctio() {
+        idCorps = 0L;
+        idDepartement = 0L;
+        idSpecialite = 0L;
+        idCadre = 0L;
+        idGradeFonctio = 0L;
+        idDepartement = 0L;
+        idArrondissement = 0L;
+        idCategorieStructure = 0L;
+        idStructure = 0L;
+        idPoste = 0L;
+        fonctionnaire = new Fonctionnaire();
+    }
+    /*
+    this is aim to initialize the oneMenu to nothing before updating
+    */
+    public void updateFonctio() {
+        if (fonctionnaire == null) {
+            idCorps = 0L;
+            idDepartement = 0L;
+            idSpecialite = 0L;
+            idCadre = 0L;
+            idGradeFonctio = 0L;
+            idDepartement = 0L;
+            idArrondissement = 0L;
+            idCategorieStructure = 0L;
+            idStructure = 0L;
+            idPoste = 0L;
+            fonctionnaire = new Fonctionnaire();
+        } else {
+            idSpecialite = fonctionnaire.getSpecialite().getId();
+            gradeFonctio = (iRangerFonctioService.findRangerFonctioOpenByIdAgent(fonctionnaire.getId())).getGradeFonctio();
+            idGradeFonctio = gradeFonctio.getId();
+            cadre = gradeFonctio.getCadre();
+            idCadre = cadre.getId();
+            corps = cadre.getCorps();
+            idCorps = corps.getId();
+            structureAttache = (iAffectationService.findAffectationOpenByIdAgent(fonctionnaire.getId())).getStructureAttache();
+            arrondissement = structureAttache.getArrondissement();
+            idArrondissement = arrondissement.getId();
+            departement = arrondissement.getDepartement();
+            idDepartement = departement.getId();  
+            categorieStructure = structureAttache.getCategorieStructure();
+            idCategorieStructure = categorieStructure.getId();
+            idStructure = structureAttache.getId();
+            poste = (iPromotionService.findPromotionOpenByIdAgent(fonctionnaire.getId())).getPoste();
+            idPoste = poste.getId();
+        }
+    }
+     public String onFlowProcess(FlowEvent event) {  
+        logger.log(Level.INFO, "Current wizard step:{0}", event.getOldStep());  
+        logger.log(Level.INFO, "Next step:{0}", event.getNewStep());  
+          
+        if(skip) {  
+            skip = false;   //reset in case user goes back  
+            return "confirm";  
+        }  
+        else {  
+            return event.getNewStep();  
+        }  
+    }  
+     public void rien(){
+         System.out.println("voici tes données "+idArrondissement + idCategorieStructure);
+     }
+
     
     public Fonctionnaire createFonctionnaire(){
         gradeFonctio = iGradeFonctioService.findGradeFonctioById(idGradeFonctio);
