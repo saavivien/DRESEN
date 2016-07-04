@@ -9,6 +9,7 @@ import com.douwe.generic.dao.DataAccessException;
 import com.dresen.dresen.DaoInterface.IGradeContractDao;
 import com.dresen.dresen.ServiceInterface.IGradeContractService;
 import com.dresen.dresen.entities.GradeContract;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Vivien Saa
  */
 @Transactional
-public class GradeContractServiceImpl implements IGradeContractService{
+public class GradeContractServiceImpl implements IGradeContractService, Serializable {
     private IGradeContractDao iGradeContractDao;
 
     public IGradeContractDao getiGradeContractDao() {

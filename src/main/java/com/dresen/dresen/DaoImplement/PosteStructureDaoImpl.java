@@ -9,13 +9,14 @@ import com.douwe.generic.dao.DataAccessException;
 import com.douwe.generic.dao.impl.GenericDao;
 import com.dresen.dresen.entities.PosteStructure;
 import com.dresen.dresen.DaoInterface.IPosteStructureDao;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author Vivien Saa
  */
-public class PosteStructureDaoImpl extends GenericDao<PosteStructure, Long> implements IPosteStructureDao{
+public class PosteStructureDaoImpl extends GenericDao<PosteStructure, Long> implements IPosteStructureDao, Serializable{
 
     public List<PosteStructure> findPosteStructureByPoste(long idPoste) throws DataAccessException {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

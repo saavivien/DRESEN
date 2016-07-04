@@ -9,6 +9,7 @@ import com.douwe.generic.dao.DataAccessException;
 import com.dresen.dresen.DaoInterface.IGradeFonctioDao;
 import com.dresen.dresen.ServiceInterface.IGradeFonctioService;
 import com.dresen.dresen.entities.GradeFonctio;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Vivien Saa
  */
 @Transactional
-public class GradeFonctioServiceImpl implements IGradeFonctioService{
+public class GradeFonctioServiceImpl implements IGradeFonctioService, Serializable {
 
    private IGradeFonctioDao iGradeFonctioDao;
 

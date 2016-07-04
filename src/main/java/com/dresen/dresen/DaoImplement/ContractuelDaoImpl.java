@@ -8,11 +8,12 @@ package com.dresen.dresen.DaoImplement;
 import com.douwe.generic.dao.impl.GenericDao;
 import com.dresen.dresen.DaoInterface.IContractuelDao;
 import com.dresen.dresen.entities.Contractuel;
+import java.io.Serializable;
 
 /**
  *
  * @author Vivien Saa
  */
-public class ContractuelDaoImpl extends GenericDao<Contractuel, Long> implements IContractuelDao{
+public class ContractuelDaoImpl extends GenericDao<Contractuel, Long> implements IContractuelDao, Serializable{
     
 }

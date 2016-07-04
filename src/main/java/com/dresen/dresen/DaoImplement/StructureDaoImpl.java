@@ -9,13 +9,14 @@ import com.douwe.generic.dao.DataAccessException;
 import com.douwe.generic.dao.impl.GenericDao;
 import com.dresen.dresen.DaoInterface.IStructureDao;
 import com.dresen.dresen.entities.StructureAttache;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author Vivien Saa
  */
-public class StructureDaoImpl extends GenericDao<StructureAttache, Long> implements IStructureDao{
+public class StructureDaoImpl extends GenericDao<StructureAttache, Long> implements IStructureDao, Serializable{
 
     public List<StructureAttache> findStructureAttacheByCategorieAndArrondissement(long idArrondissement, long idCategorie) throws DataAccessException {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

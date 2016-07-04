@@ -9,6 +9,7 @@ import com.douwe.generic.dao.DataAccessException;
 import com.dresen.dresen.DaoInterface.IArrondissementDao;
 import com.dresen.dresen.ServiceInterface.IArrondissementService;
 import com.dresen.dresen.entities.Arrondissement;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Vivien Saa
  */
 @Transactional
-public class ArrondissementServiceImpl implements IArrondissementService{
+public class ArrondissementServiceImpl implements IArrondissementService, Serializable {
     private IArrondissementDao iArrondissementDao;
 
     public IArrondissementDao getiArrondissementDao() {

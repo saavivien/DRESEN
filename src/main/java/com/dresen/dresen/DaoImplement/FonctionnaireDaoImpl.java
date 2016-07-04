@@ -8,11 +8,12 @@ package com.dresen.dresen.DaoImplement;
 import com.douwe.generic.dao.impl.GenericDao;
 import com.dresen.dresen.DaoInterface.IFonctionnaireDao;
 import com.dresen.dresen.entities.Fonctionnaire;
+import java.io.Serializable;
 
 /**
  *
  * @author Vivien Saa
  */
-public class FonctionnaireDaoImpl extends GenericDao<Fonctionnaire, Long> implements IFonctionnaireDao{
+public class FonctionnaireDaoImpl extends GenericDao<Fonctionnaire, Long> implements IFonctionnaireDao, Serializable{
     
 }

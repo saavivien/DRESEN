@@ -23,14 +23,14 @@ and open the template in the editor.
             <p:dialog widgetVar="dlg" header=" Enregistrer un nouveau Poste" hideEffect="explode" showEffect="explode" modal="true">
                 <h:form id="formAjouter" enctype="multipart/form-data">
                     <p:panelGrid id="panelAjouter" columns="2" layout="grid">
-                                <p:outputLabel value="Intitulé du Poste:" for="intitule" />
-                                <p:inputText id="intitule" value="#{posteBean.poste.intitulePoste}" title="Intitule" />
-                                <p:outputLabel value="Code/Abréviation du Poste:" for="code" />
-                                <p:inputText id="code" value="#{posteBean.poste.code}" title="code" />
-                                <p:outputLabel value="Cocher le(s) type(s) de structure concernée(s) par le poste:" />
-                                <p:selectManyCheckbox value="#{posteBean.listCategorieStructureSelectedString}" layout="pageDirection">  
-                                    <f:selectItems var="categorie" itemLabel="#{categorie.intituleCategorieStructure}" value="#{posteBean.listCategorieStructure}"/>  
-                                </p:selectManyCheckbox>  
+                        <p:outputLabel value="Intitulé du Poste:" for="intitule" />
+                        <p:inputText id="intitule" value="#{posteBean.poste.intitulePoste}" title="Intitule" />
+                        <p:outputLabel value="Code/Abréviation du Poste:" for="code" />
+                        <p:inputText id="code" value="#{posteBean.poste.code}" title="code" />
+                        <p:outputLabel value="Cocher le(s) type(s) de structure concernée(s) par le poste:" />
+                        <p:selectManyCheckbox value="#{posteBean.listCategorieStructureSelectedString}" layout="pageDirection">  
+                            <f:selectItems var="categorie" itemLabel="#{categorie.intituleCategorieStructure}" value="#{posteBean.listCategorieStructure}"/>  
+                        </p:selectManyCheckbox>  
                     </p:panelGrid>
                     <p:commandButton value="Enregistrer" action="#{posteBean.createPoste()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
                 </h:form>
@@ -38,30 +38,30 @@ and open the template in the editor.
             <p:dialog widgetVar="dl" header=" Modifier un Poste" hideEffect="fold" showEffect="explode" resizable="true" modal="true">
                 <h:form id="formModifier" enctype="multipart/form-data">                
                     <p:panelGrid columns="2" id="panelGModifier">
-                                <p:outputLabel value="Intitulé du Poste:" for="intitule" />
-                                <p:inputText id="intitule" value="#{posteBean.poste.intitulePoste}" title="Intitule" />
-                                <p:outputLabel value="Code/Abréviation du Poste:" for="code" />
-                                <p:inputText id="code" value="#{posteBean.poste.code}" title="code" />
-                                <p:outputLabel value="Cocher le(s) type(s) de structure concernée(s) par le poste:" />
-                                <p:selectManyCheckbox value="#{posteBean.listCategorieStructureSelectedString}" layout="pageDirection" >  
-                                      <f:selectItems var="categorie" itemLabel="#{categorie.intituleCategorieStructure}" value="#{posteBean.listCategorieStructure}"/>
-                                </p:selectManyCheckbox>
-                                <h:inputHidden id="number" value="#{posteBean.poste.id}" />
+                        <p:outputLabel value="Intitulé du Poste:" for="intitule" />
+                        <p:inputText id="intitule" value="#{posteBean.poste.intitulePoste}" title="Intitule" />
+                        <p:outputLabel value="Code/Abréviation du Poste:" for="code" />
+                        <p:inputText id="code" value="#{posteBean.poste.code}" title="code" />
+                        <p:outputLabel value="Cocher le(s) type(s) de structure concernée(s) par le poste:" />
+                        <p:selectManyCheckbox value="#{posteBean.listCategorieStructureSelectedString}" layout="pageDirection" >  
+                            <f:selectItems var="categorie" itemLabel="#{categorie.intituleCategorieStructure}" value="#{posteBean.listCategorieStructure}"/>
+                        </p:selectManyCheckbox>
+                        <h:inputHidden id="number" value="#{posteBean.poste.id}" />
                     </p:panelGrid>
                     <p:commandButton value="Modifier" action="#{posteBean.updatePoste()}"  oncomplete="PF('dl').hide()" update=":tableForm:table" />
                 </h:form>
             </p:dialog> 
         </f:view>
-        
-        
+
+
         <f:view>
             <h:form id='tableForm'>
-                
+
                 <p:contextMenu for="table">  
-                    <p:menuitem value="New" actionListener="#{gradeFonctioBean.initGradeFonc()}" update=":formAjouter:panelAjouter" oncomplete="PF('dlg').show()" /> 
-                    <p:menuitem value="Update" actionListener="#{gradeFonctioBean.updateGradeFonc()}" update=":formModifier:panelGModifier" oncomplete="PF('dl').show()"/>  
+                    <p:menuitem value="New"  update=":formAjouter:panelAjouter" oncomplete="PF('dlg').show()" /> 
+                    <p:menuitem value="Update"  update=":formModifier:panelGModifier" oncomplete="PF('dl').show()"/>  
                 </p:contextMenu>  
-                <p:dataTable value="#{posteBean.findAllPoste()}" var="item" paginator="true" rows="5" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{posteBean.poste}" rowKey="#{item.id}">
+                <p:dataTable  value="#{posteBean.findAllPoste()}" var="item" paginator="true" rows="5" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{posteBean.poste}" rowKey="#{item.id}">
                     <f:facet name="header">
                         La liste des Postes
                     </f:facet>
@@ -80,9 +80,11 @@ and open the template in the editor.
                     </p:column>
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="code du poste"/>
+                            <h:outputText value="Structure concernées"/>
                         </f:facet>
-                        <h:outputText value="#{posteBean.listStructure()}"/>
+                        <p:dataList value="#{posteBean.listPosteStructures(item)}" var="posteStructure" type="ordered" >  
+                            #{posteStructure.categorieStructure} 
+                        </p:dataList>  
                     </p:column>
 
                 </p:dataTable>
@@ -91,7 +93,7 @@ and open the template in the editor.
                         <p:commandButton type="push" onclick="PF('dlg').show();" value="Nouveau poste" icon="ui-icon-disk">
                             <p:ajax update=":formAjouter:panelAjouter" resetValues="true" />
                         </p:commandButton>
-                      
+
                         <span class="ui-separator">
                             <span class="ui-icon ui-icon-grip-dotted-vertical" />
                         </span>

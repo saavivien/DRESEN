@@ -9,6 +9,7 @@ import com.douwe.generic.dao.DataAccessException;
 import com.dresen.dresen.DaoInterface.IPromotionDao;
 import com.dresen.dresen.ServiceInterface.IPromotionService;
 import com.dresen.dresen.entities.Promotion;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +19,7 @@ import org.hibernate.service.spi.ServiceException;
  *
  * @author Vivien Saa
  */
-public class PromotionServiceImpl implements IPromotionService{
+public class PromotionServiceImpl implements IPromotionService, Serializable {
     private IPromotionDao iPromotionDao;
 
     public IPromotionDao getIPromotionDao() {

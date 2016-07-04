@@ -9,13 +9,14 @@ import com.douwe.generic.dao.DataAccessException;
 import com.douwe.generic.dao.impl.GenericDao;
 import com.dresen.dresen.DaoInterface.IGradeFonctioDao;
 import com.dresen.dresen.entities.GradeFonctio;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author Vivien Saa
  */
-public class GradeFonctioDaoImpl extends GenericDao<GradeFonctio, Long> implements IGradeFonctioDao{
+public class GradeFonctioDaoImpl extends GenericDao<GradeFonctio, Long> implements IGradeFonctioDao, Serializable{
 
     public List<GradeFonctio> findGradeFonctioByIdCadre(long idCadre) throws DataAccessException {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

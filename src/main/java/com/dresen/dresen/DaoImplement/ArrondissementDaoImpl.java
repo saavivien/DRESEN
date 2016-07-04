@@ -9,13 +9,14 @@ import com.douwe.generic.dao.DataAccessException;
 import com.douwe.generic.dao.impl.GenericDao;
 import com.dresen.dresen.DaoInterface.IArrondissementDao;
 import com.dresen.dresen.entities.Arrondissement;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author Vivien Saa
  */
-public class ArrondissementDaoImpl extends GenericDao<Arrondissement, Long> implements IArrondissementDao{
+public class ArrondissementDaoImpl extends GenericDao<Arrondissement, Long> implements IArrondissementDao, Serializable{
 
     public List<Arrondissement> findArrondissementByIdDepart(long idDepart) throws DataAccessException {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

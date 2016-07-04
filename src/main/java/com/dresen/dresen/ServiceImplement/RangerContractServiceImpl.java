@@ -9,6 +9,7 @@ import com.douwe.generic.dao.DataAccessException;
 import com.dresen.dresen.DaoInterface.IRangerContractDao;
 import com.dresen.dresen.ServiceInterface.IRangerContractService;
 import com.dresen.dresen.entities.RangerContract;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Vivien Saa
  */
 @Transactional
-public class RangerContractServiceImpl implements IRangerContractService{
+public class RangerContractServiceImpl implements IRangerContractService, Serializable {
     private IRangerContractDao iRangerContractDao;
 
     public IRangerContractDao getiRangerContractDao() {

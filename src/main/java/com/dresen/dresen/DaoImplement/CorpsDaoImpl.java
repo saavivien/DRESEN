@@ -8,11 +8,12 @@ package com.dresen.dresen.DaoImplement;
 import com.douwe.generic.dao.impl.GenericDao;
 import com.dresen.dresen.DaoInterface.ICorpsDao;
 import com.dresen.dresen.entities.Corps;
+import java.io.Serializable;
 
 /**
  *
  * @author Vivien Saa
  */
-public class CorpsDaoImpl extends GenericDao<Corps, Long> implements ICorpsDao{
+public class CorpsDaoImpl extends GenericDao<Corps, Long> implements ICorpsDao, Serializable{
     
 }

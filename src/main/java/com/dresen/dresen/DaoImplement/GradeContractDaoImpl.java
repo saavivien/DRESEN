@@ -8,11 +8,12 @@ package com.dresen.dresen.DaoImplement;
 import com.douwe.generic.dao.impl.GenericDao;
 import com.dresen.dresen.DaoInterface.IGradeContractDao;
 import com.dresen.dresen.entities.GradeContract;
+import java.io.Serializable;
 
 /**
  *
  * @author Vivien Saa
  */
-public class GradeContractDaoImpl extends GenericDao<GradeContract, Long> implements IGradeContractDao{
+public class GradeContractDaoImpl extends GenericDao<GradeContract, Long> implements IGradeContractDao, Serializable{
     
 }

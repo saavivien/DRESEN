@@ -9,6 +9,7 @@ import com.douwe.generic.dao.DataAccessException;
 import com.dresen.dresen.DaoInterface.IStructureDao;
 import com.dresen.dresen.ServiceInterface.IStructureService;
 import com.dresen.dresen.entities.StructureAttache;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Vivien Saa
  */
 @Transactional
-public class StructureServiceImpl implements IStructureService{
+public class StructureServiceImpl implements IStructureService, Serializable {
     private IStructureDao iStructureDao;
 
     public IStructureDao getiStructureDao() {

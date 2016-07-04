@@ -9,6 +9,7 @@ import com.douwe.generic.dao.DataAccessException;
 import com.dresen.dresen.DaoInterface.IDepartementDao;
 import com.dresen.dresen.ServiceInterface.IDepartementService;
 import com.dresen.dresen.entities.Departement;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Vivien Saa
  */
 @Transactional
-public class DepartementServiceImpl implements IDepartementService{
+public class DepartementServiceImpl implements IDepartementService, Serializable {
    
     IDepartementDao iDepartementDao;
 

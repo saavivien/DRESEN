@@ -9,6 +9,7 @@ import com.douwe.generic.dao.DataAccessException;
 import com.dresen.dresen.DaoInterface.IRangerFonctioDao;
 import com.dresen.dresen.ServiceInterface.IRangerFonctioService;
 import com.dresen.dresen.entities.RangerFonctio;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Vivien Saa
  */
 @Transactional
-public class RangerFonctioServiceImpl implements IRangerFonctioService{
+public class RangerFonctioServiceImpl implements IRangerFonctioService, Serializable {
      private IRangerFonctioDao iRangerFonctioDao;
 
     public IRangerFonctioDao getiRangerFonctioDao() {

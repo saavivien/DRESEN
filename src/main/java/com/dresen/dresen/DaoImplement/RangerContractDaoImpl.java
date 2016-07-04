@@ -9,13 +9,14 @@ import com.douwe.generic.dao.DataAccessException;
 import com.douwe.generic.dao.impl.GenericDao;
 import com.dresen.dresen.DaoInterface.IRangerContractDao;
 import com.dresen.dresen.entities.RangerContract;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author Vivien Saa
  */
-public class RangerContractDaoImpl extends GenericDao<RangerContract, Long> implements IRangerContractDao{
+public class RangerContractDaoImpl extends GenericDao<RangerContract, Long> implements IRangerContractDao, Serializable{
 
     public List<RangerContract> findRangerContractByIdAgent(long idAgent) throws DataAccessException {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

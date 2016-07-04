@@ -9,6 +9,7 @@ import com.douwe.generic.dao.DataAccessException;
 import com.dresen.dresen.DaoInterface.IFonctionnaireDao;
 import com.dresen.dresen.ServiceInterface.IFonctionnaireService;
 import com.dresen.dresen.entities.Fonctionnaire;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Vivien Saa
  */
 @Transactional
-public class FonctionnaireServiceImpl implements IFonctionnaireService{
+public class FonctionnaireServiceImpl implements IFonctionnaireService, Serializable {
     private IFonctionnaireDao iFonctionnaireDao;
 
     public IFonctionnaireDao getiFonctionnaireDao() {

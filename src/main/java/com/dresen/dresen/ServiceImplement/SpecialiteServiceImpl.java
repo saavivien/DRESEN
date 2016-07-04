@@ -9,6 +9,7 @@ import com.douwe.generic.dao.DataAccessException;
 import com.dresen.dresen.DaoInterface.ISpecialiteDao;
 import com.dresen.dresen.ServiceInterface.ISpecialiteService;
 import com.dresen.dresen.entities.Specialite;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Vivien Saa
  */
 @Transactional
-public class SpecialiteServiceImpl implements ISpecialiteService{
+public class SpecialiteServiceImpl implements ISpecialiteService, Serializable {
     private ISpecialiteDao iSpecialiteDao;
 
     public ISpecialiteDao getiSpecialiteDao() {

@@ -61,8 +61,8 @@ public class PosteBean {
         this.iPosteStructureService = iPosteStructureService;
     }
 
-    public List<PosteStructure> getListPosteStructures() {
-        return iPosteStructureService.findPosteStructureByPoste(poste.getId());
+    public List<PosteStructure> listPosteStructures(Poste p) {
+        return iPosteStructureService.findPosteStructureByPoste(p.getId());
     }
 
     public void setListPosteStructures(List<PosteStructure> listPosteStructures) {

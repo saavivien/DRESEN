@@ -21,6 +21,7 @@ public interface IPosteStructureService {
     public PosteStructure updatePosteStructure(PosteStructure poste_Structure) throws ServiceException;
     public List<PosteStructure> findAllPosteStructure() throws ServiceException;
     public List<PosteStructure> findPosteStructureByPoste(long idPoste) throws ServiceException;
+    public void deletePosteStructure(PosteStructure posteStructure) throws ServiceException;
     public PosteStructure deletePosteStructureByPoste(long idAgent) throws ServiceException;
     public List<PosteStructure> findPosteStructureByCategorieStructure(long idCategorie) throws ServiceException;
     

@@ -9,6 +9,7 @@ import com.douwe.generic.dao.DataAccessException;
 import com.dresen.dresen.DaoInterface.IPosteDao;
 import com.dresen.dresen.ServiceInterface.IPosteService;
 import com.dresen.dresen.entities.Poste;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Vivien Saa
  */
 @Transactional
-public class PosteServiceImpl implements IPosteService{
+public class PosteServiceImpl implements IPosteService, Serializable {
     private IPosteDao iPosteDao;
 
     public IPosteDao getiPosteDao() {

@@ -22,7 +22,7 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
      @NamedQuery(name = "PosteStructure.findPosteStructureByPoste", query = "SELECT ps FROM PosteStructure ps WHERE ps.poste.id = :param"),
-     @NamedQuery(name = "PosteStructure.deletePosteStructureByPoste", query = "DELETE FROM PosteStructure ps WHERE ps.poste.id = :param"),
+     @NamedQuery(name = "PosteStructure.deletePosteStructureByPoste", query = "DELETE FROM PosteStructure WHERE poste.id = :param"),
      @NamedQuery(name = "PosteStructure.findPosteStructureByCategorieStructure", query = "SELECT ps FROM PosteStructure ps WHERE ps.categorieStructure.id = :param")
 })
 public class PosteStructure implements Serializable {

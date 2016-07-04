@@ -9,6 +9,7 @@ import com.douwe.generic.dao.DataAccessException;
 import com.dresen.dresen.DaoInterface.IAffectationDao;
 import com.dresen.dresen.ServiceInterface.IAffectationService;
 import com.dresen.dresen.entities.Affectation;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Vivien Saa
  */
 @Transactional
-public class AffectationServiceImpl implements IAffectationService{
+public class AffectationServiceImpl implements IAffectationService, Serializable {
     private IAffectationDao iAffectationDao;
 
     public IAffectationDao getiAffectationDao() {

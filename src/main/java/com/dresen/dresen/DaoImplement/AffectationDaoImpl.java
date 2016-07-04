@@ -9,13 +9,14 @@ import com.douwe.generic.dao.DataAccessException;
 import com.douwe.generic.dao.impl.GenericDao;
 import com.dresen.dresen.DaoInterface.IAffectationDao;
 import com.dresen.dresen.entities.Affectation;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author Vivien Saa
  */
-public class AffectationDaoImpl extends GenericDao<Affectation, Long> implements IAffectationDao{
+public class AffectationDaoImpl extends GenericDao<Affectation, Long> implements IAffectationDao, Serializable{
 
     public List<Affectation> findAffectationByIdAgent(long idAgent) throws DataAccessException {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

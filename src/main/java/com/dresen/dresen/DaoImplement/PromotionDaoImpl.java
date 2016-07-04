@@ -9,13 +9,14 @@ import com.douwe.generic.dao.DataAccessException;
 import com.douwe.generic.dao.impl.GenericDao;
 import com.dresen.dresen.DaoInterface.IPromotionDao;
 import com.dresen.dresen.entities.Promotion;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author Vivien Saa
  */
-public class PromotionDaoImpl extends GenericDao<Promotion, Long> implements IPromotionDao{
+public class PromotionDaoImpl extends GenericDao<Promotion, Long> implements IPromotionDao, Serializable{
 
     public List<Promotion> findPromotionByIdAgent(long idAgent) throws DataAccessException {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

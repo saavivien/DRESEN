@@ -9,6 +9,7 @@ import com.douwe.generic.dao.DataAccessException;
 import com.dresen.dresen.DaoInterface.ICadreDao;
 import com.dresen.dresen.ServiceInterface.ICadreService;
 import com.dresen.dresen.entities.Cadre;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Vivien Saa
  */
 @Transactional
-public class CadreServiceImpl implements ICadreService{
+public class CadreServiceImpl implements ICadreService, Serializable {
     private ICadreDao iCadreDao;
 
     public ICadreDao getiCadreDao() {

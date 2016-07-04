@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hibernate.service.spi.ServiceException;
 import com.dresen.dresen.ServiceInterface.IPosteStructureService;
+import java.io.Serializable;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -20,7 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Vivien Saa
  */
 @Transactional
-public class PosteStructureServiceImpl implements IPosteStructureService{
+public class PosteStructureServiceImpl implements IPosteStructureService, Serializable {
+
     private IPosteStructureDao iPosteStructureDao;
 
     public IPosteStructureDao getiPosteStructureDao() {
@@ -30,69 +32,77 @@ public class PosteStructureServiceImpl implements IPosteStructureService{
     public void setiPosteStructureDao(IPosteStructureDao iPosteStructureDao) {
         this.iPosteStructureDao = iPosteStructureDao;
     }
-    
-    
+
     public PosteStructure createPosteStructure(PosteStructure posteStructure) throws ServiceException {
-        try{//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iPosteStructureDao.create(posteStructure);
-        }catch (DataAccessException ex){
+        } catch (DataAccessException ex) {
             Logger.getLogger(PosteStructureServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible de créer le lien poste et structure");
         }
     }
 
     public PosteStructure findPosteStructureById(Long id) throws ServiceException {
-        try{//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iPosteStructureDao.findById(id);
-        }catch (DataAccessException ex){
+        } catch (DataAccessException ex) {
             Logger.getLogger(PosteStructureServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible de créer le lien poste et structure");
         }
     }
 
     public PosteStructure updatePosteStructure(PosteStructure posteStructure) throws ServiceException {
-        try{//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iPosteStructureDao.update(posteStructure);
-        }catch (DataAccessException ex){
+        } catch (DataAccessException ex) {
             Logger.getLogger(PosteStructureServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible de créer le lien poste et structure");
         }
     }
 
     public List<PosteStructure> findAllPosteStructure() throws ServiceException {
-        try{//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iPosteStructureDao.findAll();
-        }catch (DataAccessException ex){
+        } catch (DataAccessException ex) {
             Logger.getLogger(PosteStructureServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible de créer le lien poste et structure");
         }
     }
 
     public List<PosteStructure> findPosteStructureByPoste(long idPoste) throws ServiceException {
-        try{//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iPosteStructureDao.findPosteStructureByPoste(idPoste);
-        }catch (DataAccessException ex){
+        } catch (DataAccessException ex) {
             Logger.getLogger(PosteStructureServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible de lister les postes structures correspondant au poste");
         }
     }
 
     public PosteStructure deletePosteStructureByPoste(long idAgent) throws ServiceException {
-        try{//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iPosteStructureDao.deletePosteStructureByPoste(idAgent);
-        }catch (DataAccessException ex){
+        } catch (DataAccessException ex) {
             Logger.getLogger(PosteStructureServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible de supprimer les postes structures correspondant au poste");
         }
     }
 
     public List<PosteStructure> findPosteStructureByCategorieStructure(long idCategorie) throws ServiceException {
-        try{//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iPosteStructureDao.findPosteStructureByCategorieStructure(idCategorie);
-        }catch (DataAccessException ex){
+        } catch (DataAccessException ex) {
             Logger.getLogger(PosteStructureServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible de lister les postes structures correspondant au poste");
         }
     }
 
+    public void deletePosteStructure(PosteStructure posteStructure) throws ServiceException {
+        try {//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            iPosteStructureDao.delete(posteStructure);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(PosteStructureServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible de supprimer le postestructure");
+        }
+
+    }
 }

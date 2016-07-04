@@ -9,13 +9,14 @@ import com.douwe.generic.dao.DataAccessException;
 import com.douwe.generic.dao.impl.GenericDao;
 import com.dresen.dresen.DaoInterface.IRangerFonctioDao;
 import com.dresen.dresen.entities.RangerFonctio;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author Vivien Saa
  */
-public class RangerFonctioDaoImpl extends GenericDao<RangerFonctio, Long> implements IRangerFonctioDao{
+public class RangerFonctioDaoImpl extends GenericDao<RangerFonctio, Long> implements IRangerFonctioDao, Serializable{
 
     public List<RangerFonctio> findRangerFonctioByIdAgent(long idAgent) throws DataAccessException {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

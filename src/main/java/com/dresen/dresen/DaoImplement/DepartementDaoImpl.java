@@ -8,11 +8,12 @@ package com.dresen.dresen.DaoImplement;
 import com.douwe.generic.dao.impl.GenericDao;
 import com.dresen.dresen.DaoInterface.IDepartementDao;
 import com.dresen.dresen.entities.Departement;
+import java.io.Serializable;
 
 /**
  *
  * @author Vivien Saa
  */
-public class DepartementDaoImpl extends GenericDao<Departement, Long> implements IDepartementDao{
+public class DepartementDaoImpl extends GenericDao<Departement, Long> implements IDepartementDao, Serializable{
     
 }

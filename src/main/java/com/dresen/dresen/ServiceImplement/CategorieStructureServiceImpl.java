@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import org.hibernate.service.spi.ServiceException;
 import com.dresen.dresen.ServiceInterface.ICategorieStructureService;
 import com.dresen.dresen.DaoInterface.ICategorieStructureDao;
+import java.io.Serializable;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -20,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Vivien Saa
  */
 @Transactional
-public class CategorieStructureServiceImpl implements ICategorieStructureService{
+public class CategorieStructureServiceImpl implements ICategorieStructureService, Serializable {
     ICategorieStructureDao iCategorieStructureDao;
 
     public ICategorieStructureDao getiCategorieStructureDao() {
