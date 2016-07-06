@@ -22,7 +22,7 @@ public class Fonctionnaire extends Agentp{
     
     @OneToMany (mappedBy = "fonctionnaire")
     private List<RangerFonctio> listRangerFonctios;
-
+  
     public Fonctionnaire() {
     }
     
