@@ -421,7 +421,7 @@ and open the template in the editor.
                     </p:column>
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="Ancienneté au poste"/>
+                            <h:outputText value="Lieu de Naissance"/>
                         </f:facet>
                         <h:outputText value="#{item.lieuNaissance}"/>
                     </p:column>
@@ -492,13 +492,25 @@ and open the template in the editor.
                         </f:facet>
                         <h:outputText value="#{fonctionnaireBean.currentDateAffect(item)}"/>
                     </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Arrondissement Structure"/>
+                        </f:facet>
+                        <h:outputText value="#{fonctionnaireBean.currentArrondissement(item)}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Département Structure"/>
+                        </f:facet>
+                        <h:outputText value="#{fonctionnaireBean.currentDepartement(item)}"/>
+                    </p:column>
                     
                 </p:dataTable>
                 <h:panelGrid columns="2">  
                     <p:panel header="Export All Data">  
                         <h:commandLink>  
                             <p:graphicImage value="/images/excel.png" />  
-                            <p:dataExporter type="xls" target="table" fileName="listArrondissement" />  
+                            <p:dataExporter type="xls" target="table"  fileName="listArrondissement" />  
                         </h:commandLink>  
 
                         <h:commandLink>  

@@ -139,7 +139,7 @@ public class StructureAttache implements Serializable {
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.Structure[ id=" + id + " ]";
+        return intituleStructure;
     }
     
 }

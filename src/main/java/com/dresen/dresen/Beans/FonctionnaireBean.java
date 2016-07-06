@@ -45,6 +45,8 @@ import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import org.primefaces.event.FlowEvent;
 
 /**
@@ -104,6 +106,8 @@ public class FonctionnaireBean implements Serializable {
     private List<CategorieStructure> listCategorieStructure;
     private List<StructureAttache> listStructureAttache;
     private List<Poste> listPoste;
+    private List<String> listInformationToDisplay;
+    private List<ColumnModel> listColumnModels;
     private long idGradeFonctio, idRangerFonctio, idStructure, idPoste, idSpecialite, idCorps, idCadre, idDepartement, idArrondissement, idCategorieStructure;
     private Cadre cadre;
     private Corps corps;
@@ -549,36 +553,64 @@ public class FonctionnaireBean implements Serializable {
     }
 
     public List<Fonctionnaire> getListFonctionnaires() {
+        listFonctionnaires = iFonctionnaireService.findAllFonctionnaire();
+        for(Fonctionnaire fonc : listFonctionnaires){
+            fonc.setDateNaiss(currentDateNaissance(fonc));
+            fonc.setGradeCourrant(currentGradeFonctio(fonc).getIntituleGradeFonctio());
+            fonc.setSpecialiteCourrant(fonc.getSpecialite().getIntituleSpecialite());
+            fonc.setDateEntreeFoncPub(currentDateEntreeFonctionPub(fonc));
+            fonc.setStructureAttacheCourant(currentStructureAttache(fonc).getIntituleStructure());
+            fonc.setPosteCourrant(currentPoste(fonc).getIntitulePoste());
+            fonc.setDateAffectCourrant(currentDateAffect(fonc));
+            fonc.setArrondStructuCourrant(currentArrondissement(fonc).getIntituleArrondissement());
+            fonc.setDepartStructuCourrant(currentDepartement(fonc).getIntituleDepartement());
+        }
         return listFonctionnaires;
     }
 
     public void setListFonctionnaires(List<Fonctionnaire> listFonctionnaires) {
         this.listFonctionnaires = listFonctionnaires;
     }
+
+    public List<String> getListInformationToDisplay() {
+        return listInformationToDisplay;
+    }
+
+    public void setListInformationToDisplay(List<String> listInformationToDisplay) {
+        this.listInformationToDisplay = listInformationToDisplay;
+    }
+
+    public List<ColumnModel> getListColumnModels() {
+        return listColumnModels;
+    }
+
+    public void setListColumnModels(List<ColumnModel> listColumnModels) {
+        this.listColumnModels = listColumnModels;
+    }
     
-    
+
     /*
     ces méthodes ont pour rôle de construire tous les agents dans leur situation courrante ie. avec leur poste courrant leur structure d'attache courrante le grade courant.
-    */
-    public String currentPoste(Agentp agent) {
-        return (iPromotionService.findPromotionOpenByIdAgent(agent.getId())).getPoste().getIntitulePoste();
+     */
+    public Poste currentPoste(Agentp agent) {
+        return (iPromotionService.findPromotionOpenByIdAgent(agent.getId())).getPoste();
     }
 
-    public String currentStructureAttache(Agentp agent) {
-        return (iAffectationService.findAffectationOpenByIdAgent(agent.getId())).getStructureAttache().getCodeStructure();
+    public StructureAttache currentStructureAttache(Agentp agent) {
+        return (iAffectationService.findAffectationOpenByIdAgent(agent.getId())).getStructureAttache();
     }
 
-    public String currentGradeFonctio(Agentp agent) {
-        return (iRangerFonctioService.findRangerFonctioOpenByIdAgent(agent.getId())).getGradeFonctio().getIntituleGradeFonctio();
+    public GradeFonctio currentGradeFonctio(Agentp agent) {
+        return (iRangerFonctioService.findRangerFonctioOpenByIdAgent(agent.getId())).getGradeFonctio();
     }
-    
+
     public String currentDateNaissance(Agentp agent) {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String dateNaissance = simpleDateFormat.format(agent.getDateNaissance());
         int age = (new Date()).getYear() - agent.getDateNaissance().getYear();
         return dateNaissance + "(" + age + ")";
     }
-    
+
     public String currentDateAffect(Agentp agent) {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Affectation affect = iAffectationService.findAffectationOpenByIdAgent(agent.getId());
@@ -586,19 +618,124 @@ public class FonctionnaireBean implements Serializable {
         int anciennetePoste = (new Date()).getYear() - (affect).getDateDebutAffect().getYear();
         return dateEntreePoste + "(" + anciennetePoste + ")";
     }
-    
+
     public String currentDateEntreeFonctionPub(Agentp agent) {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String dateEntreeFonctionPub = simpleDateFormat.format(agent.getDateEntreFonctionPub());
         int nombreAnneeService = (new Date()).getYear() - agent.getDateEntreFonctionPub().getYear();
         return dateEntreeFonctionPub + "(" + nombreAnneeService + ")";
     }
+    public Arrondissement currentArrondissement(Agentp agent) {
+        return currentStructureAttache(agent).getArrondissement();
+    }
+     public Departement currentDepartement(Agentp agent) {
+        return currentArrondissement(agent).getDepartement();
+    }
 
     /*
-    fin du bloc de construction des agents dans leur situation courante
-    */
+    fin du bloc de construction des agents dans leur situation courante. début des méthode permettant d'avoir un tableau dynamique
+     */
+     static public class ColumnModel implements Serializable {  
+  
+        private String header;  
+        private String property;  
+  
+        public ColumnModel(String header, String property) {  
+            this.header = header;  
+            this.property = property;  
+        }  
+  
+        public String getHeader() {  
+            return header;  
+        }  
+  
+        public String getProperty() {  
+            return property;  
+        }  
+    }
     
-   
+    public void updateColumns() {
+        //reset table state  
+        UIComponent table = FacesContext.getCurrentInstance().getViewRoot().findComponent(":tableForm:table");
+        // table.setValueExpression("sortBy", null);  
+
+        //update columns  
+        createDynamicColumns();
+    }
+    public void initListColumnModels() {
+        if (listColumnModels == null) {
+            listColumnModels = new ArrayList<>();
+        }
+    }
+    public void createDynamicColumns() {
+        listColumnModels.clear();
+        System.out.println("vvvvvvvvvvvvvvvvvssssssssssssssss"+listInformationToDisplay.get(0)); 
+        for (String columnKey : listInformationToDisplay) {
+            switch (columnKey) {
+                case "matricule":
+                    listColumnModels.add(new ColumnModel("Matricule", "matricule"));
+                    break;
+                case "nom":
+                    listColumnModels.add(new ColumnModel("Matricule", "nom"));
+                    break;
+                case "prenom":
+                    listColumnModels.add(new ColumnModel("Prénom", "prenom"));
+                    break;
+                case "nomjeunefille":
+                    listColumnModels.add(new ColumnModel("Nom jeune fille", "nomJeuneFille"));
+                    break;
+                case "datenaissance":
+                    listColumnModels.add(new ColumnModel("Date Naissance", "dateNaiss"));
+                    break;
+                case "lieunaissance":
+                    listColumnModels.add(new ColumnModel("Lieu Naissance", "lieuNaissance"));
+                    break;
+                case "sexe":
+                    listColumnModels.add(new ColumnModel("Sexe", "sexe"));
+                    break;
+                case "numerocni":
+                    listColumnModels.add(new ColumnModel("Numéro CNI", "cni"));
+                    break;
+                case "regionorigine":
+                    listColumnModels.add(new ColumnModel("Région origine", "regionOrigine"));
+                    break;
+                case "departementorigine":
+                    listColumnModels.add(new ColumnModel("Département origine", "departementOrigine"));
+                    break;
+                case "arrondissementorigine":
+                    listColumnModels.add(new ColumnModel("Arrondissement origine", "arrondissementOrigine"));
+                    break;
+                case "grade":
+                    listColumnModels.add(new ColumnModel("Grade", "gradeCourrant"));
+                    break;
+                case "specialite":
+                    listColumnModels.add(new ColumnModel("Spécialité", "specialiteCourrant"));
+                    break;
+                case "dateentreefoncpub":
+                    listColumnModels.add(new ColumnModel("Date entrée fonc.pub.", "dateEntreeFoncPub"));
+                    break;
+                case "structureattache":
+                    listColumnModels.add(new ColumnModel("Structure attache", "structureAttacheCourant"));
+                    break;
+                case "poste":
+                    listColumnModels.add(new ColumnModel("Poste", "posteCourrant"));
+                    break;
+                case "ancienneteposte":
+                    listColumnModels.add(new ColumnModel("Ancienneté Poste", "dateAffectCourrant"));
+                    break;
+                case "arrondstructureattache":
+                    listColumnModels.add(new ColumnModel("Structure attache", "arrondStructuCourrant"));
+                    break;
+                case "departstructureattache":
+                    listColumnModels.add(new ColumnModel("Structure attache", "departStructuCourrant"));
+                    break;
+                default:
+                    break;
+            
+            }
+        }
+    }
+
     public List<Sexe> sexes() {
         List<Sexe> listSexe = new ArrayList<Sexe>();
         listSexe.addAll(Arrays.asList(Sexe.values()));
@@ -634,48 +771,34 @@ public class FonctionnaireBean implements Serializable {
     this is aim to initialize the oneMenu to nothing before updating
      */
     public void beforeUpdateFonctio() {
-//        if (fonctionnaire == null) {
-//            idCorps = 0L;
-//            idDepartement = 0L;
-//            idSpecialite = 0L;
-//            idCadre = 0L;
-//            idGradeFonctio = 0L;
-//            idDepartement = 0L;
-//            idArrondissement = 0L;
-//            idCategorieStructure = 0L;
-//            idStructure = 0L;
-//            idPoste = 0L;
-//            fonctionnaire = new Fonctionnaire();
-//            simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-//        } else {
-            simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            idSpecialite = fonctionnaire.getSpecialite().getId();
-            gradeFonctio = (iRangerFonctioService.findRangerFonctioOpenByIdAgent(fonctionnaire.getId())).getGradeFonctio();
-            idGradeFonctio = gradeFonctio.getId();
-            cadre = gradeFonctio.getCadre();
-            dateNaissanceFonc = simpleDateFormat.format(fonctionnaire.getDateNaissance());
-            dateEntreFoncPub = simpleDateFormat.format(fonctionnaire.getDateEntreFonctionPub());
-            dateDebutGrade = simpleDateFormat.format((iRangerFonctioService.findRangerFonctioOpenByIdAgent(fonctionnaire.getId())).getDateDebutRangerFonctio());
-            dateDebutPoste = simpleDateFormat.format((iAffectationService.findAffectationOpenByIdAgent(fonctionnaire.getId())).getDateDebutAffect());
-            idCadre = cadre.getId();
-            corps = cadre.getCorps();
-            idCorps = corps.getId();
-            structureAttache = (iAffectationService.findAffectationOpenByIdAgent(fonctionnaire.getId())).getStructureAttache();
-            arrondissement = structureAttache.getArrondissement();
-            idArrondissement = arrondissement.getId();
-            departement = arrondissement.getDepartement();
-            idDepartement = departement.getId();
-            categorieStructure = structureAttache.getCategorieStructure();
-            idCategorieStructure = categorieStructure.getId();
-            idStructure = structureAttache.getId();
-            poste = (iPromotionService.findPromotionOpenByIdAgent(fonctionnaire.getId())).getPoste();
-            idPoste = poste.getId();
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        idSpecialite = fonctionnaire.getSpecialite().getId();
+        gradeFonctio = (iRangerFonctioService.findRangerFonctioOpenByIdAgent(fonctionnaire.getId())).getGradeFonctio();
+        idGradeFonctio = gradeFonctio.getId();
+        cadre = gradeFonctio.getCadre();
+        dateNaissanceFonc = simpleDateFormat.format(fonctionnaire.getDateNaissance());
+        dateEntreFoncPub = simpleDateFormat.format(fonctionnaire.getDateEntreFonctionPub());
+        dateDebutGrade = simpleDateFormat.format((iRangerFonctioService.findRangerFonctioOpenByIdAgent(fonctionnaire.getId())).getDateDebutRangerFonctio());
+        dateDebutPoste = simpleDateFormat.format((iAffectationService.findAffectationOpenByIdAgent(fonctionnaire.getId())).getDateDebutAffect());
+        idCadre = cadre.getId();
+        corps = cadre.getCorps();
+        idCorps = corps.getId();
+        structureAttache = (iAffectationService.findAffectationOpenByIdAgent(fonctionnaire.getId())).getStructureAttache();
+        arrondissement = structureAttache.getArrondissement();
+        idArrondissement = arrondissement.getId();
+        departement = arrondissement.getDepartement();
+        idDepartement = departement.getId();
+        categorieStructure = structureAttache.getCategorieStructure();
+        idCategorieStructure = categorieStructure.getId();
+        idStructure = structureAttache.getId();
+        poste = (iPromotionService.findPromotionOpenByIdAgent(fonctionnaire.getId())).getPoste();
+        idPoste = poste.getId();
 //        }
     }
 
     //this is to initialize the various element an display them before confirmation
     public void beforeConfirm() throws ParseException {
-        
+
         specialite = iSpecialiteService.findSpecialiteById(idSpecialite);
         structureAttache = iStructureService.findStructureAttacheById(idStructure);
         gradeFonctio = iGradeFonctioService.findGradeFonctioById(idGradeFonctio);
@@ -696,7 +819,7 @@ public class FonctionnaireBean implements Serializable {
     public String onFlowProcess(FlowEvent event) throws ParseException {
         logger.log(Level.INFO, "Current wizard step:{0}", event.getOldStep());
         logger.log(Level.INFO, "Next step:{0}", event.getNewStep());
-      //  event.setPhaseId(PhaseId.phaseIdValueOf("personnel"));
+        //  event.setPhaseId(PhaseId.phaseIdValueOf("personnel"));
 
         if (event.getNewStep().equals("confirmationTab")) {
             beforeConfirm();
@@ -741,14 +864,17 @@ public class FonctionnaireBean implements Serializable {
 
             affectation = iAffectationService.findAffectationOpenByIdAgent(fonctionnaire.getId());
             affectation.setStructureAttache(structureAttache);
+            affectation.setDateDebutAffect(simpleDateFormat.parse(dateDebutPoste));
             iAffectationService.updateAffectation(affectation);
 
             rangerFonctio = iRangerFonctioService.findRangerFonctioOpenByIdAgent(fonctionnaire.getId());
             rangerFonctio.setGradeFonctio(gradeFonctio);
+            rangerFonctio.setDateDebutRangerFonctio(simpleDateFormat.parse(dateDebutGrade));
             iRangerFonctioService.updateRangerFonctio(rangerFonctio);
 
             promotion = iPromotionService.findPromotionOpenByIdAgent(fonctionnaire.getId());
             promotion.setPoste(poste);
+            promotion.setDateDebutPromo(simpleDateFormat.parse(dateDebutPoste));
             iPromotionService.updatePromotion(promotion);
 
             return iFonctionnaireService.updateFonctionnaire(fonctionnaire);

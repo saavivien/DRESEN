@@ -117,7 +117,7 @@ public class Poste implements Serializable {
 
     @Override
     public String toString() {
-        return "Poste{" + "intitule=" + intitulePoste + '}';
+        return intitulePoste;
     }
 
   

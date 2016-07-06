@@ -65,6 +65,6 @@ public class OrientationBean {
     //// MENU AGENT
     
     public String ajouterFonctionnaire(){
-        return "AjouterFonctionnaire";
+        return "Fonctionnaire";
     }
 }

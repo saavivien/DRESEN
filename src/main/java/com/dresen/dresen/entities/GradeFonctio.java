@@ -120,7 +120,7 @@ public class GradeFonctio implements Serializable {
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.GradeFonctio[ id=" + id + " ]";
+        return intituleGradeFonctio;
     }
     
 }

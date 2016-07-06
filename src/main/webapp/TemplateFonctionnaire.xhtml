@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Application de gestion du personnel des services déconcentrés du MINESEC EXTREME NORD</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body> 
+        <div id="menu">
+            <ui:include src="Menu.xhtml"/>
+        </div>
+        <f:view>
+            <p:dialog widgetVar="dlg" header=" Enregistrer un nouveau fonctionnaire" hideEffect="explode" showEffect="explode" modal="true">
+                <h:form id="formAjouter" enctype="multipart/form-data"> 
+                    <p:growl id="growl" sticky="true" showDetail="true"/>  
+
+                    <p:wizard widgetVar="wizAjouter" flowListener="#{fonctionnaireBean.onFlowProcess}" >  
+                        <p:tab id="personnel" title="Informations personnelles"> 
+                            <p:panel id="panelAjouterInfoPerso" header="Informations personnelles">
+                                <p:panelGrid id="panelAjouterInfoPersoGrid" columns="2">
+                                    <p:outputLabel value="Nom:" for="nom" />  
+                                    <p:inputText id="nom" value="#{fonctionnaireBean.fonctionnaire.nom}" title="nom" required="true"/>
+                                    <p:outputLabel value="Prenom:" for="prenom" />  
+                                    <p:inputText id="prenom" value="#{fonctionnaireBean.fonctionnaire.prenom}" title="prenom"/>
+                                    <p:outputLabel value="Nom de jeune fille:" for="nomjeunefille" />  
+                                    <p:inputText id="nomjeunefille" value="#{fonctionnaireBean.fonctionnaire.nomJeuneFille}" title="nomjeunefille"/>
+                                    <p:outputLabel value="Date de naissance:" for="datenaiss" />
+                                    <p:inputMask id="datenaiss" value="#{fonctionnaireBean.dateNaissanceFonc}" mask="99/99/9999" required="true" />                                         
+                                    <p:outputLabel value="Lieu de naissance:" for="lieunaissance" />  
+                                    <p:inputText id="lieunaissance" value="#{fonctionnaireBean.fonctionnaire.lieuNaissance}" title="lieunaissance" required="true"/>
+                                    <p:outputLabel value="Sexe:" for="sexe" /> 
+                                    <p:selectOneMenu  value="#{fonctionnaireBean.fonctionnaire.sexe}" label="sexe" id="sexe" filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                        <f:selectItem itemLabel="Selectionner le sexe" itemValue="" noSelectionOption="true"  />
+                                        <f:selectItems var="custe" value="#{fonctionnaireBean.sexes()}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Numéro de CNI:" for="numerocni" />  
+                                    <p:inputText id="numerocni" value="#{fonctionnaireBean.fonctionnaire.cni}" title="numerocni" required="true"/>
+                                    <p:outputLabel value="Date d'entrée dans la fonction publique:" for="dateentreefoncpub" />
+                                    <p:inputMask id="dateentreefoncpub" value="#{fonctionnaireBean.dateEntreFoncPub}" mask="99/99/9999" required="true" />                                  
+                                    <p:outputLabel value="matricule:" for="matricule" />  
+                                    <p:inputText id="matricule" value="#{fonctionnaireBean.fonctionnaire.matricule}" title="matricule"/>
+                                    <p:outputLabel value="Région d'origine:" for="regionorigine" />  
+                                    <p:inputText id="regionorigine" value="#{fonctionnaireBean.fonctionnaire.regionOrigine}" title="regionorigine"/>
+                                    <p:outputLabel value="Département d'origine:" for="departementorigine" />  
+                                    <p:inputText id="departementorigine" value="#{fonctionnaireBean.fonctionnaire.departementOrigine}" title="departementorigine"/>
+                                    <p:outputLabel value="Arrondissement d'origine:" for="arrondissementorigine" />  
+                                    <p:inputText id="arrondissementorigine" value="#{fonctionnaireBean.fonctionnaire.arrondissementOrigine}" title="arrondissementorigine"/>
+                                </p:panelGrid>
+                            </p:panel>
+                        </p:tab> 
+                        <p:tab id="qualifications" title="Qualifications"> 
+                            <p:panel id="panelAjouterQualification" header="Qualifications">
+                                <p:panelGrid id="panelAjouterQualificationGrid" columns="2">
+                                    <p:outputLabel value="Spécialité:" for="specialite" />  
+                                    <p:selectOneMenu  value="#{fonctionnaireBean.idSpecialite}" label="specialite" id="specialite"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                        <f:selectItem itemLabel="Selectionner la spécialité" itemValue="" noSelectionOption="true"  />
+                                        <f:selectItems var="custe1" value="#{fonctionnaireBean.listSpecialite}"   itemLabel="#{custe1.intituleSpecialite}" itemValue="#{custe1.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Corps:" for="corps" />  
+                                    <p:selectOneMenu  value="#{fonctionnaireBean.idCorps}" label="corps" id="corps"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                        <p:ajax event="change" update="cadre"/>
+                                        <f:selectItem itemLabel="Selectionner le Corps" itemValue="" noSelectionOption="true"  />
+                                        <f:selectItems var="custe2" value="#{fonctionnaireBean.listCorps}"   itemLabel="#{custe2.intituleCorps}" itemValue="#{custe2.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Cadre:" for="cadre" />
+                                    <p:selectOneMenu  value="#{fonctionnaireBean.idCadre}" label="cadre" id="cadre"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                        <p:ajax event="change" update="gradeFonctio"/>
+                                        <f:selectItem itemLabel="Selectionner le cadre" itemValue="" noSelectionOption="true"  />
+                                        <f:selectItems var="custe3" value="#{fonctionnaireBean.listCadre}"   itemLabel="#{custe3.intituleCadre}" itemValue="#{custe3.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Grade:" for="gradeFonctio" />
+                                    <p:selectOneMenu  value="#{fonctionnaireBean.idGradeFonctio}" label="gradeFonctio" id="gradeFonctio"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                        <f:selectItem itemLabel="Selectionner le grade" itemValue="" noSelectionOption="true"  />
+                                        <f:selectItems var="custe4" value="#{fonctionnaireBean.listGradeFonctio}"   itemLabel="#{custe4.intituleGradeFonctio}" itemValue="#{custe4.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Date de l'obtention du grade" for="dateobgrad" />                                   
+                                    <p:inputMask id="dateobgrad" value="#{fonctionnaireBean.dateDebutGrade}" mask="99/99/9999" required="true" />
+                                </p:panelGrid>
+                            </p:panel>
+                        </p:tab> 
+                        <p:tab id="promotion" title="Affectattion/Promotion"> 
+                            <p:panel id="panelAjouterAffectPromo" header="Affectattion/Promotion">
+                                <p:panelGrid id="panelAjouterAffectPromoGrid" columns="2">
+                                    <p:outputLabel value="Département de la Structure:" for="departementStructure"/>       
+                                    <p:selectOneMenu  id="departementStructure" value="#{fonctionnaireBean.idDepartement}" label="departementStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                        <p:ajax  event="change" update="arrondissementStructure" />
+                                        <f:selectItem itemLabel="Selectioner le département" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems var="custe5" value="#{fonctionnaireBean.listDepartement}"   itemLabel="#{custe5.intituleDepartement}" itemValue="#{custe5.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Arrondissement de la Structure:" for="arrondissementStructure"/>       
+                                    <p:selectOneMenu  id="arrondissementStructure" value="#{fonctionnaireBean.idArrondissement}" label="arrondissementStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                        <p:ajax  event="change" update="structureAttache" />
+                                        <f:selectItem itemLabel="Selectionner l'arrondissement" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems var="custe6" value="#{fonctionnaireBean.listArrondissement}"   itemLabel="#{custe6.intituleArrondissement}" itemValue="#{custe6.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Catégorie de la Structure:" for="categorieStructure"/>       
+                                    <p:selectOneMenu  id="categorieStructure" value="#{fonctionnaireBean.idCategorieStructure}" label="categorieStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                        <p:ajax  event="change" update="structureAttache" />
+                                        <f:selectItem itemLabel="Selectionner la catégorie de la structure" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems var="custe7" value="#{fonctionnaireBean.listCategorieStructure}"   itemLabel="#{custe7.intituleCategorieStructure}" itemValue="#{custe7.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Structure d'attache:" for="structureAttache"/>       
+                                    <p:selectOneMenu  id="structureAttache" value="#{fonctionnaireBean.idStructure}" label="structure d'attache"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                        <p:ajax  event="change" update="fonction" />
+                                        <f:selectItem itemLabel="Selectionner la structure d'attache" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems var="custe8" value="#{fonctionnaireBean.listStructureAttache}"   itemLabel="#{custe8.intituleStructure}" itemValue="#{custe8.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Fonction/Poste:" for="fonction"/>       
+                                    <p:selectOneMenu  id="fonction" value="#{fonctionnaireBean.idPoste}" label="fonction"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                        <f:selectItem itemLabel="Selectionner la fonction" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems var="custe9" value="#{fonctionnaireBean.listPoste}"   itemLabel="#{custe9.intitulePoste}" itemValue="#{custe9.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Date d'entrée en poste" for="datedebpost" />                                   
+                                    <p:inputMask id="datedebpost" value="#{fonctionnaireBean.dateDebutPoste}" mask="99/99/9999" required="true" />
+                                </p:panelGrid>
+                            </p:panel>
+                        </p:tab> 
+                        <p:tab id="confirmationTab" title="Confirmation">  
+                            <p:panel header="Confirmation">  
+                                <h:panelGrid id="confirmation" columns="4">  
+                                    <h:outputText value="Nom: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nom}" />
+                                    <h:outputText value="Spécialite: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.specialite.intituleSpecialite}" />
+
+                                    <h:outputText value="Prenom: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.prenom}" />
+                                    <h:outputText value="Corps: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.corps.intituleCorps}" />
+
+                                    <h:outputText value="Nom de jeune fille: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nomJeuneFille}" />
+                                    <h:outputText value="Cadre: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.cadre.intituleCadre}" />
+
+                                    <h:outputText value="Date de naissance: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateNaissanceFonc}" />
+                                    <h:outputText value="Grade: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.gradeFonctio.intituleGradeFonctio}" />
+
+                                    <h:outputText value="Lieu de naissance: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.lieuNaissance}" />
+                                    <h:outputText value="Département de la Structure: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.departement.intituleDepartement}" />
+
+                                    <h:outputText value="Sexe: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.sexe}" />   
+                                    <h:outputText value="Arrondissement de la Structure: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.arrondissement.intituleArrondissement}" />
+
+                                    <h:outputText value="Numéro de CNI: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.cni}" />
+                                    <h:outputText value="Catégorie de la Structure: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.categorieStructure.intituleCategorieStructure}" />
+
+                                    <h:outputText value="Date d'entrée dans la fonction publique: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateEntreFoncPub}" />
+                                    <h:outputText value="Structure d'attache: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.structureAttache.intituleStructure}" />
+
+                                    <h:outputText value="matricule: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.matricule}" />
+                                    <h:outputText value="Fonction/Poste: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.poste.intitulePoste}" /> 
+
+                                    <h:outputText value="Région d'origine: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.regionOrigine}" />   
+                                    <h:outputText value="Date d'obtention du grade" />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateDebutGrade}" />        
+
+                                    <h:outputText value="Département d'origine: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.departementOrigine}" />
+                                    <h:outputText value="Date d'entrée en poste" />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateDebutPoste}" />
+
+                                    <h:outputText value="Arrondissement d'origine: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.arrondissementOrigine}" />
+                                    <h:outputText value="" />  
+                                    <h:outputText styleClass="outputLabel" value="" />
+
+                                    <p:commandButton value="Enregistrer" action="#{fonctionnaireBean.createFonctionnaire()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
+                                </h:panelGrid> 
+                            </p:panel>  
+                        </p:tab>  
+
+                    </p:wizard>  
+
+                </h:form>
+            </p:dialog>
+
+            <!--Modification du fonctionnaire-->
+
+            <p:dialog widgetVar="dl" header=" Modifier un Arrondissement" hideEffect="fold" showEffect="explode" resizable="true" modal="true">
+                <h:form id="formModifier" enctype="multipart/form-data">                
+                    <p:wizard widgetVar="wizModifier" flowListener="#{fonctionnaireBean.onFlowProcess}">  
+                        <p:tab id="personnel" title="Informations personnelles"> 
+                            <p:panel id="panelModifierInfoPerso" header="Informations personnelles">
+                                <p:panelGrid id="panelModifierInfoPersoGrid" columns="2">
+                                    <p:outputLabel value="Nom:" for="nom" />  
+                                    <p:inputText id="nom" value="#{fonctionnaireBean.fonctionnaire.nom}" title="nom" required="true"/>
+                                    <p:outputLabel value="Prenom:" for="prenom" />  
+                                    <p:inputText id="prenom" value="#{fonctionnaireBean.fonctionnaire.prenom}" title="prenom"/>
+                                    <p:outputLabel value="Nom de jeune fille:" for="nomjeunefille" />  
+                                    <p:inputText id="nomjeunefille" value="#{fonctionnaireBean.fonctionnaire.nomJeuneFille}" title="nomjeunefille"/>
+                                    <p:outputLabel value="Date de naissance:" for="datenaiss" />
+                                    <p:inputMask id="datenaiss" value="#{fonctionnaireBean.dateNaissanceFonc}" mask="99/99/9999" required="true" />                                         
+                                    <p:outputLabel value="Lieu de naissance:" for="lieunaissance" />  
+                                    <p:inputText id="lieunaissance" value="#{fonctionnaireBean.fonctionnaire.lieuNaissance}" title="lieunaissance" required="true"/>
+                                    <p:outputLabel value="Sexe:" for="sexe" /> 
+                                    <p:selectOneMenu  value="#{fonctionnaireBean.fonctionnaire.sexe}" label="sexe" id="sexe" filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                        <f:selectItem itemLabel="Selectionner le sexe" itemValue="" noSelectionOption="true"  />
+                                        <f:selectItems var="custe" value="#{fonctionnaireBean.sexes()}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Numéro de CNI:" for="numerocni" />  
+                                    <p:inputText id="numerocni" value="#{fonctionnaireBean.fonctionnaire.cni}" title="numerocni" required="true"/>
+                                    <p:outputLabel value="Date d'entrée dans la fonction publique:" for="dateentreefoncpub" />
+                                    <p:inputMask id="dateentreefoncpub" value="#{fonctionnaireBean.dateEntreFoncPub}" mask="99/99/9999" required="true" />                                  
+                                    <p:outputLabel value="matricule:" for="matricule" />  
+                                    <p:inputText id="matricule" value="#{fonctionnaireBean.fonctionnaire.matricule}" title="matricule"/>
+                                    <p:outputLabel value="Région d'origine:" for="regionorigine" />  
+                                    <p:inputText id="regionorigine" value="#{fonctionnaireBean.fonctionnaire.regionOrigine}" title="regionorigine"/>
+                                    <p:outputLabel value="Département d'origine:" for="departementorigine" />  
+                                    <p:inputText id="departementorigine" value="#{fonctionnaireBean.fonctionnaire.departementOrigine}" title="departementorigine"/>
+                                    <p:outputLabel value="Arrondissement d'origine:" for="arrondissementorigine" />  
+                                    <p:inputText id="arrondissementorigine" value="#{fonctionnaireBean.fonctionnaire.arrondissementOrigine}" title="arrondissementorigine"/>
+                                    <h:inputHidden id="number" value="#{fonctionnaireBean.fonctionnaire.id}" />
+                                </p:panelGrid>
+                            </p:panel>
+                        </p:tab> 
+                        <p:tab id="qualifications" title="Qualifications"> 
+                            <p:panel id="panelModifierQualification" header="Qualifications">
+                                <p:panelGrid id="panelModifierQualificationGrid" columns="2">
+                                    <p:outputLabel value="Spécialité:" for="specialite" />  
+                                    <p:selectOneMenu  value="#{fonctionnaireBean.idSpecialite}" label="specialite" id="specialite"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                        <f:selectItem itemLabel="Selectionner la spécialité" itemValue="" noSelectionOption="true"  />
+                                        <f:selectItems var="custe1" value="#{fonctionnaireBean.listSpecialite}"   itemLabel="#{custe1.intituleSpecialite}" itemValue="#{custe1.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Corps:" for="corps" />  
+                                    <p:selectOneMenu  value="#{fonctionnaireBean.idCorps}" label="corps" id="corps"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                        <p:ajax event="change" update="cadre"/>
+                                        <f:selectItem itemLabel="Selectionner le Corps" itemValue="" noSelectionOption="true"  />
+                                        <f:selectItems var="custe2" value="#{fonctionnaireBean.listCorps}"   itemLabel="#{custe2.intituleCorps}" itemValue="#{custe2.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Cadre:" for="cadre" />
+                                    <p:selectOneMenu  value="#{fonctionnaireBean.idCadre}" label="cadre" id="cadre"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                        <p:ajax event="change" update="gradeFonctio"/>
+                                        <f:selectItem itemLabel="Selectionner le cadre" itemValue="" noSelectionOption="true"  />
+                                        <f:selectItems var="custe3" value="#{fonctionnaireBean.listCadre}"   itemLabel="#{custe3.intituleCadre}" itemValue="#{custe3.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Grade:" for="gradeFonctio" />
+                                    <p:selectOneMenu  value="#{fonctionnaireBean.idGradeFonctio}" label="gradeFonctio" id="gradeFonctio"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                        <f:selectItem itemLabel="Selectionner le grade" itemValue="" noSelectionOption="true"  />
+                                        <f:selectItems var="custe4" value="#{fonctionnaireBean.listGradeFonctio}"   itemLabel="#{custe4.intituleGradeFonctio}" itemValue="#{custe4.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Date de l'obtention du grade" for="dateobgrad" />                                   
+                                    <p:inputMask id="dateobgrad" value="#{fonctionnaireBean.dateDebutGrade}" mask="99/99/9999" required="true" />
+                                    
+                                </p:panelGrid>
+                            </p:panel>
+                        </p:tab> 
+                        <p:tab id="promotion" title="Affectattion/Promotion"> 
+                            <p:panel id="panelModifierAffectPromo" header="Affectattion/Promotion">
+                                <p:panelGrid id="panelAjouterAffectPromoGrid" columns="2">
+                                    <p:outputLabel value="Département de la Structure:" for="departementStructure"/>       
+                                    <p:selectOneMenu  id="departementStructure" value="#{fonctionnaireBean.idDepartement}" label="departementStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                        <p:ajax  event="change" update="arrondissementStructure" />
+                                        <f:selectItem itemLabel="Selectioner le département" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems var="custe5" value="#{fonctionnaireBean.listDepartement}"   itemLabel="#{custe5.intituleDepartement}" itemValue="#{custe5.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Arrondissement de la Structure:" for="arrondissementStructure"/>       
+                                    <p:selectOneMenu  id="arrondissementStructure" value="#{fonctionnaireBean.idArrondissement}" label="arrondissementStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                        <p:ajax  event="change" update="structureAttache" />
+                                        <f:selectItem itemLabel="Selectionner l'arrondissement" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems var="custe6" value="#{fonctionnaireBean.listArrondissement}"   itemLabel="#{custe6.intituleArrondissement}" itemValue="#{custe6.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Catégorie de la Structure:" for="categorieStructure"/>       
+                                    <p:selectOneMenu  id="categorieStructure" value="#{fonctionnaireBean.idCategorieStructure}" label="categorieStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                        <p:ajax  event="change" update="structureAttache" />
+                                        <f:selectItem itemLabel="Selectionner la catégorie de la structure" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems var="custe7" value="#{fonctionnaireBean.listCategorieStructure}"   itemLabel="#{custe7.intituleCategorieStructure}" itemValue="#{custe7.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Structure d'attache:" for="structureAttache"/>       
+                                    <p:selectOneMenu  id="structureAttache" value="#{fonctionnaireBean.idStructure}" label="structure d'attache"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                        <p:ajax  event="change" update="fonction" />
+                                        <f:selectItem itemLabel="Selectionner la structure d'attache" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems var="custe8" value="#{fonctionnaireBean.listStructureAttache}"   itemLabel="#{custe8.intituleStructure}" itemValue="#{custe8.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Fonction/Poste:" for="fonction"/>       
+                                    <p:selectOneMenu  id="fonction" value="#{fonctionnaireBean.idPoste}" label="fonction"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                        <f:selectItem itemLabel="Selectionner la fonction" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems var="custe9" value="#{fonctionnaireBean.listPoste}"   itemLabel="#{custe9.intitulePoste}" itemValue="#{custe9.id}" itemLabelEscaped="true" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Date d'entrée en poste" for="datedebpost" />                                   
+                                    <p:inputMask id="datedebpost" value="#{fonctionnaireBean.dateDebutPoste}" mask="99/99/9999" required="true" />
+                                </p:panelGrid>
+                            </p:panel>
+                        </p:tab> 
+                        <p:tab id="confirmationTab" title="Confirmation">  
+                            <p:panel header="Confirmation">  
+                                <h:panelGrid id="confirmation" columns="4">  
+                                    <h:outputText value="Nom: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nom}" />
+                                    <h:outputText value="Spécialite: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.specialite.intituleSpecialite}" />
+
+                                    <h:outputText value="Prenom: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.prenom}" />
+                                    <h:outputText value="Corps: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.corps.intituleCorps}" />
+
+                                    <h:outputText value="Nom de jeune fille: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nomJeuneFille}" />
+                                    <h:outputText value="Cadre: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.cadre.intituleCadre}" />
+
+                                    <h:outputText value="Date de naissance: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateNaissanceFonc}" />
+                                    <h:outputText value="Grade: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.gradeFonctio.intituleGradeFonctio}" />
+
+                                    <h:outputText value="Lieu de naissance: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.lieuNaissance}" />
+                                    <h:outputText value="Département de la Structure: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.departement.intituleDepartement}" />
+
+                                    <h:outputText value="Sexe: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.sexe}" />   
+                                    <h:outputText value="Arrondissement de la Structure: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.arrondissement.intituleArrondissement}" />
+
+                                    <h:outputText value="Numéro de CNI: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.cni}" />
+                                    <h:outputText value="Catégorie de la Structure: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.categorieStructure.intituleCategorieStructure}" />
+
+                                    <h:outputText value="Date d'entrée dans la fonction publique: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateEntreFoncPub}" />
+                                    <h:outputText value="Structure d'attache: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.structureAttache.intituleStructure}" />
+
+                                    <h:outputText value="matricule: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.matricule}" />
+                                    <h:outputText value="Fonction/Poste: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.poste.intitulePoste}" /> 
+
+                                    <h:outputText value="Région d'origine: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.regionOrigine}" />   
+                                    <h:outputText value="Date d'obtention du grade" />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateDebutGrade}" />        
+
+                                    <h:outputText value="Département d'origine: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.departementOrigine}" />
+                                    <h:outputText value="Date d'entrée en poste" />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateDebutPoste}" />
+
+                                    <h:outputText value="Arrondissement d'origine: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.arrondissementOrigine}" />
+                                    <h:outputText value="" />  
+                                    <h:outputText styleClass="outputLabel" value="" />
+
+                                    <p:commandButton value="Modifier" action="#{fonctionnaireBean.updateFonctionnaire()}"  oncomplete="PF('dl').hide()" update=":tableForm:table"/>
+                                </h:panelGrid> 
+                            </p:panel>  
+                        </p:tab>  
+
+                    </p:wizard>  
+                </h:form>
+            </p:dialog> 
+
+            <p:dialog widgetVar="dlgc" header=" Choisir les informations à afficher" hideEffect="explode" showEffect="explode" modal="true">
+                <h:form id="formChoix" enctype="multipart/form-data"> 
+                    <p:panel id="panelChoix" header="Choix des informations">
+                        <p:panelGrid id="infoToDisplay" columns="1">
+                            <p:selectManyCheckbox value="#{fonctionnaireBean.listInformationToDisplay}" layout="pageDirection" columns=""  >  
+                                <f:selectItem itemLabel="Matricule" itemValue="matricule" />
+                                <f:selectItem itemLabel="Nom" itemValue="nom"/>
+                                <f:selectItem itemLabel="Prénom" itemValue="prenom"/>
+                                <f:selectItem itemLabel="Nom de jeune fille" itemValue="nomjeunefille"/>
+                                <f:selectItem itemLabel="Date de Naissance" itemValue="datenaissance"/>
+                                <f:selectItem itemLabel="Lieu de Naissance" itemValue="lieunaissance"/>
+                                <f:selectItem itemLabel="Région d'origine" itemValue="regionorigine"/>
+                                <f:selectItem itemLabel="Département d'origine" itemValue="departementorigine"/>
+                                <f:selectItem itemLabel="Arrondissement d'origine" itemValue="arrondissementorigine"/>
+                                <f:selectItem itemLabel="Sexe" itemValue="sexe"/>
+                                <f:selectItem itemLabel="Numéro de CNI" itemValue="numerocni"/>
+                                <f:selectItem itemLabel="Grade" itemValue="grade"/>
+                                <f:selectItem itemLabel="Spécialité" itemValue="specialite"/>
+                                <f:selectItem itemLabel="Date d'entrée en fonction publique" itemValue="dateentreefoncpub"/>
+                                <f:selectItem itemLabel="Structure d'attache" itemValue="structureattache"/>
+                                <f:selectItem itemLabel="Poste" itemValue="poste"/>
+                                <f:selectItem itemLabel="Ancienneté au Poste" itemValue="ancienneteposte"/> 
+                                <f:selectItem itemLabel="Département de la structure d'attache" itemValue="departstructureattache"/>
+                                <f:selectItem itemLabel="Arrondissement de la structure d'attache" itemValue="arrondstructureattache"/>
+                            </p:selectManyCheckbox>
+                            <p:commandButton id="btn" update=":tableForm:table" actionListener="#{fonctionnaireBean.createDynamicColumns()}" value="Afficher" oncomplete="PF('dlgc').hide()" process="@parent"/>                           
+                        </p:panelGrid>
+                    </p:panel>
+                </h:form>
+            </p:dialog>
+        </f:view>
+
+
+        <f:view>
+            <h:form id='tableForm'>
+                <p:contextMenu for="table">  
+                    <p:menuitem value="New" actionListener="#{fonctionnaireBean.initFonctio()}" onclick="PF('dlg').show();"  />
+                    <p:menuitem value="Update" actionListener="#{fonctionnaireBean.beforeUpdateFonctio()}" update=":formModifier" oncomplete="PF('dl').show()"/>  
+                </p:contextMenu> 
+
+                <p:dataTable value="#{fonctionnaireBean.listFonctionnaires}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " resizableColumns="true" liveResize="true" id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{fonctionnaireBean.fonctionnaire}" rowKey="#{item.id}">
+                    <f:facet name="header">
+                        La liste des fonctionnaires
+                    </f:facet>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nom}"/>
+                    </p:column>
+                    <p:columns value="#{fonctionnaireBean.listColumnModels}" var="column" columnIndexVar="colIndex">   
+                        <f:facet name="header">  
+                            #{column.header}  
+                        </f:facet>  
+                        #{item[column.property]}  
+                    </p:columns>  
+
+                </p:dataTable>
+                <h:panelGrid columns="2">  
+                    <p:panel header="Export All Data">  
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/excel.png" />  
+                            <p:dataExporter type="xls" target="table" fileName="listArrondissement" />  
+                        </h:commandLink>  
+
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/pdf.png" />  
+                            <p:dataExporter type="pdf" target="table" fileName="listArrondissement"/>  
+                        </h:commandLink>  
+                    </p:panel> 
+                    <p:panel header="Export Page Data">  
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/excel.png" />  
+                            <p:dataExporter type="xls" target="table" fileName="listArrondissement" pageOnly="true"/>  
+                        </h:commandLink>  
+
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/pdf.png" />  
+                            <p:dataExporter type="pdf" target="table" fileName="listArrondissement" pageOnly="true"/>  
+                        </h:commandLink>  
+                    </p:panel>  
+                </h:panelGrid>  
+
+
+
+
+                <p:toolbar>
+                    <f:facet name="left">
+                        <p:commandButton type="push" actionListener="#{fonctionnaireBean.initFonctio()}" onclick="PF('dlg').show();" value="Nouveau Fonctionnaire" icon="ui-icon-disk"/>                      
+                        <p:commandButton type="push" actionListener="#{fonctionnaireBean.initListColumnModels()}" onclick="PF('dlgc').show();" value="Choix des colonnes à afficher" icon="ui-icon-disk"/>                      
+                        <span class="ui-separator">
+                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                        </span>
+                        <p:commandButton type="push" title="Save" icon="ui-icon-disk" />
+                        <p:commandButton type="push" title="Update" icon="ui-icon-arrowrefresh-1-w"/>
+                        <p:commandButton type="push" title="Print" icon="ui-icon-print"/>
+                    </f:facet>
+                </p:toolbar>
+            </h:form>
+        </f:view>
+    </h:body>
+</html>
