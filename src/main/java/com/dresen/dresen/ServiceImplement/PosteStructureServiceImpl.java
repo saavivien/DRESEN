@@ -78,9 +78,9 @@ public class PosteStructureServiceImpl implements IPosteStructureService, Serial
         }
     }
 
-    public PosteStructure deletePosteStructureByPoste(long idAgent) throws ServiceException {
+    public void deletePosteStructureByPoste(long idAgent) throws ServiceException {
         try {//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            return iPosteStructureDao.deletePosteStructureByPoste(idAgent);
+            iPosteStructureDao.deletePosteStructureByPoste(idAgent);
         } catch (DataAccessException ex) {
             Logger.getLogger(PosteStructureServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible de supprimer les postes structures correspondant au poste");

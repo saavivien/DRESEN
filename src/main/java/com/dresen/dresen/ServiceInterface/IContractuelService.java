@@ -20,5 +20,6 @@ public interface IContractuelService {
     public Contractuel findContractuelById(Long id) throws ServiceException;
     public Contractuel updateContractuel(Contractuel contractuel) throws ServiceException;
     public List<Contractuel> findAllContractuel() throws ServiceException;  
-    
+    public List<Contractuel> findContractuelActif() throws ServiceException;
+    public List<Contractuel> findContractuelRetraites() throws ServiceException;
 }

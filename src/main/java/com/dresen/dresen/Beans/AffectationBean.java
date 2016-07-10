@@ -200,6 +200,6 @@ public class AffectationBean{
        return iAffectationService.findAffectationOpenByIdAgent(agent.getId());
     }
     public List<Affectation> findAllAffectationOpened(){
-        return iAffectationService.findAllPromotionOpen();       
+        return iAffectationService.findAllAffectationOpen();       
     }
 }

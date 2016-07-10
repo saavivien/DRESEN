@@ -56,7 +56,7 @@ public class test {
         
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-           List<Poste> listPostes = iPosteDao.findPosteByCategorieStructure(2);
+           List<Poste> listPostes = iPosteDao.findPosteByCategorieStructure(3);
            for(Poste p:listPostes)
                System.out.println("intitulé de la structure:vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvssssssssssssssssssssssssssssssss"+p.getIntitulePoste());
            tx.commit();

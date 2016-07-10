@@ -22,6 +22,6 @@ public interface IAffectationService {
     public List<Affectation> findAllAffectation() throws ServiceException; 
     public List<Affectation> findAffectationByIdAgent(long idAgent) throws ServiceException;
     public Affectation findAffectationOpenByIdAgent(long idAgent) throws ServiceException;
-    public List<Affectation> findAllPromotionOpen() throws ServiceException;
+    public List<Affectation> findAllAffectationOpen() throws ServiceException;
 
 }

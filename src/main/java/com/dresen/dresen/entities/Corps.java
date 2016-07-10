@@ -92,7 +92,7 @@ public class Corps implements Serializable {
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.Corps[ id=" + id + " ]";
+        return intituleCorps;
     }
     
 }

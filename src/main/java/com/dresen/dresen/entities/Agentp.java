@@ -37,7 +37,7 @@ public class Agentp implements Serializable {
     @Column(unique = true, nullable = false)
     private int cni;
     
-    @Column
+    @Column (nullable = false)
     private String nom;
     
     @Column
@@ -69,6 +69,9 @@ public class Agentp implements Serializable {
     @Column
     private String nomJeuneFille;
     
+    @Column
+    private boolean isRetraité;
+    
     @OneToMany (mappedBy = "agent")
     private List<Affectation> listAffectations;
     
@@ -76,20 +79,6 @@ public class Agentp implements Serializable {
     private List<Promotion> listPromotions;
     
     
-    /*
-    ces attributs seront construits à partir d'autres entitées ou table. ils ne sont pas des colonnes mais ils permettent de 
-    porter les données courrantes sur un agent afin de faciliter la manipulation du dataTable avec les colonnes dynamiques
-    */
-    private String dateNaiss;
-    private String gradeCourrant;
-    private String specialiteCourrant;
-    private String dateEntreeFoncPub;
-    private String structureAttacheCourant;
-    private String posteCourrant;
-    private String dateAffectCourrant;
-    private String arrondStructuCourrant;
-    private String departStructuCourrant;
-
     public Long getId() {
         return id;
     }
@@ -211,81 +200,6 @@ public class Agentp implements Serializable {
     public void setLieuNaissance(String lieuNaissance) {
         this.lieuNaissance = lieuNaissance;
     }
-
-    public String getDateNaiss() {
-        return dateNaiss;
-    }
-
-    public void setDateNaiss(String dateNaiss) {
-        this.dateNaiss = dateNaiss;
-    }
-
-    public String getGradeCourrant() {
-        return gradeCourrant;
-    }
-
-    public void setGradeCourrant(String gradeCourrant) {
-        this.gradeCourrant = gradeCourrant;
-    }
-
-    public String getSpecialiteCourrant() {
-        return specialiteCourrant;
-    }
-
-    public void setSpecialiteCourrant(String specialiteCourrant) {
-        this.specialiteCourrant = specialiteCourrant;
-    }
-
-   
-    public String getDateEntreeFoncPub() {
-        return dateEntreeFoncPub;
-    }
-
-    public void setDateEntreeFoncPub(String dateEntreeFoncPub) {
-        this.dateEntreeFoncPub = dateEntreeFoncPub;
-    }
-
-    public String getStructureAttacheCourant() {
-        return structureAttacheCourant;
-    }
-
-    public void setStructureAttacheCourant(String structureAttacheCourant) {
-        this.structureAttacheCourant = structureAttacheCourant;
-    }
-
-   
-    public String getPosteCourrant() {
-        return posteCourrant;
-    }
-
-    public void setPosteCourrant(String posteCourrant) {
-        this.posteCourrant = posteCourrant;
-    }
-
-    public String getDateAffectCourrant() {
-        return dateAffectCourrant;
-    }
-
-    public void setDateAffectCourrant(String dateAffectCourrant) {
-        this.dateAffectCourrant = dateAffectCourrant;
-    }
-
-    public String getArrondStructuCourrant() {
-        return arrondStructuCourrant;
-    }
-
-    public void setArrondStructuCourrant(String arrondStructuCourrant) {
-        this.arrondStructuCourrant = arrondStructuCourrant;
-    }
-
-    public String getDepartStructuCourrant() {
-        return departStructuCourrant;
-    }
-
-    public void setDepartStructuCourrant(String departStructuCourrant) {
-        this.departStructuCourrant = departStructuCourrant;
-    }
-    
     
 
     @Override
@@ -302,6 +216,15 @@ public class Agentp implements Serializable {
         final Agentp other = (Agentp) obj;
         return !(this.id != other.id && (this.id == null || !this.id.equals(other.id)));
     }
+
+    public boolean isIsRetraité() {
+        return isRetraité;
+    }
+
+    public void setIsRetraité(boolean isRetraité) {
+        this.isRetraité = isRetraité;
+    }
+    
 
     @Override
     public String toString() {

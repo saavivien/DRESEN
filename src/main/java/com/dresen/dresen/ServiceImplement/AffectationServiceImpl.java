@@ -94,7 +94,7 @@ public class AffectationServiceImpl implements IAffectationService, Serializable
         }        
     }
 
-    public List<Affectation> findAllPromotionOpen() throws ServiceException {
+    public List<Affectation> findAllAffectationOpen() throws ServiceException {
         try {
             // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iAffectationDao.findAllAffectationOpen();

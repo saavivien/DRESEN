@@ -73,5 +73,28 @@ public class ContractuelServiceImpl implements IContractuelService, Serializable
             throw new ServiceException("impossible de trouver la liste des contractuels");
         }    
     }
+
+    @Override
+    public List<Contractuel> findContractuelActif() throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iContractuelDao.findContractuelActif();
+        } catch (DataAccessException ex) {
+            Logger.getLogger(ContractuelServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible de trouver la liste des contractuel actif");
+        }
+    }
+    
+
+    @Override
+    public List<Contractuel> findContractuelRetraites() throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iContractuelDao.findContractuelRetraites();
+        } catch (DataAccessException ex) {
+            Logger.getLogger(ContractuelServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible de trouver la liste des contractuel Retratés");
+        }
+    }
     
 }

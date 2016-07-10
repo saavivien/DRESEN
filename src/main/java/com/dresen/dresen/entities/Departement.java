@@ -88,7 +88,7 @@ public class Departement implements Serializable {
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.Departement[ id=" + id + " ]";
+        return intituleDepartement;
     }
     
 }

@@ -8,6 +8,8 @@ package com.dresen.dresen.entities;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -15,6 +17,10 @@ import javax.persistence.OneToMany;
  * @author Vivien Saa
  */
 @Entity
+@NamedQueries({ 
+    @NamedQuery(name = "Fonctionnaire.findFonctionnaireActif", query = "SELECT DISTINCT f FROM Fonctionnaire f, Affectation a JOIN f.listAffectations f_a WHERE f_a.dateFinAffect = NULL"),
+    @NamedQuery(name = "Fonctionnaire.findFonctionnaireRetraites", query = "SELECT f FROM Fonctionnaire f WHERE f.isRetraité = TRUE")        
+})
 public class Fonctionnaire extends Agentp{
     
     @ManyToOne 

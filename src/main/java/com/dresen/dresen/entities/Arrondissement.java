@@ -110,7 +110,7 @@ public class Arrondissement implements Serializable {
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.Arrondissement[ id=" + id + " ]";
+        return intituleArrondissement;
     }
     
 }

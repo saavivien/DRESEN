@@ -22,7 +22,7 @@ public interface IPosteStructureService {
     public List<PosteStructure> findAllPosteStructure() throws ServiceException;
     public List<PosteStructure> findPosteStructureByPoste(long idPoste) throws ServiceException;
     public void deletePosteStructure(PosteStructure posteStructure) throws ServiceException;
-    public PosteStructure deletePosteStructureByPoste(long idAgent) throws ServiceException;
+    public void deletePosteStructureByPoste(long idAgent) throws ServiceException;
     public List<PosteStructure> findPosteStructureByCategorieStructure(long idCategorie) throws ServiceException;
     
 }

@@ -24,7 +24,7 @@ import javax.persistence.OneToMany;
 @Entity
 @NamedQueries({
      @NamedQuery(name = "Poste.findPosteByName", query = "SELECT p FROM Poste p WHERE p.intitulePoste = :Param"),
-     @NamedQuery(name = "Poste.findPosteByCategorieStructure", query = "SELECT p FROM Poste p, PosteStructure ps JOIN p.listPosteStructures p_ps WHERE p_ps.categorieStructure.id = :param")   
+     @NamedQuery(name = "Poste.findPosteByCategorieStructure", query = "SELECT DISTINCT p FROM Poste p, PosteStructure ps JOIN p.listPosteStructures p_ps WHERE p_ps.categorieStructure.id = :param")   
 })
 public class Poste implements Serializable {
 

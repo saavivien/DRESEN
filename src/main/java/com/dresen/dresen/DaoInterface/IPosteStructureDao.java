@@ -15,6 +15,6 @@ import java.util.List;
  */
 public interface IPosteStructureDao extends IDao<PosteStructure, Long>{
     public List<PosteStructure> findPosteStructureByPoste(long idPoste) throws DataAccessException;
-    public PosteStructure deletePosteStructureByPoste(long idAgent) throws DataAccessException;
+    public void deletePosteStructureByPoste(long idAgent) throws DataAccessException;
     public List<PosteStructure> findPosteStructureByCategorieStructure(long idCategorie) throws DataAccessException;
 }

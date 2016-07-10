@@ -7,6 +7,8 @@ package com.dresen.dresen.entities;
 
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -14,6 +16,10 @@ import javax.persistence.OneToMany;
  * @author Vivien Saa
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = "Contractuel.findContractuelActif", query = "SELECT DISTINCT c FROM Contractuel c, Affectation a JOIN c.listAffectations c_a WHERE c_a.dateFinAffect = NULL"),
+    @NamedQuery(name = "Contractuel.findContractuelRetraites", query = "SELECT c FROM Contractuel c WHERE c.isRetraité = TRUE")       
+})
 public class Contractuel extends Agentp{
     
     @OneToMany (mappedBy = "contractuel")

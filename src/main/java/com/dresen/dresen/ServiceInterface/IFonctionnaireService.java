@@ -20,5 +20,7 @@ public interface IFonctionnaireService {
     public Fonctionnaire findFonctionnaireById(Long id) throws ServiceException;
     public Fonctionnaire updateFonctionnaire(Fonctionnaire fonctionnaire) throws ServiceException;
     public List<Fonctionnaire> findAllFonctionnaire() throws ServiceException;
+    public List<Fonctionnaire> findFonctionnaireActif() throws ServiceException;
+    public List<Fonctionnaire> findFonctionnaireRetraites() throws ServiceException;
     
 }

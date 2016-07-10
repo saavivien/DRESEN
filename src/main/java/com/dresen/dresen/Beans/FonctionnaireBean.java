@@ -42,9 +42,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import org.primefaces.component.wizard.Wizard;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 
 /**
@@ -86,10 +90,12 @@ public class FonctionnaireBean implements Serializable {
     private GradeFonctio gradeFonctio = new GradeFonctio();
     private RangerFonctio rangerFonctio = new RangerFonctio();
     private Promotion promotion = new Promotion();
+    private Promotion promotionAffec;
     private Poste poste = new Poste();
     private Specialite specialite = new Specialite();
 
     private Affectation affectation = new Affectation();
+    private Affectation affectationAffec;
     private StructureAttache structureAttache = new StructureAttache();
     private boolean skip;
     private static Logger logger = Logger.getLogger(FonctionnaireBean.class.getName());
@@ -105,6 +111,10 @@ public class FonctionnaireBean implements Serializable {
     private List<CategorieStructure> listCategorieStructure;
     private List<StructureAttache> listStructureAttache;
     private List<Poste> listPoste;
+    private List<RangerFonctio> listRangerFonctios;
+    private List<Promotion> listPromotions;
+    private List<AffectationPromotion> listAffectationsPromotions;
+    private List<Affectation> listAffectations;
     private List<String> listInformationToDisplay;
     private long idGradeFonctio, idRangerFonctio, idStructure, idPoste, idSpecialite, idCorps, idCadre, idDepartement, idArrondissement, idCategorieStructure;
     private Cadre cadre;
@@ -113,7 +123,17 @@ public class FonctionnaireBean implements Serializable {
     private Departement departement;
     private CategorieStructure categorieStructure;
     private SimpleDateFormat simpleDateFormat;
-    private String dateNaissanceFonc, dateEntreFoncPub, dateDebutGrade, dateDebutPoste, dateDebutAffec;
+    private String dateNaissanceFonc, dateEntreFoncPub, dateDebutGrade, dateDebutPoste, dateDebutPosteAffec, dateDebutAffec;
+    private StructureAttache structureAttacheAffec;
+    private Poste posteAffec;
+    private Arrondissement arrondissementAffec;
+    private Departement departementAffec;
+    private CategorieStructure categorieStructureAffec;
+    private RangerFonctio rangerFonctioChangerGrade;
+    private Corps corpsChangerGrade;
+    private Cadre cadreChangerGrade;
+    private GradeFonctio gradeChangerGrade;
+    private String dateDebutGradeChangerGrade;
 
     public FonctionnaireBean() {
     }
@@ -282,6 +302,39 @@ public class FonctionnaireBean implements Serializable {
         return iStructureService.findStructureAttacheByCategorieAndArrondissement(idArrondissement, idCategorieStructure);
     }
 
+     public List<RangerFonctio> getListRangerFonctios() {
+        return listRangerFonctios;
+    }
+
+    public void setListRangerFonctios(List<RangerFonctio> listRangerFonctios) {
+        this.listRangerFonctios = listRangerFonctios;
+    }
+
+    public List<Promotion> getListPromotions() {
+        return listPromotions;
+    }
+
+    public void setListPromotions(List<Promotion> listPromotions) {
+        this.listPromotions = listPromotions;
+    }
+
+    public List<Affectation> getListAffectations() {
+        return listAffectations;
+    }
+
+    public void setListAffectations(List<Affectation> listAffectations) {
+        this.listAffectations = listAffectations;
+    }
+
+    public List<AffectationPromotion> getListAffectationsPromotions() {
+        return listAffectationsPromotions;
+    }
+
+    public void setListAffectationsPromotions(List<AffectationPromotion> listAffectationsPromotions) {
+        this.listAffectationsPromotions = listAffectationsPromotions;
+    }
+    
+    
     public boolean isSkip() {
         return skip;
     }
@@ -566,6 +619,112 @@ public class FonctionnaireBean implements Serializable {
         this.listInformationToDisplay = listInformationToDisplay;
     }
 
+    public Promotion getPromotionAffec() {
+        return promotionAffec;
+    }
+
+    public void setPromotionAffec(Promotion promotionAffec) {
+        this.promotionAffec = promotionAffec;
+    }
+
+    public Affectation getAffectationAffec() {
+        return affectationAffec;
+    }
+
+    public void setAffectationAffec(Affectation affectationAffec) {
+        this.affectationAffec = affectationAffec;
+    }
+
+    public String getDateDebutPosteAffec() {
+        return dateDebutPosteAffec;
+    }
+
+    public void setDateDebutPosteAffec(String dateDebutPosteAffec) {
+        this.dateDebutPosteAffec = dateDebutPosteAffec;
+    }
+
+    public StructureAttache getStructureAttacheAffec() {
+        return structureAttacheAffec;
+    }
+
+    public void setStructureAttacheAffec(StructureAttache structureAttacheAffec) {
+        this.structureAttacheAffec = structureAttacheAffec;
+    }
+
+    public Poste getPosteAffec() {
+        return posteAffec;
+    }
+
+    public void setPosteAffec(Poste posteAffec) {
+        this.posteAffec = posteAffec;
+    }
+
+    public Arrondissement getArrondissementAffec() {
+        return arrondissementAffec;
+    }
+
+    public void setArrondissementAffec(Arrondissement arrondissementAffec) {
+        this.arrondissementAffec = arrondissementAffec;
+    }
+
+    public Departement getDepartementAffec() {
+        return departementAffec;
+    }
+
+    public void setDepartementAffec(Departement departementAffec) {
+        this.departementAffec = departementAffec;
+    }
+
+    public CategorieStructure getCategorieStructureAffec() {
+        return categorieStructureAffec;
+    }
+
+    public void setCategorieStructureAffec(CategorieStructure categorieStructureAffec) {
+        this.categorieStructureAffec = categorieStructureAffec;
+    }
+
+    public RangerFonctio getRangerFonctioChangerGrade() {
+        return rangerFonctioChangerGrade;
+    }
+
+    public void setRangerFonctioChangerGrade(RangerFonctio rangerFonctioChangerGrade) {
+        this.rangerFonctioChangerGrade = rangerFonctioChangerGrade;
+    }
+
+    public Corps getCorpsChangerGrade() {
+        return corpsChangerGrade;
+    }
+
+    public void setCorpsChangerGrade(Corps corpsChangerGrade) {
+        this.corpsChangerGrade = corpsChangerGrade;
+    }
+
+    public Cadre getCadreChangerGrade() {
+        return cadreChangerGrade;
+    }
+
+    public void setCadreChangerGrade(Cadre cadreChangerGrade) {
+        this.cadreChangerGrade = cadreChangerGrade;
+    }
+
+    public GradeFonctio getGradeChangerGrade() {
+        return gradeChangerGrade;
+    }
+
+    public void setGradeChangerGrade(GradeFonctio gradeChangerGrade) {
+        this.gradeChangerGrade = gradeChangerGrade;
+    }
+
+    public String getDateDebutGradeChangerGrade() {
+        return dateDebutGradeChangerGrade;
+    }
+
+    public void setDateDebutGradeChangerGrade(String dateDebutGradeChangerGrade) {
+        this.dateDebutGradeChangerGrade = dateDebutGradeChangerGrade;
+    }
+
+    
+    
     public boolean isBoolMat() {
         return boolMat;
     }
@@ -762,6 +921,11 @@ public class FonctionnaireBean implements Serializable {
      public Departement currentDepartement(Agentp agent) {
         return currentArrondissement(agent).getDepartement();
     }
+    
+    public String dateToString(Date date){
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return simpleDateFormat.format(date);
+    } 
 
     /*
     fin du bloc de construction des agents dans leur situation courante. début des méthode permettant d'avoir un tableau dynamique
@@ -769,7 +933,6 @@ public class FonctionnaireBean implements Serializable {
       
     public void initListColumn() {
         boolMat = false;
-        boolPrenom = false;
         boolNomJeunFille = false;
         boolDateNaiss = false;
         boolDateNaiss = false;
@@ -793,9 +956,6 @@ public class FonctionnaireBean implements Serializable {
             switch (column) {
                 case "matricule":
                     boolMat = true;
-                    break;
-                case "prenom":
-                    boolPrenom = true;
                     break;
                 case "nomjeunefille":
                     boolNomJeunFille = true;
@@ -917,12 +1077,11 @@ public class FonctionnaireBean implements Serializable {
 
     //this is to initialize the various element an display them before confirmation
     public void beforeConfirm() throws ParseException {
-
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         specialite = iSpecialiteService.findSpecialiteById(idSpecialite);
         structureAttache = iStructureService.findStructureAttacheById(idStructure);
         gradeFonctio = iGradeFonctioService.findGradeFonctioById(idGradeFonctio);
         poste = iPosteService.findPosteById(idPoste);
-        structureAttache = iStructureService.findStructureAttacheById(idStructure);
         cadre = iCadreService.findCadreById(idCadre);
         corps = iCorpsService.findCorpsById(idCorps);
         arrondissement = iArrondissementService.findArrondissementById(idArrondissement);
@@ -934,8 +1093,93 @@ public class FonctionnaireBean implements Serializable {
         affectation.setDateDebutAffect(simpleDateFormat.parse(dateDebutPoste));
         rangerFonctio.setDateDebutRangerFonctio(simpleDateFormat.parse(dateDebutGrade));
     }
+    
+     public void beforeConfirmAffect() throws ParseException {
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy"); 
+        affectation = iAffectationService.findAffectationOpenByIdAgent(fonctionnaire.getId());
+        structureAttache = affectation.getStructureAttache();
+        arrondissement = structureAttache.getArrondissement();
+        departement = arrondissement.getDepartement();
+        categorieStructure = structureAttache.getCategorieStructure();
+        promotion = iPromotionService.findPromotionOpenByIdAgent(fonctionnaire.getId());
+        poste = promotion.getPoste();
+        dateDebutPoste = simpleDateFormat.format(affectation.getDateDebutAffect());
 
-    public String onFlowProcess(FlowEvent event) throws ParseException {
+        promotionAffec = new Promotion();
+        affectationAffec = new Affectation();
+        structureAttacheAffec = iStructureService.findStructureAttacheById(idStructure);
+        posteAffec = iPosteService.findPosteById(idPoste);
+        arrondissementAffec = iArrondissementService.findArrondissementById(idArrondissement);
+        departementAffec = iDepartementService.findDepartementById(idDepartement);
+        categorieStructureAffec = iCategorieStructureService.findCategorieStructureById(idCategorieStructure);
+        promotionAffec.setDateDebutPromo(simpleDateFormat.parse(dateDebutPosteAffec));
+        affectationAffec.setDateDebutAffect(simpleDateFormat.parse(dateDebutPosteAffec));
+    }
+     
+     public void beforeConfirmChangeGrade() throws ParseException {
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy"); 
+        rangerFonctio = iRangerFonctioService.findRangerFonctioOpenByIdAgent(fonctionnaire.getId());
+        gradeFonctio = rangerFonctio.getGradeFonctio();
+        cadre = gradeFonctio.getCadre();
+        corps = cadre.getCorps();
+        dateDebutGrade = simpleDateFormat.format(rangerFonctio.getDateDebutRangerFonctio());
+        
+        rangerFonctioChangerGrade = new RangerFonctio();
+        corpsChangerGrade = iCorpsService.findCorpsById(idCorps);
+        cadreChangerGrade = iCadreService.findCadreById(idCadre);
+        gradeChangerGrade = iGradeFonctioService.findGradeFonctioById(idGradeFonctio);
+        rangerFonctioChangerGrade.setDateDebutRangerFonctio(simpleDateFormat.parse(dateDebutGradeChangerGrade));
+    }
+    
+     public void beforeChangerGrade() throws ParseException {
+        rangerFonctio = null;
+        gradeFonctio = null;
+        cadre = null;
+        corps = null;
+        dateDebutGrade = "";
+    
+        idCorps = 0L;
+        idCadre = 0L;
+        idGradeFonctio = 0L;
+    }
+     
+    public class AffectationPromotion{
+        private Promotion p;
+        private Affectation a;
+
+        public Promotion getP() {
+            return p;
+        }
+
+        public void setP(Promotion p) {
+            this.p = p;
+        }
+
+        public Affectation getA() {
+            return a;
+        }
+
+        public void setA(Affectation a) {
+            this.a = a;
+        }
+        
+    } 
+    
+    public void beforeDisplayProfil() {
+        listAffectations = iAffectationService.findAffectationByIdAgent(fonctionnaire.getId());
+        listPromotions = iPromotionService.findPromotionByIdAgent(fonctionnaire.getId());
+        listRangerFonctios = iRangerFonctioService.findRangerFonctioByIdAgent(fonctionnaire.getId());
+        listAffectationsPromotions = new ArrayList<>();
+        for (int i = 0; i < listPromotions.size(); i++) {
+            AffectationPromotion ap = new AffectationPromotion();
+            ap.setA(listAffectations.get(i));
+            ap.setP(listPromotions.get(i));
+            listAffectationsPromotions.add(ap);
+        }
+        System.out.println("vvvvvvvvvvvvvvvvvvvvvvvvvssssssssssssssssssssss" + listAffectations.get(0).getAgent().getNom());
+    }
+
+    public String onFlowProcessAjouter(FlowEvent event) throws ParseException {
         logger.log(Level.INFO, "Current wizard step:{0}", event.getOldStep());
         logger.log(Level.INFO, "Next step:{0}", event.getNewStep());
         //  event.setPhaseId(PhaseId.phaseIdValueOf("personnel"));
@@ -943,6 +1187,32 @@ public class FonctionnaireBean implements Serializable {
         if (event.getNewStep().equals("confirmationTab")) {
             beforeConfirm();
             return "confirmationTab";
+        } else {
+            return event.getNewStep();
+        }
+    }
+    
+     public String onFlowProcessAffectation(FlowEvent event) throws ParseException {
+        logger.log(Level.INFO, "Current wizard step:{0}", event.getOldStep());
+        logger.log(Level.INFO, "Next step:{0}", event.getNewStep());
+        //  event.setPhaseId(PhaseId.phaseIdValueOf("personnel"));
+
+        if (event.getNewStep().equals("confirmationTabAffect")) {
+            beforeConfirmAffect();
+            return "confirmationTabAffect";
+        } else {
+            return event.getNewStep();
+        }
+    }
+     
+     public String onFlowProcessChangerGrade(FlowEvent event) throws ParseException {
+        logger.log(Level.INFO, "Current wizard step:{0}", event.getOldStep());
+        logger.log(Level.INFO, "Next step:{0}", event.getNewStep());
+        //  event.setPhaseId(PhaseId.phaseIdValueOf("personnel"));
+
+        if (event.getNewStep().equals("confirmationTabChangerGrade")) {
+            beforeConfirmChangeGrade();
+            return "confirmationTabChangerGrade";
         } else {
             return event.getNewStep();
         }
@@ -967,7 +1237,8 @@ public class FonctionnaireBean implements Serializable {
 
             return fonctionnaire;
         } catch (Exception e) {
-            System.out.println("erreur d'enregistrement du fonctionnaire" + e);
+            FacesMessage msg = new FacesMessage("echec d'enregitrement vérifier les informations");  
+            FacesContext.getCurrentInstance().addMessage(null, msg);  
             throw e;
         }
     }
@@ -995,12 +1266,49 @@ public class FonctionnaireBean implements Serializable {
 
             return iFonctionnaireService.updateFonctionnaire(fonctionnaire);
         } catch (Exception e) {
-            System.out.println("erreur d'enregistrement du fonctionnaire" + e);
+            FacesMessage msg = new FacesMessage("echec de modification vérifier les informations");  
+            FacesContext.getCurrentInstance().addMessage(null, msg);  
             throw e;
         }
     }
 
     public List<Fonctionnaire> findAllFonctionnaire() {
         return iFonctionnaireService.findAllFonctionnaire();
+    }
+    
+    public List<Fonctionnaire> findFonctionnaireActif() {
+        return iFonctionnaireService.findFonctionnaireActif();
+    }
+    
+    public void affecterFonctionnaire() {
+        try {
+            affectationAffec.setAgent(fonctionnaire);
+            affectationAffec.setStructureAttache(structureAttacheAffec);
+            promotionAffec.setAgent(fonctionnaire);
+            promotionAffec.setPoste(posteAffec);
+            iAffectationService.createAffectation(affectationAffec);
+            iPromotionService.createPromotion(promotionAffec);
+            affectation.setDateFinAffect(affectationAffec.getDateDebutAffect());
+            promotion.setDateFinPromo(promotionAffec.getDateDebutPromo());
+            iAffectationService.updateAffectation(affectation);
+            iPromotionService.updatePromotion(promotion);
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("echec d'affectation vérifier les informations");  
+            FacesContext.getCurrentInstance().addMessage(null, msg);  
+            throw e;
+        }
+    }
+    public void ChagerGradeFonctionnaire() {
+        try {
+            rangerFonctioChangerGrade.setFonctionnaire(fonctionnaire);
+            rangerFonctioChangerGrade.setGradeFonctio(gradeChangerGrade);
+            iRangerFonctioService.createRangerFonctio(rangerFonctioChangerGrade);
+            rangerFonctio.setDateFinRangerFonctio(rangerFonctioChangerGrade.getDateDebutRangerFonctio());
+            iRangerFonctioService.updateRangerFonctio(rangerFonctio);
+          
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("echec du changement de grade vérifier les informations");  
+            FacesContext.getCurrentInstance().addMessage(null, msg);  
+        }
     }
 }

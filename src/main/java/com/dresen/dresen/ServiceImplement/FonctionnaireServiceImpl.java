@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class FonctionnaireServiceImpl implements IFonctionnaireService, Serializable {
+
     private IFonctionnaireDao iFonctionnaireDao;
 
     public IFonctionnaireDao getiFonctionnaireDao() {
@@ -30,10 +31,10 @@ public class FonctionnaireServiceImpl implements IFonctionnaireService, Serializ
 
     public void setiFonctionnaireDao(IFonctionnaireDao iFonctionnaireDao) {
         this.iFonctionnaireDao = iFonctionnaireDao;
-    } 
+    }
 
     public Fonctionnaire createFonctionnaire(Fonctionnaire fonctionnaire) throws ServiceException {
-         try {
+        try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iFonctionnaireDao.create(fonctionnaire);
         } catch (DataAccessException ex) {
@@ -43,7 +44,7 @@ public class FonctionnaireServiceImpl implements IFonctionnaireService, Serializ
     }
 
     public Fonctionnaire findFonctionnaireById(Long id) throws ServiceException {
-         try {
+        try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iFonctionnaireDao.findById(id);
         } catch (DataAccessException ex) {
@@ -63,13 +64,35 @@ public class FonctionnaireServiceImpl implements IFonctionnaireService, Serializ
     }
 
     public List<Fonctionnaire> findAllFonctionnaire() throws ServiceException {
-         try {
+        try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iFonctionnaireDao.findAll();
         } catch (DataAccessException ex) {
             Logger.getLogger(FonctionnaireServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la liste des fonctionnaires");
-        }        
+        }
     }
-    
+
+    @Override
+    public List<Fonctionnaire> findFonctionnaireActif() throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iFonctionnaireDao.findFonctionnaireActif();
+        } catch (DataAccessException ex) {
+            Logger.getLogger(FonctionnaireServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible rechercher la liste des fonctionnaires ");
+        }
+    }
+
+    @Override
+    public List<Fonctionnaire> findFonctionnaireRetraites() throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iFonctionnaireDao.findAll();
+        } catch (DataAccessException ex) {
+            Logger.getLogger(FonctionnaireServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible rechercher la liste des fonctionnaires Retraités");
+        }
+    }
+
 }

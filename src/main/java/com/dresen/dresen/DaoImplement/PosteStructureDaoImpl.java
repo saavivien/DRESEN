@@ -23,9 +23,9 @@ public class PosteStructureDaoImpl extends GenericDao<PosteStructure, Long> impl
         return (getManager().createNamedQuery("PosteStructure.findPosteStructureByPoste").setParameter("param", idPoste).getResultList());
     }
 
-    public PosteStructure deletePosteStructureByPoste(long idPoste) throws DataAccessException {
+    public void deletePosteStructureByPoste(long idPoste) throws DataAccessException {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        return (PosteStructure)(getManager().createNamedQuery("PosteStructure.deletePosteStructureByPoste").setParameter("param", idPoste).getSingleResult());
+        getManager().createNamedQuery("PosteStructure.deletePosteStructureByPoste").setParameter("param", idPoste).executeUpdate();
     }
 
     public List<PosteStructure> findPosteStructureByCategorieStructure(long idCategorie) throws DataAccessException {
