@@ -24,7 +24,8 @@ public interface IPromotionDao extends IDao<Promotion, Long>{
      */
     public List<Promotion> findPromotionByIdAgent(long idAgent) throws DataAccessException;
     public Promotion findPromotionOpenByIdAgent(long idAgent) throws DataAccessException;
-    public List<Promotion> findAllPromotionOpen() throws DataAccessException;        
+    public List<Promotion> findAllPromotionOpen() throws DataAccessException; 
+    public Promotion findLastPromotionByIdAgent(long idAgent) throws DataAccessException;
 
     
 }

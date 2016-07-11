@@ -15,56 +15,75 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean
 @RequestScoped
 public class OrientationBean {
-     
+
     public OrientationBean() {
     }
-    public String affectation(){
+
+    public String affectation() {
         return "Affectation";
     }
-    public String arrondissement(){
+
+    public String arrondissement() {
         return "Arrondissement";
     }
-    public String departement(){
+
+    public String departement() {
         return "Departement";
     }
-    public String cadre(){
+
+    public String cadre() {
         return "Cadre";
     }
-    public String contractuel(){
+
+    public String contractuel() {
         return "Contractuel";
     }
-    public String corps(){
+
+    public String corps() {
         return "Corps";
     }
-    public String fonctionnaire(){
+
+    public String fonctionnaire() {
         return "Fonctionnaire";
     }
-    public String specialite(){
+
+    public String specialite() {
         return "Specialite";
     }
-    public String promotion(){
+
+    public String promotion() {
         return "Promotion";
     }
-     public String poste(){
+
+    public String poste() {
         return "Poste";
     }
-    public String structureAttache(){
+
+    public String structureAttache() {
         return "StructureAttache";
     }
-    public String categorieStructure(){
+
+    public String categorieStructure() {
         return "CategorieStructure";
     }
-    public String gradeFonctio(){
+
+    public String gradeFonctio() {
         return "GradeFonctionnaire";
     }
-    public String gradeContract(){
+
+    public String gradeContract() {
         return "GradeContractuel";
     }
-    
-    
+
     //// MENU AGENT
-    
-    public String ajouterFonctionnaire(){
+    public String ajouterFonctionnaire() {
         return "Fonctionnaire";
+    }
+
+    public String retraiteFonctionnaire() {
+        return "FonctionnairesRetraites";
+    }
+    public String horsRegionFonctionnaire() {
+        return "FonctionnaireHorsRegion";
     }
 }

@@ -99,5 +99,16 @@ public class PromotionServiceImpl implements IPromotionService, Serializable {
             throw new ServiceException("impossible rechercher les promotions ouvertes");
         }          
     }
+
+    @Override
+    public Promotion findLastPromotionByIdAgent(long idAgent) throws ServiceException {
+     try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iPromotionDao.findLastPromotionByIdAgent(idAgent);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(PromotionServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible rechercher la dernière promotion");
+        }   
+    }
     
 }

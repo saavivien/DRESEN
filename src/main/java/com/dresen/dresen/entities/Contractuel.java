@@ -18,7 +18,7 @@ import javax.persistence.OneToMany;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Contractuel.findContractuelActif", query = "SELECT DISTINCT c FROM Contractuel c, Affectation a JOIN c.listAffectations c_a WHERE c_a.dateFinAffect = NULL"),
-    @NamedQuery(name = "Contractuel.findContractuelRetraites", query = "SELECT c FROM Contractuel c WHERE c.isRetraité = TRUE")       
+    @NamedQuery(name = "Contractuel.findContractuelRetraites", query = "SELECT c FROM Contractuel c WHERE c.isRetraite = TRUE")       
 })
 public class Contractuel extends Agentp{
     

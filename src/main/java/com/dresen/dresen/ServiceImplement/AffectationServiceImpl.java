@@ -74,6 +74,7 @@ public class AffectationServiceImpl implements IAffectationService, Serializable
         }    
     }
 
+    @Override
     public List<Affectation> findAffectationByIdAgent(long idAgent) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -84,6 +85,7 @@ public class AffectationServiceImpl implements IAffectationService, Serializable
         }        
     }
 
+    @Override
     public Affectation findAffectationOpenByIdAgent(long idAgent) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -94,6 +96,7 @@ public class AffectationServiceImpl implements IAffectationService, Serializable
         }        
     }
 
+    @Override
     public List<Affectation> findAllAffectationOpen() throws ServiceException {
         try {
             // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -103,5 +106,16 @@ public class AffectationServiceImpl implements IAffectationService, Serializable
             throw new ServiceException("impossible rechercher la liste des affectations ouvertes");
         }
     }
-    
+
+    @Override
+    public Affectation findLastAffectationByIdAgent(long idAgent) throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iAffectationDao.findLastAffectationByIdAgent(idAgent);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(AffectationServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible de rechercher la dernière affectation de l'agent");
+        }
+    }
+
 }

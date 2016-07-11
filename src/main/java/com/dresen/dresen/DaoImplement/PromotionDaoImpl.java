@@ -32,5 +32,11 @@ public class PromotionDaoImpl extends GenericDao<Promotion, Long> implements IPr
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         return (getManager().createNamedQuery("Promotion.findAllPromotionOpen").getResultList());
     }
+
+    @Override
+    public Promotion findLastPromotionByIdAgent(long idAgent) throws DataAccessException {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (Promotion)(getManager().createNamedQuery("Promotion.findLastPromotionByIdAgent").setParameter("param", idAgent).getSingleResult());
+    }
     
 }

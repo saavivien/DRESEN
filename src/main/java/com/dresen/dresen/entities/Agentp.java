@@ -69,8 +69,8 @@ public class Agentp implements Serializable {
     @Column
     private String nomJeuneFille;
     
-    @Column
-    private boolean isRetraité;
+    @Column (nullable = false)
+    private boolean isRetraite;
     
     @OneToMany (mappedBy = "agent")
     private List<Affectation> listAffectations;
@@ -200,6 +200,14 @@ public class Agentp implements Serializable {
     public void setLieuNaissance(String lieuNaissance) {
         this.lieuNaissance = lieuNaissance;
     }
+
+    public boolean isIsRetraite() {
+        return isRetraite;
+    }
+
+    public void setIsRetraite(boolean isRetraite) {
+        this.isRetraite = isRetraite;
+    }
     
 
     @Override
@@ -216,15 +224,6 @@ public class Agentp implements Serializable {
         final Agentp other = (Agentp) obj;
         return !(this.id != other.id && (this.id == null || !this.id.equals(other.id)));
     }
-
-    public boolean isIsRetraité() {
-        return isRetraité;
-    }
-
-    public void setIsRetraité(boolean isRetraité) {
-        this.isRetraité = isRetraité;
-    }
-    
 
     @Override
     public String toString() {

@@ -23,5 +23,6 @@ public interface IPromotionService {
     public List<Promotion> findPromotionByIdAgent(long idAgent) throws ServiceException;
     public List<Promotion> findAllPromotionOpen() throws ServiceException;
     public Promotion findPromotionOpenByIdAgent(long idAgent) throws ServiceException;
+    public Promotion findLastPromotionByIdAgent(long idAgent) throws ServiceException;
     
 }

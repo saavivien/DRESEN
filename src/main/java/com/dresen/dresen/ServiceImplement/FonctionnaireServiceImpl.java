@@ -88,7 +88,7 @@ public class FonctionnaireServiceImpl implements IFonctionnaireService, Serializ
     public List<Fonctionnaire> findFonctionnaireRetraites() throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            return iFonctionnaireDao.findAll();
+            return iFonctionnaireDao.findFonctionnaireRetraites();
         } catch (DataAccessException ex) {
             Logger.getLogger(FonctionnaireServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la liste des fonctionnaires Retraités");

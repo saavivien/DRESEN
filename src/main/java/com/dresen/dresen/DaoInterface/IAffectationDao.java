@@ -25,4 +25,5 @@ public interface IAffectationDao extends IDao<Affectation, Long>{
     public List<Affectation> findAffectationByIdAgent(long idAgent) throws DataAccessException;
     public Affectation findAffectationOpenByIdAgent(long idAgent) throws DataAccessException;
     public List<Affectation> findAllAffectationOpen() throws DataAccessException;
+    public Affectation findLastAffectationByIdAgent(long idAgent) throws DataAccessException;
 }

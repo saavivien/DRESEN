@@ -25,7 +25,8 @@ import javax.persistence.Temporal;
 @NamedQueries({
      @NamedQuery(name = "Promotion.findAllPromotionOpen", query = "SELECT p FROM Promotion p WHERE p.dateFinPromo = NULL"),
      @NamedQuery(name = "Promotion.findPromotionByIdAgent", query = "SELECT p FROM Promotion p WHERE p.agent.id = :param"),
-     @NamedQuery(name = "Promotion.findPromotionOpenByIdAgent", query = "SELECT p FROM Promotion p WHERE p.agent.id = :param AND p.dateFinPromo= NULL")
+     @NamedQuery(name = "Promotion.findPromotionOpenByIdAgent", query = "SELECT p FROM Promotion p WHERE p.agent.id = :param AND p.dateFinPromo= NULL"),
+     @NamedQuery(name = "Promotion.findLastPromotionByIdAgent", query = "SELECT p FROM Promotion p WHERE p.agent.id = :param AND p.dateDebutPromo >= ALL(SELECT p.dateDebutPromo FROM Promotion p WHERE p.agent.id = :param)")
 })
 public class Promotion implements Serializable {
 

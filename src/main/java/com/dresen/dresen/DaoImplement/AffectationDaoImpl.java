@@ -33,6 +33,12 @@ public class AffectationDaoImpl extends GenericDao<Affectation, Long> implements
         return (getManager().createNamedQuery("Affectation.findAllAffectationOpen").getResultList());
 
     }
+
+    @Override
+    public Affectation findLastAffectationByIdAgent(long idAgent) throws DataAccessException {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (Affectation) (getManager().createNamedQuery("Affectation.findLastAffectationByIdAgent").setParameter("param", idAgent).getSingleResult());
+    }
     
     
 }

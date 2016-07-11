@@ -151,7 +151,9 @@ public class PosteBean {
 //        }
 //    }
     
-    
+    public void initPost(){
+        poste = new Poste();
+    }
     public Poste createPoste(){
         iPosteService.createPoste(poste);
         for (String nameCatStruct : listCategorieStructureSelectedString) {

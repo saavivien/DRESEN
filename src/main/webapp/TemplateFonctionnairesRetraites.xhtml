@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Application de gestion du personnel des services déconcentrés du MINESEC EXTREME NORD</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body> 
+        <div id="menu">
+            <ui:include src="Menu.xhtml"/>
+        </div>
+        <f:view>
+            <!--Choix des information à afficher-->
+
+            <p:dialog widgetVar="dlgc" header=" Choisir les informations à afficher" hideEffect="explode" showEffect="explode" modal="true">
+                <h:form id="formChoix" enctype="multipart/form-data"> 
+                    <p:panel id="panelChoix" header="Choix des informations">
+                        <p:panelGrid id="infoToDisplay" columns="1">
+                            <p:selectManyCheckbox value="#{fonctionnaireBean.listInformationToDisplay}" layout="pageDirection" columns=""  style="font-style: italic">  
+                                <f:selectItem itemLabel="Matricule" itemValue="matricule" />
+                                <f:selectItem itemLabel="Nom" itemValue="nom"/>
+                                <f:selectItem itemLabel="Prénom" itemValue="prenom"/>
+                                <f:selectItem itemLabel="Nom de jeune fille" itemValue="nomjeunefille"/>
+                                <f:selectItem itemLabel="Date de Naissance" itemValue="datenaissance"/>
+                                <f:selectItem itemLabel="Lieu de Naissance" itemValue="lieunaissance"/>
+                                <f:selectItem itemLabel="Région d'origine" itemValue="regionorigine"/>
+                                <f:selectItem itemLabel="Département d'origine" itemValue="departementorigine"/>
+                                <f:selectItem itemLabel="Arrondissement d'origine" itemValue="arrondissementorigine"/>
+                                <f:selectItem itemLabel="Sexe" itemValue="sexe"/>
+                                <f:selectItem itemLabel="Numéro de CNI" itemValue="numerocni"/>
+                                <f:selectItem itemLabel="Grade" itemValue="grade"/>
+                                <f:selectItem itemLabel="Spécialité" itemValue="specialite"/>
+                                <f:selectItem itemLabel="Date d'entrée en fonction publique" itemValue="dateentreefoncpub"/>
+                                <f:selectItem itemLabel="Date de départ en retraite" itemValue="dateretraite"/>
+                            </p:selectManyCheckbox>
+                            <p:commandButton id="btn" update=":tableForm:table" actionListener="#{fonctionnaireBean.createDynamicColumns()}" value="Afficher" oncomplete="PF('dlgc').hide()" process="@parent"/>                           
+                        </p:panelGrid>
+                    </p:panel>
+                </h:form>
+            </p:dialog>
+            
+            <!--Restauration du fonctionnaire retraité-->
+            <p:dialog widgetVar="dlgr" header=" Restaurer un fonctionnaire" hideEffect="fold" showEffect="explode" resizable="true" modal="true" >
+                <h:form id="formRestauration" enctype="multipart/form-data">                
+                    <p:panel header="Confirmer la restauration">  
+                        <p:panelGrid id="restaurationGrid" columns="4" >  
+                            <h:outputText value="Nom : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nom}" style="font-style: italic"/>
+                            <h:outputText value="Prenom : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.prenom}" style="font-style: italic"/>
+
+                            <h:outputText value="Sexe : "/>  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.sexe}" style="font-style: italic"/>   
+                            <h:outputText value="Nom de jeune fille : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nomJeuneFille}" style="font-style: italic"/>
+
+                            <h:outputText value="Date de naissance : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.dateNaissance}" style="font-style: italic"/>
+                            <h:outputText value="Lieu de naissance : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.lieuNaissance}" style="font-style: italic"/>
+
+                            <h:outputText value="matricule : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.matricule}" style="font-style: italic"/>
+                            <h:outputText value="Numéro de CNI : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.cni}" style="font-style: italic"/>
+
+                            <h:outputText value="Date d'entrée à la fonction publique: " />
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.dateEntreFonctionPub}" style="font-style: italic"/>
+                            <h:outputText value="     Spécialite : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.specialite.intituleSpecialite}" style="font-style: italic"/>
+
+                            <h:outputText value="     précédemment en service à(au) : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.structureAttache.intituleStructure}" style="font-style: italic"/>
+                            <h:outputText value="     Au poste : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.poste.intitulePoste}" style="font-style: italic"/>
+
+                            <h:outputText value="     Arrondissement de : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.arrondissement.intituleArrondissement}" style="font-style: italic"/>
+                            <h:outputText value="     Département : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.departement.intituleDepartement}" style="font-style: italic"/>
+                            <h:outputText value="     Poste occupé depuis le : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateDebutPoste}" style="font-style: italic"/>    
+                        </p:panelGrid>
+                        <p:commandButton value="Confirmer restauration" action="#{fonctionnaireBean.restaureRetraite()}"  oncomplete="PF('dlgr').hide()" update=":tableForm:table"/> 
+                    </p:panel>  
+                </h:form>
+            </p:dialog> 
+
+            <!--Profil  du fonctionnaire retraité-->
+            <p:dialog widgetVar="dlgp" header=" Profil" hideEffect="explode" showEffect="explode" modal="true" width="850">
+                <h:form id="formProfil" enctype="multipart/form-data"> 
+                    <p:panel id="panelProfil" header="Profil du fonctionnaire">
+                        <p:panelGrid id="profilGrid1" columns="4">
+                            <h:outputText value="Nom : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nom}" style="font-style: italic"/>
+                            <h:outputText value="Prenom : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.prenom}" style="font-style: italic"/>
+
+                            <h:outputText value="Sexe : "/>  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.sexe}" style="font-style: italic"/>   
+                            <h:outputText value="Nom de jeune fille : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nomJeuneFille}" style="font-style: italic"/>
+
+                            <h:outputText value="Date de naissance : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.dateNaissance}" style="font-style: italic"/>
+                            <h:outputText value="Lieu de naissance : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.lieuNaissance}" style="font-style: italic"/>
+
+                            <h:outputText value="matricule : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.matricule}" style="font-style: italic"/>
+                            <h:outputText value="Numéro de CNI : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.cni}" style="font-style: italic"/>
+
+                            <h:outputText value="Date d'entrée à la fonction publique : " />
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.dateEntreFonctionPub}" style="font-style: italic"/>
+                            <h:outputText value="     Spécialite : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.specialite.intituleSpecialite}" style="font-style: italic"/>
+
+                            <h:outputText value="Région d'origine : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.regionOrigine}" style="font-style: italic"/>   
+                            <h:outputText value="Département d'origine : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.departementOrigine}" style="font-style: italic"/> 
+                            <h:outputText value="Arrondissement d'origine : " />  
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.arrondissementOrigine}" style="font-style: italic"/>
+                        </p:panelGrid>
+                        <h5>Différents poste occupés</h5> 
+
+                        <p:dataTable var="affectationPromotion" value="#{fonctionnaireBean.listAffectationsPromotions}" id="parcours" resizableColumns="true">  
+
+                            <p:column  headerText="Du" width="100">  
+                                #{affectationPromotion.a.dateDebutAffect}
+                            </p:column>  
+                            <p:column  headerText="Au" width="100">  
+                                #{affectationPromotion.a.dateFinAffect}
+                            </p:column>  
+
+                            <p:column  headerText="Structure d'attache">  
+                                #{affectationPromotion.a.structureAttache.intituleStructure}
+                            </p:column>  
+                            <p:column  headerText="Poste/Fonction">  
+                                #{affectationPromotion.p.poste.intitulePoste}
+                            </p:column>  
+                        </p:dataTable> 
+
+                        <h5>Grades</h5>  
+                        <p:dataTable var="rangerFonctio" value="#{fonctionnaireBean.listRangerFonctios}" resizableColumns="true" liveResize="true">  
+                            <p:column headerText="Du" width="100"> 
+                                <h:outputText value="#{rangerFonctio.dateDebutRangerFonctio}" />
+                            </p:column>  
+
+                            <p:column headerText="Au" width="100"> 
+                                <h:outputText value="#{rangerFonctio.dateFinRangerFonctio}" />
+                            </p:column>  
+
+                            <p:column headerText="Grade">  
+                                <h:outputText value="#{rangerFonctio.gradeFonctio.intituleGradeFonctio}" />  
+                            </p:column>   
+                        </p:dataTable>    
+
+                    </p:panel>
+                </h:form>
+            </p:dialog>
+        </f:view>
+        <!--Tableau  du fonctionnaire-->
+        <f:view>
+            <h:form id='tableForm'>
+                <p:contextMenu for="table">               
+                    <p:menuitem value="Restaurer" actionListener="#{fonctionnaireBean.beforeRestauration()}" update=":formRestauration" oncomplete="PF('dlgr').show()"/>
+                    <p:menuitem value="Profil" actionListener="#{fonctionnaireBean.beforeDisplayProfil()}" update=":formProfil" oncomplete="PF('dlgp').show()"/>
+                </p:contextMenu> 
+
+                <p:dataTable value="#{fonctionnaireBean.findFonctionnaireRetraites()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " resizableColumns="true" liveResize="true" id="table" scrollable="true" rowsPerPageTemplate="10,15" selectionMode="single" selection="#{fonctionnaireBean.fonctionnaire}" rowKey="#{item.id}">
+                    <f:facet name="header">
+                        La liste des fonctionnaires retraités
+                    </f:facet>
+
+                    <p:column rendered="#{fonctionnaireBean.boolMat}" filterBy="#{item.matricule}" width="120">
+                        <f:facet name="header">
+                            <h:outputText value="Matricule"/>
+                        </f:facet>
+                        <h:outputText value="#{item.matricule}"/>
+                    </p:column>
+                    
+                     <p:column rendered="#{fonctionnaireBean.boolCni}" filterBy="#{item.cni}" width="100">
+                        <f:facet name="header">
+                            <h:outputText value="Numéro CNI"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cni}"/>
+                    </p:column>
+
+                    <p:column rendered="#{fonctionnaireBean.boolNom}" filterBy="#{item.nom}" width="150">
+                        <f:facet name="header">
+                            <h:outputText value="Nom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nom}"/>
+                    </p:column>
+
+                    <p:column rendered="#{fonctionnaireBean.boolPrenom}" filterBy="#{item.prenom}" width="150">
+                        <f:facet name="header">
+                            <h:outputText value="Prénom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.prenom}"/>
+                    </p:column>
+
+                    <p:column rendered="#{fonctionnaireBean.boolNomJeunFille}" filterBy="#{item.nomJeuneFille}" width="150">
+                        <f:facet name="header">
+                            <h:outputText value="Nom de jeune fille"/>
+                        </f:facet>
+                        <h:outputText value="#{item.nomJeuneFille}"/>
+                    </p:column>
+
+                    <p:column rendered="#{fonctionnaireBean.boolDateNaiss}" width="140">
+                        <f:facet name="header">
+                            <h:outputText value="Date de naissance"/>
+                        </f:facet>
+                        <h:outputText value="#{fonctionnaireBean.currentDateNaissance(item)}"/>
+                    </p:column>
+
+                    <p:column rendered="#{fonctionnaireBean.boolLieuNaiss}" filterBy="#{item.lieuNaissance}" width="100">
+                        <f:facet name="header">
+                            <h:outputText value="Lieu de Naissance"/>
+                        </f:facet>
+                        <h:outputText value="#{item.lieuNaissance}"/>
+                    </p:column>
+
+                    <p:column rendered="#{fonctionnaireBean.boolSexe}" filterBy="#{item.sexe}" width="80">
+                        <f:facet name="header">
+                            <h:outputText value="Sexe"/>
+                        </f:facet>
+                        <h:outputText value="#{item.sexe}"/>
+                    </p:column>
+
+                    <p:column rendered="#{fonctionnaireBean.boolRegOri}" filterBy="#{item.regionOrigine}" sortBy="#{item.regionOrigine}" width="100">
+                        <f:facet name="header">
+                            <h:outputText value="Région Origine"/>
+                        </f:facet>
+                        <h:outputText value="#{item.regionOrigine}"/>
+                    </p:column>
+
+                    <p:column rendered="#{fonctionnaireBean.boolDepOri}" filterBy="#{item.departementOrigine}" sortBy="#{item.departementOrigine}" width="100">
+                        <f:facet name="header">
+                            <h:outputText value="Département Origine"/>
+                        </f:facet>
+                        <h:outputText value="#{item.departementOrigine}"/>
+                    </p:column>
+
+                    <p:column rendered="#{fonctionnaireBean.boolArrOro}" filterBy="#{item.arrondissementOrigine}" sortBy="#{item.arrondissementOrigine}" width="100">
+                        <f:facet name="header">
+                            <h:outputText value="Arrondissement Origine"/>
+                        </f:facet>
+                        <h:outputText value="#{item.arrondissementOrigine}"/>
+                    </p:column>            
+
+                    <p:column rendered="#{fonctionnaireBean.boolSpecial}" filterBy="#{item.specialite.intituleSpecialite}" sortBy="#{item.specialite.intituleSpecialite}" width="100">
+                        <f:facet name="header">
+                            <h:outputText value="Spécialité"/>
+                        </f:facet>
+                        <h:outputText value="#{item.specialite.intituleSpecialite}"/>
+                    </p:column>
+
+                    <p:column rendered="#{fonctionnaireBean.boolDateEntreeFoncPub}" width="140">
+                        <f:facet name="header">
+                            <h:outputText value="Date entrée fonction publique"/>
+                        </f:facet>
+                        <h:outputText value="#{fonctionnaireBean.currentDateEntreeFonctionPub(item)}"/>
+                    </p:column>
+                    <p:column rendered="#{fonctionnaireBean.boolDateRetraite}" width="140">
+                        <f:facet name="header">
+                            <h:outputText value="Date retraite"/>
+                        </f:facet>
+                        <h:outputText value="#{fonctionnaireBean.currentDateDepartRetraite(item)}"/>
+                    </p:column>
+
+                </p:dataTable>
+                <h:panelGrid columns="2">  
+                    <p:panel header="Export All Data">  
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/excel.png" />  
+                            <p:dataExporter type="xls" target="table" fileName="listArrondissement" />  
+                        </h:commandLink>  
+
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/pdf.png" />  
+                            <p:dataExporter type="pdf" target="table" fileName="listArrondissement"/>  
+                        </h:commandLink>  
+                    </p:panel> 
+                    <p:panel header="Export Page Data">  
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/excel.png" />  
+                            <p:dataExporter type="xls" target="table" fileName="listArrondissement" pageOnly="true" postProcessor="#{doc.postProcessXLS}"/>  
+                        </h:commandLink>  
+
+                        <h:commandLink>  
+                            <p:graphicImage value="/images/pdf.png" />  
+                            <p:dataExporter type="pdf" target="table" fileName="listArrondissement" pageOnly="true" encoding="UTF-8"/>  
+                        </h:commandLink>  
+                    </p:panel>  
+                </h:panelGrid>  
+
+
+
+
+                <p:toolbar>
+                    <f:facet name="left">
+                        <p:commandButton type="push" actionListener="#{fonctionnaireBean.initListColumn()}" onclick="PF('dlgc').show();" value="Choix des colonnes à afficher" icon="ui-icon-disk"/>                      
+                        <span class="ui-separator">
+                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                        </span>
+                        <p:commandButton type="push" title="Save" icon="ui-icon-disk" />
+                        <p:commandButton type="push" title="Update" icon="ui-icon-arrowrefresh-1-w"/>
+                        <p:commandButton type="push" title="Print" icon="ui-icon-print"/>
+                    </f:facet>
+                </p:toolbar>
+            </h:form>
+        </f:view>
+    </h:body>
+</html>

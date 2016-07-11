@@ -25,7 +25,8 @@ import javax.persistence.Temporal;
 @NamedQueries({
      @NamedQuery(name = "Affectation.findAllAffectationOpen", query = "SELECT a FROM Affectation a WHERE a.dateFinAffect=NULL"),
      @NamedQuery(name = "Affectation.findAffectationByIdAgent", query = "SELECT a FROM Affectation a WHERE a.agent.id = :param"),
-     @NamedQuery(name = "Affectation.findAffectationOpenByIdAgent", query = "SELECT a FROM Affectation a WHERE a.agent.id = :param AND a.dateFinAffect=NULL")
+     @NamedQuery(name = "Affectation.findAffectationOpenByIdAgent", query = "SELECT a FROM Affectation a WHERE a.agent.id = :param AND a.dateFinAffect=NULL"),
+     @NamedQuery(name = "Affectation.findLastAffectationByIdAgent", query = "SELECT a FROM Affectation a WHERE a.agent.id = :param AND a.dateDebutAffect >= ALL (SELECT a.dateDebutAffect FROM Affectation a WHERE a.agent.id = :param) ")
 }
 )
 public class Affectation implements Serializable {

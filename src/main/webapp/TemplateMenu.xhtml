@@ -16,47 +16,58 @@ and open the template in the editor.
     </head>
     <body>  
 
-   <!--     <div>
-            <p:menubar>
-               
-            
-                <p:menuitem value="Bonjour : #{orientationBean}" url="#" /> 
-            <f:facet name="options">  
-                <p:inputText style="margin-right:10px"/>  
-                <p:commandButton value="Deconnexion" action="#{orientationBean}" icon="ui-icon-extlink"/>  
-            </f:facet>  
-            </p:menubar>
-        </div>
--->
+        <!--     <div>
+                 <p:menubar>
+                    
+                 
+                     <p:menuitem value="Bonjour : #{orientationBean}" url="#" /> 
+                 <f:facet name="options">  
+                     <p:inputText style="margin-right:10px"/>  
+                     <p:commandButton value="Deconnexion" action="#{orientationBean}" icon="ui-icon-extlink"/>  
+                 </f:facet>  
+                 </p:menubar>
+             </div>
+        -->
         <h:form>          
             <!--        <p:tabMenu activeIndex="2">  -->
-            <p:menuButton value="Agents">  
-                <p:menuitem value="Affectations" actionListener="#{buttonBean.save}" icon="ui-icon-extlink" />  
-                     <p:menuitem value="Retraites" actionListener="#{buttonBean.update}" icon="ui-icon-extlink"/>  
-                     <p:menuitem value="Changer un poste" actionListener="#{buttonBean.delete}" icon="ui-icon-extlink"/>   
-                     <p:menuitem value="Changer un Grade" actionListener="#{buttonBean.delete}" icon="ui-icon-extlink"/>   
-                     <p:menuitem value="Les contractuels" icon="ui-icon-extlink"/>
-                     <p:menuitem value="Les fonctionnaires" action="#{orientationBean.ajouterFonctionnaire()}" icon="ui-icon-extlink"/>
-            </p:menuButton>  
-            <p:menuButton value="Parcours">  
-                     <p:menuitem value="Departements" action="#{orientationBean.departement()}" ajax="false" icon="ui-icon-extlink"/>  
-                     <p:menuitem value="Arrondissements" action="#{orientationBean.arrondissement()}" ajax="false" icon="ui-icon-extlink"/> 
-                     <p:menuitem value="Catégorie Structures" action="#{orientationBean.categorieStructure()}" ajax="false" icon="ui-icon-extlink" />  
-                     <p:menuitem value="Structures d'attaches" action="#{orientationBean.structureAttache()}" ajax="false" icon="ui-icon-extlink"/>  
-                     <p:separator />  
-                     <p:menuitem value="Postes/Fonctions" action="#{orientationBean.poste()}" ajax="false" icon=""/>
-                     <p:separator /> 
-                     <p:menuitem value="Corps" action="#{orientationBean.corps()}" icon="" />  
-                     <p:menuitem value="Cadres" action="#{orientationBean.cadre()}" icon="ui-icon-extlink"/>  
-                     <p:menuitem value="Grade Fonctionnaire" action="#{orientationBean.gradeFonctio()}" icon="ui-icon-extlink"/> 
-                     <p:menuitem value="Spécialités" action="#{orientationBean.specialite()}" icon="ui-icon-extlink"/> 
-                     <p:separator />  
-                     <p:menuitem value="Grade Contractuel" action="#{orientationBean.gradeContract()}" icon="ui-icon-extlink"/>
-            </p:menuButton>  
-            <p:menuButton value="Import/Export">  
-                     <p:menuitem value="Importer" actionListener="#{buttonBean.save}" icon="ui-icon-disk"/>  
-                     <p:menuitem value="Exporter" actionListener="#{buttonBean.update}" icon="ui-icon-arrowrefresh-1-w"/>  
-            </p:menuButton>  
+            <p:menubar >
+                <p:submenu label="Gestion des agents"> 
+                    <p:submenu label="Contractuels">  
+                        <p:menuitem value="En service" action="#{orientationBean.ajouterFonctionnaire()}"/>
+                        <p:menuitem value="Retraités" action="#{orientationBean.retraiteFonctionnaire()}"/>
+                        <p:menuitem value="Sortis de la région" action="#{orientationBean.retraiteFonctionnaire()}" />
+                    </p:submenu>  
+                    <p:separator />  
+                    <p:submenu label="Fonctionnaires ">  
+                        <p:menuitem value="En service" action="#{orientationBean.ajouterFonctionnaire()}"/>
+                        <p:menuitem value="Retraités" action="#{orientationBean.retraiteFonctionnaire()}"/>
+                        <p:menuitem value="Sortis de la région" action="#{orientationBean.horsRegionFonctionnaire()}" />
+                    </p:submenu>  
+                </p:submenu>
+                <p:submenu label="Parcours"> 
+                    <p:menuitem value="Departements" action="#{orientationBean.departement()}" ajax="false" icon="ui-icon-extlink"/>  
+                    <p:menuitem value="Arrondissements" action="#{orientationBean.arrondissement()}" ajax="false" icon="ui-icon-extlink"/> 
+                    <p:menuitem value="Catégorie Structures" action="#{orientationBean.categorieStructure()}" ajax="false" icon="ui-icon-extlink" />  
+                    <p:menuitem value="Structures d'attaches" action="#{orientationBean.structureAttache()}" ajax="false" icon="ui-icon-extlink"/>  
+                    <p:separator />  
+                    <p:menuitem value="Postes/Fonctions" action="#{orientationBean.poste()}" ajax="false" icon=""/>
+                    <p:separator /> 
+                    <p:menuitem value="Corps" action="#{orientationBean.corps()}" icon="" />  
+                    <p:menuitem value="Cadres" action="#{orientationBean.cadre()}" icon="ui-icon-extlink"/>  
+                    <p:menuitem value="Grade Fonctionnaire" action="#{orientationBean.gradeFonctio()}" icon="ui-icon-extlink"/> 
+                    <p:menuitem value="Spécialités" action="#{orientationBean.specialite()}" icon="ui-icon-extlink"/> 
+                    <p:separator />  
+                    <p:menuitem value="Grade Contractuel" action="#{orientationBean.gradeContract()}" icon="ui-icon-extlink"/>
+                </p:submenu>
+                <p:submenu label="Import/Export">  
+                    <p:menuitem value="Importer" actionListener="#{buttonBean.save}" icon="ui-icon-disk"/>  
+                    <p:menuitem value="Exporter" actionListener="#{buttonBean.update}" icon="ui-icon-arrowrefresh-1-w"/>  
+                </p:submenu> 
+                <f:facet name="options">  
+                    <p:inputText style="margin-right:10px"/>  
+                    <p:commandButton type="button" value="Déconnexion" icon="ui-icon-extlink" />  
+                </f:facet>  
+            </p:menubar>  
         </h:form>
     </body>
 

@@ -23,5 +23,6 @@ public interface IAffectationService {
     public List<Affectation> findAffectationByIdAgent(long idAgent) throws ServiceException;
     public Affectation findAffectationOpenByIdAgent(long idAgent) throws ServiceException;
     public List<Affectation> findAllAffectationOpen() throws ServiceException;
+    public Affectation findLastAffectationByIdAgent(long idAgent) throws ServiceException;
 
 }
