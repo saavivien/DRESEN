@@ -33,13 +33,13 @@ and open the template in the editor.
             <p:menubar >
                 <p:submenu label="Gestion des agents"> 
                     <p:submenu label="Contractuels">  
-                        <p:menuitem value="En service" action="#{orientationBean.ajouterFonctionnaire()}"/>
-                        <p:menuitem value="Retraités" action="#{orientationBean.retraiteFonctionnaire()}"/>
-                        <p:menuitem value="Sortis de la région" action="#{orientationBean.retraiteFonctionnaire()}" />
+                        <p:menuitem value="En service" action="#{orientationBean.contractuel()}"/>
+                        <p:menuitem value="Retraités" action="#{orientationBean.retraiteContractuel()}"/>
+                        <p:menuitem value="Sortis de la région" action="#{orientationBean.retraiteContractuel()}" />
                     </p:submenu>  
                     <p:separator />  
                     <p:submenu label="Fonctionnaires ">  
-                        <p:menuitem value="En service" action="#{orientationBean.ajouterFonctionnaire()}"/>
+                        <p:menuitem value="En service" action="#{orientationBean.fonctionnaire()}"/>
                         <p:menuitem value="Retraités" action="#{orientationBean.retraiteFonctionnaire()}"/>
                         <p:menuitem value="Sortis de la région" action="#{orientationBean.horsRegionFonctionnaire()}" />
                     </p:submenu>  

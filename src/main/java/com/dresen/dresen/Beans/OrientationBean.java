@@ -35,16 +35,8 @@ public class OrientationBean {
         return "Cadre";
     }
 
-    public String contractuel() {
-        return "Contractuel";
-    }
-
     public String corps() {
         return "Corps";
-    }
-
-    public String fonctionnaire() {
-        return "Fonctionnaire";
     }
 
     public String specialite() {
@@ -76,13 +68,18 @@ public class OrientationBean {
     }
 
     //// MENU AGENT
-    public String ajouterFonctionnaire() {
+    public String fonctionnaire() {
         return "Fonctionnaire";
+    }
+
+    public String contractuel() {
+        return "Contractuel";
     }
 
     public String retraiteFonctionnaire() {
         return "FonctionnairesRetraites";
     }
+
     public String horsRegionFonctionnaire() {
         return "FonctionnaireHorsRegion";
     }

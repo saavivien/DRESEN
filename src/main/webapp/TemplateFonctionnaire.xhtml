@@ -125,7 +125,7 @@ and open the template in the editor.
                         </p:tab> 
                         <p:tab id="confirmationTab" title="Confirmation">  
                             <p:panel header="Confirmation">  
-                                <h:panelGrid id="confirmation" columns="4" cellspacing="50">  
+                                <h:panelGrid id="confirmation" columns="4" cellspacing="10">  
                                     <h:outputText value="Nom : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nom}" style="font-style: italic"/>
                                     <h:outputText value="     Spécialite : " />  
@@ -781,7 +781,7 @@ and open the template in the editor.
 
                 </p:contextMenu> 
 
-                <p:dataTable value="#{fonctionnaireBean.findFonctionnaireActif()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " resizableColumns="true" liveResize="true" id="table" scrollable="true" rowsPerPageTemplate="10,15" selectionMode="single" selection="#{fonctionnaireBean.fonctionnaire}" rowKey="#{item.id}">
+                <p:dataTable value="#{fonctionnaireBean.findFonctionnaireActif()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" resizableColumns="true" liveResize="true" id="table" scrollable="true" rowsPerPageTemplate="10,15" selectionMode="single" selection="#{fonctionnaireBean.fonctionnaire}" rowKey="#{item.id}">
                     <f:facet name="header">
                         La liste des fonctionnaires
                     </f:facet>
@@ -924,25 +924,14 @@ and open the template in the editor.
                     <p:panel header="Export All Data">  
                         <h:commandLink>  
                             <p:graphicImage value="/images/excel.png" />  
-                            <p:dataExporter type="xls" target="table" fileName="listArrondissement" />  
+                            <p:dataExporter type="xls" target="table" fileName="listFonctionnaireActifs" postProcessor="#{excelDocumentBean.postProcessXLS}"/>  
                         </h:commandLink>  
 
                         <h:commandLink>  
                             <p:graphicImage value="/images/pdf.png" />  
-                            <p:dataExporter type="pdf" target="table" fileName="listArrondissement"/>  
+                            <p:dataExporter type="pdf" target="table" encoding="UTF-8" fileName="listFonctionnaireActifs"/>  
                         </h:commandLink>  
                     </p:panel> 
-                    <p:panel header="Export Page Data">  
-                        <h:commandLink>  
-                            <p:graphicImage value="/images/excel.png" />  
-                            <p:dataExporter type="xls" target="table" fileName="listArrondissement" pageOnly="true" postProcessor="#{doc.postProcessXLS}"/>  
-                        </h:commandLink>  
-
-                        <h:commandLink>  
-                            <p:graphicImage value="/images/pdf.png" />  
-                            <p:dataExporter type="pdf" target="table" fileName="listArrondissement" pageOnly="true" encoding="UTF-8"/>  
-                        </h:commandLink>  
-                    </p:panel>  
                 </h:panelGrid>  
 
 
