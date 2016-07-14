@@ -24,30 +24,40 @@ and open the template in the editor.
             <p:dialog widgetVar="dlgc" header=" Choisir les informations à afficher" hideEffect="explode" showEffect="explode" modal="true">
                 <h:form id="formChoix" enctype="multipart/form-data"> 
                     <p:panel id="panelChoix" header="Choix des informations">
-                        <p:panelGrid id="infoToDisplay" columns="1">
-                            <p:selectManyCheckbox value="#{fonctionnaireBean.listInformationToDisplay}" layout="pageDirection" columns=""  style="font-style: italic">  
+                        <p:panelGrid id="infoToDisplay" columns="2">
+                            <p:selectManyCheckbox id="infoToDisplayS1" value="#{fonctionnaireBean.listInformationToDisplay}" layout="pageDirection" columns=""  style="font-style: italic"> 
+                                <p:ajax update="selectall" listener="#{fonctionnaireBean.selectAllCancel}"/>
                                 <f:selectItem itemLabel="Matricule" itemValue="matricule" />
                                 <f:selectItem itemLabel="Nom" itemValue="nom"/>
                                 <f:selectItem itemLabel="Prénom" itemValue="prenom"/>
                                 <f:selectItem itemLabel="Nom de jeune fille" itemValue="nomjeunefille"/>
                                 <f:selectItem itemLabel="Date de Naissance" itemValue="datenaissance"/>
                                 <f:selectItem itemLabel="Lieu de Naissance" itemValue="lieunaissance"/>
+                                <f:selectItem itemLabel="Région de Naissance" itemValue="regionnaissance"/>
+                                <f:selectItem itemLabel="Département de Naissance" itemValue="departnaissance"/>
+                                <f:selectItem itemLabel="Arrondissement de Naissance" itemValue="arrondnaissance"/> 
                                 <f:selectItem itemLabel="Région d'origine" itemValue="regionorigine"/>
                                 <f:selectItem itemLabel="Département d'origine" itemValue="departementorigine"/>
                                 <f:selectItem itemLabel="Arrondissement d'origine" itemValue="arrondissementorigine"/>
+                            </p:selectManyCheckbox>
+                            <p:selectManyCheckbox id="infoToDisplayS2" value="#{fonctionnaireBean.listInformationToDisplay1}" layout="pageDirection" columns=""  style="font-style: italic">
+                                <p:ajax update="selectall" listener="#{fonctionnaireBean.selectAllCancel}"/>
+                                <f:selectItem itemLabel="Diplôme entrée fonction publique" itemValue="diplomefoncpub"/>
                                 <f:selectItem itemLabel="Sexe" itemValue="sexe"/>
                                 <f:selectItem itemLabel="Numéro de CNI" itemValue="numerocni"/>
-                                <f:selectItem itemLabel="Grade" itemValue="grade"/>
                                 <f:selectItem itemLabel="Spécialité" itemValue="specialite"/>
                                 <f:selectItem itemLabel="Date d'entrée en fonction publique" itemValue="dateentreefoncpub"/>
                                 <f:selectItem itemLabel="Date de départ en retraite" itemValue="dateretraite"/>
                             </p:selectManyCheckbox>
+                            <p:selectBooleanCheckbox id="selectall" value="#{fonctionnaireBean.selectAll}" itemLabel="Tout cocher">  
+                                <p:ajax update="infoToDisplayS1, infoToDisplayS2" listener="#{fonctionnaireBean.selectAllMethod}"/>  
+                            </p:selectBooleanCheckbox>  
                             <p:commandButton id="btn" update=":tableForm:table" actionListener="#{fonctionnaireBean.createDynamicColumns()}" value="Afficher" oncomplete="PF('dlgc').hide()" process="@parent"/>                           
                         </p:panelGrid>
                     </p:panel>
                 </h:form>
             </p:dialog>
-            
+
             <!--Restauration du fonctionnaire retraité-->
             <p:dialog widgetVar="dlgr" header=" Restaurer un fonctionnaire" hideEffect="fold" showEffect="explode" resizable="true" modal="true" >
                 <h:form id="formRestauration" enctype="multipart/form-data">                
@@ -64,7 +74,7 @@ and open the template in the editor.
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nomJeuneFille}" style="font-style: italic"/>
 
                             <h:outputText value="Date de naissance : " />  
-                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.dateNaissance}" style="font-style: italic"/>
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateNaissanceFonc}" style="font-style: italic"/>
                             <h:outputText value="Lieu de naissance : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.lieuNaissance}" style="font-style: italic"/>
 
@@ -111,7 +121,7 @@ and open the template in the editor.
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nomJeuneFille}" style="font-style: italic"/>
 
                             <h:outputText value="Date de naissance : " />  
-                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.dateNaissance}" style="font-style: italic"/>
+                            <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateNaissanceFonc}" style="font-style: italic"/>
                             <h:outputText value="Lieu de naissance : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.lieuNaissance}" style="font-style: italic"/>
 
@@ -189,8 +199,8 @@ and open the template in the editor.
                         </f:facet>
                         <h:outputText value="#{item.matricule}"/>
                     </p:column>
-                    
-                     <p:column rendered="#{fonctionnaireBean.boolCni}" filterBy="#{item.cni}" width="100">
+
+                    <p:column rendered="#{fonctionnaireBean.boolCni}" filterBy="#{item.cni}" width="100">
                         <f:facet name="header">
                             <h:outputText value="Numéro CNI"/>
                         </f:facet>
@@ -213,23 +223,44 @@ and open the template in the editor.
 
                     <p:column rendered="#{fonctionnaireBean.boolNomJeunFille}" filterBy="#{item.nomJeuneFille}" width="150">
                         <f:facet name="header">
-                            <h:outputText value="Nom de jeune fille"/>
+                            <h:outputText value="Nom jeune fille"/>
                         </f:facet>
                         <h:outputText value="#{item.nomJeuneFille}"/>
                     </p:column>
 
                     <p:column rendered="#{fonctionnaireBean.boolDateNaiss}" width="140">
                         <f:facet name="header">
-                            <h:outputText value="Date de naissance"/>
+                            <h:outputText value="Date naissance"/>
                         </f:facet>
                         <h:outputText value="#{fonctionnaireBean.currentDateNaissance(item)}"/>
                     </p:column>
 
                     <p:column rendered="#{fonctionnaireBean.boolLieuNaiss}" filterBy="#{item.lieuNaissance}" width="100">
                         <f:facet name="header">
-                            <h:outputText value="Lieu de Naissance"/>
+                            <h:outputText value="Lieu Naissance"/>
                         </f:facet>
                         <h:outputText value="#{item.lieuNaissance}"/>
+                    </p:column>
+
+                    <p:column rendered="#{fonctionnaireBean.boolRegionNaiss}" filterBy="#{item.regionNaissance}" width="150">
+                        <f:facet name="header">
+                            <h:outputText value="Région Naissance"/>
+                        </f:facet>
+                        <h:outputText value="#{item.regionNaissance}"/>
+                    </p:column>
+
+                    <p:column rendered="#{fonctionnaireBean.boolDepartNaiss}" filterBy="#{item.departNaissance}" width="150">
+                        <f:facet name="header">
+                            <h:outputText value="Départem. Naissance"/>
+                        </f:facet>
+                        <h:outputText value="#{item.departNaissance}"/>
+                    </p:column>
+
+                    <p:column rendered="#{fonctionnaireBean.boolArrondNaiss}" filterBy="#{item.arrondNaissance}" width="150">
+                        <f:facet name="header">
+                            <h:outputText value="Arrondiss. Naissance"/>
+                        </f:facet>
+                        <h:outputText value="#{item.arrondNaissance}"/>
                     </p:column>
 
                     <p:column rendered="#{fonctionnaireBean.boolSexe}" filterBy="#{item.sexe}" width="80">
@@ -239,23 +270,23 @@ and open the template in the editor.
                         <h:outputText value="#{item.sexe}"/>
                     </p:column>
 
-                    <p:column rendered="#{fonctionnaireBean.boolRegOri}" filterBy="#{item.regionOrigine}" sortBy="#{item.regionOrigine}" width="100">
+                    <p:column rendered="#{fonctionnaireBean.boolRegOri}" filterBy="#{item.regionOrigine}" sortBy="#{item.regionOrigine}" width="150">
                         <f:facet name="header">
                             <h:outputText value="Région Origine"/>
                         </f:facet>
                         <h:outputText value="#{item.regionOrigine}"/>
                     </p:column>
 
-                    <p:column rendered="#{fonctionnaireBean.boolDepOri}" filterBy="#{item.departementOrigine}" sortBy="#{item.departementOrigine}" width="100">
+                    <p:column rendered="#{fonctionnaireBean.boolDepOri}" filterBy="#{item.departementOrigine}" sortBy="#{item.departementOrigine}" width="150">
                         <f:facet name="header">
-                            <h:outputText value="Département Origine"/>
+                            <h:outputText value="Départ. Origine"/>
                         </f:facet>
                         <h:outputText value="#{item.departementOrigine}"/>
                     </p:column>
 
-                    <p:column rendered="#{fonctionnaireBean.boolArrOro}" filterBy="#{item.arrondissementOrigine}" sortBy="#{item.arrondissementOrigine}" width="100">
+                    <p:column rendered="#{fonctionnaireBean.boolArrOro}" filterBy="#{item.arrondissementOrigine}" sortBy="#{item.arrondissementOrigine}" width="150">
                         <f:facet name="header">
-                            <h:outputText value="Arrondissement Origine"/>
+                            <h:outputText value="Arrond. Origine"/>
                         </f:facet>
                         <h:outputText value="#{item.arrondissementOrigine}"/>
                     </p:column>            
@@ -267,9 +298,16 @@ and open the template in the editor.
                         <h:outputText value="#{item.specialite.intituleSpecialite}"/>
                     </p:column>
 
-                    <p:column rendered="#{fonctionnaireBean.boolDateEntreeFoncPub}" width="140">
+                    <p:column rendered="#{fonctionnaireBean.boolDiplomeEntre}" filterBy="#{item.diplomeEntreeFoncPub}" width="150">
                         <f:facet name="header">
-                            <h:outputText value="Date entrée fonction publique"/>
+                            <h:outputText value="Diplôme entrée fonct. pub."/>
+                        </f:facet>
+                        <h:outputText value="#{item.diplomeEntreeFoncPub}"/>
+                    </p:column>
+
+                    <p:column rendered="#{fonctionnaireBean.boolDateEntreeFoncPub}" width="150">
+                        <f:facet name="header">
+                            <h:outputText value="Date entrée fonc. pub."/>
                         </f:facet>
                         <h:outputText value="#{fonctionnaireBean.currentDateEntreeFonctionPub(item)}"/>
                     </p:column>
@@ -282,28 +320,12 @@ and open the template in the editor.
 
                 </p:dataTable>
                 <h:panelGrid columns="2">  
-                    <p:panel header="Export All Data">  
+                    <p:panel header="Exporter sous Excel">  
                         <h:commandLink>  
                             <p:graphicImage value="/images/excel.png" />  
-                            <p:dataExporter type="xls" target="table" fileName="listArrondissement" />  
-                        </h:commandLink>  
-
-                        <h:commandLink>  
-                            <p:graphicImage value="/images/pdf.png" />  
-                            <p:dataExporter type="pdf" target="table" fileName="listArrondissement"/>  
+                            <p:dataExporter type="xls" target="table" fileName="listRetraité" postProcessor="#{excelDocumentBean.postProcessXLS}"/>  
                         </h:commandLink>  
                     </p:panel> 
-                    <p:panel header="Export Page Data">  
-                        <h:commandLink>  
-                            <p:graphicImage value="/images/excel.png" />  
-                            <p:dataExporter type="xls" target="table" fileName="listArrondissement" pageOnly="true" postProcessor="#{doc.postProcessXLS}"/>  
-                        </h:commandLink>  
-
-                        <h:commandLink>  
-                            <p:graphicImage value="/images/pdf.png" />  
-                            <p:dataExporter type="pdf" target="table" fileName="listArrondissement" pageOnly="true" encoding="UTF-8"/>  
-                        </h:commandLink>  
-                    </p:panel>  
                 </h:panelGrid>  
 
 

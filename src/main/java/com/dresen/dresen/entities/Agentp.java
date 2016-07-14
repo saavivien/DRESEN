@@ -8,6 +8,7 @@ package com.dresen.dresen.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
@@ -30,55 +32,72 @@ public class Agentp implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
-    
-    @Column(unique = true)
+
+    @Column
     private String matricule;
-    
+
     @Column(unique = true, nullable = false)
     private int cni;
-    
-    @Column (nullable = false)
+
+    @Column(nullable = false)
     private String nom;
-    
+
     @Column
     private String prenom;
-    
+
     @Column
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateNaissance;
-    
+
     @Column
     private String lieuNaissance;
-    
+
+    @Column
+    String regionNaissance;
+
+    @Column
+    String departNaissance;
+
+    @Column
+    String arrondNaissance;
+
     @Column
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateEntreFonctionPub;
-    
+
     @Column
     private Sexe sexe;
-    
+
     @Column
     private String regionOrigine;
-    
+
     @Column
     private String departementOrigine;
-    
+
     @Column
     private String arrondissementOrigine;
-    
+
     @Column
     private String nomJeuneFille;
     
-    @Column (nullable = false)
+    @Column
+    private String diplomeEntreeFoncPub;
+
+    @ManyToOne
+    private Specialite specialite;
+
+    @Column(nullable = false)
     private boolean isRetraite;
     
-    @OneToMany (mappedBy = "agent")
+    @Column(nullable = false)
+    private boolean isBornArround;
+
+    @OneToMany(mappedBy = "agent")
     private List<Affectation> listAffectations;
-    
-    @OneToMany (mappedBy = "agent")
+
+    @OneToMany(mappedBy = "agent")
     private List<Promotion> listPromotions;
-    
-    
+
     public Long getId() {
         return id;
     }
@@ -94,8 +113,6 @@ public class Agentp implements Serializable {
     public void setCni(int cni) {
         this.cni = cni;
     }
-  
-   
 
     public String getMatricule() {
         return matricule;
@@ -201,6 +218,46 @@ public class Agentp implements Serializable {
         this.lieuNaissance = lieuNaissance;
     }
 
+    public Specialite getSpecialite() {
+        return specialite;
+    }
+
+    public void setSpecialite(Specialite specialite) {
+        this.specialite = specialite;
+    }
+
+    public String getRegionNaissance() {
+        return regionNaissance;
+    }
+
+    public void setRegionNaissance(String regionNaissance) {
+        this.regionNaissance = regionNaissance;
+    }
+
+    public String getDepartNaissance() {
+        return departNaissance;
+    }
+
+    public void setDepartNaissance(String departNaissance) {
+        this.departNaissance = departNaissance;
+    }
+
+    public String getArrondNaissance() {
+        return arrondNaissance;
+    }
+
+    public void setArrondNaissance(String arrondNaissance) {
+        this.arrondNaissance = arrondNaissance;
+    }
+
+    public String getDiplomeEntreeFoncPub() {
+        return diplomeEntreeFoncPub;
+    }
+
+    public void setDiplomeEntreeFoncPub(String diplomeEntreeFoncPub) {
+        this.diplomeEntreeFoncPub = diplomeEntreeFoncPub;
+    }
+
     public boolean isIsRetraite() {
         return isRetraite;
     }
@@ -208,7 +265,14 @@ public class Agentp implements Serializable {
     public void setIsRetraite(boolean isRetraite) {
         this.isRetraite = isRetraite;
     }
-    
+
+    public boolean isIsBornArround() {
+        return isBornArround;
+    }
+
+    public void setIsBornArround(boolean isBornArround) {
+        this.isBornArround = isBornArround;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -226,12 +290,15 @@ public class Agentp implements Serializable {
     }
 
     @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
     public String toString() {
         return "Agent{" + "idAgent=" + id + ", matricule=" + matricule + ", nom=" + nom + ", prenom=" + prenom + ", dateNaissance=" + dateNaissance + ", dateEntreFonctionPub=" + dateEntreFonctionPub + ", sexe=" + sexe + ", nomJeuneFille=" + nomJeuneFille + '}';
     }
-    
-    
-    
- 
-    
+
 }

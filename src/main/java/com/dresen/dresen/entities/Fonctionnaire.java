@@ -23,23 +23,10 @@ import javax.persistence.OneToMany;
 })
 public class Fonctionnaire extends Agentp{
     
-    @ManyToOne 
-    private Specialite specialite;
-    
     @OneToMany (mappedBy = "fonctionnaire")
     private List<RangerFonctio> listRangerFonctios;
   
     public Fonctionnaire() {
-    }
-    
-    
-
-    public Specialite getSpecialite() {
-        return specialite;
-    }
-
-    public void setSpecialite(Specialite specialite) {
-        this.specialite = specialite;
     }
 
     public List<RangerFonctio> getListRangerFonctios() {

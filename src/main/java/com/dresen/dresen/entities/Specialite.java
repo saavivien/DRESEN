@@ -30,7 +30,7 @@ public class Specialite implements Serializable {
     private String intituleSpecialite;
     
     @OneToMany (mappedBy = "specialite")
-    private List<Fonctionnaire> listFonctionnaires;
+    private List<Agentp> listAgentps;
 
     public Specialite() {
     }
@@ -52,17 +52,13 @@ public class Specialite implements Serializable {
         this.intituleSpecialite = intituleSpecialite;
     }
 
-    public List<Fonctionnaire> getListFonctionnaires() {
-        return listFonctionnaires;
+    public List<Agentp> getListAgentps() {
+        return listAgentps;
     }
 
-    public void setListFonctionnaires(List<Fonctionnaire> listFonctionnaires) {
-        this.listFonctionnaires = listFonctionnaires;
-    }
-    
-    
-
-    
+    public void setListAgentps(List<Agentp> listAgentps) {
+        this.listAgentps = listAgentps;
+    }    
     
     @Override
     public int hashCode() {
