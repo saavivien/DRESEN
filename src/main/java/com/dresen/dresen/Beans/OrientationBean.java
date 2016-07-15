@@ -72,15 +72,23 @@ public class OrientationBean {
         return "Fonctionnaire";
     }
 
-    public String contractuel() {
-        return "Contractuel";
-    }
-
     public String retraiteFonctionnaire() {
         return "FonctionnairesRetraites";
     }
 
     public String horsRegionFonctionnaire() {
-        return "FonctionnaireHorsRegion";
+        return "FonctionnairesHorsRegion";
+    }
+
+    public String contractuel() {
+        return "Contractuel";
+    }
+
+    public String retraiteContractuel() {
+        return "ContractuelsRetraites";
+    }
+
+    public String horsRegionContractuel() {
+        return "ContractuelsHorsRegion";
     }
 }

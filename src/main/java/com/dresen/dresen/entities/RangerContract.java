@@ -89,16 +89,6 @@ public class RangerContract implements Serializable {
     public void setContractuel(Contractuel contractuel) {
         this.contractuel = contractuel;
     }
-    
-    
-
-    public Date getDateDebutRanger() {
-        return dateDebutRangerContract;
-    }
-
-    public void setDateDebutRanger(Date dateDebutRanger) {
-        this.dateDebutRangerContract = dateDebutRanger;
-    }
 
     public Date getDateFinRanger() {
         return dateFinRangerContract;

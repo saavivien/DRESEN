@@ -19,6 +19,7 @@ import com.dresen.dresen.ServiceInterface.IRangerFonctioService;
 import com.dresen.dresen.ServiceInterface.ISpecialiteService;
 import com.dresen.dresen.ServiceInterface.IStructureService;
 import com.dresen.dresen.entities.Affectation;
+import com.dresen.dresen.entities.AffectationPromotion;
 import com.dresen.dresen.entities.Agentp;
 import com.dresen.dresen.entities.Arrondissement;
 import com.dresen.dresen.entities.Cadre;
@@ -99,7 +100,7 @@ public class FonctionnaireBean implements Serializable {
     private boolean selectAll;
     private static Logger logger = Logger.getLogger(FonctionnaireBean.class.getName());
     // ces variable permettent de contrôler les colonnes à afficher dans le dataTable
-    private boolean boolMat, boolNom = true, boolPrenom =true, boolNomJeunFille, boolDateSortie, boolDateNaiss, boolRegionNaiss,boolAge, boolDepartNaiss, boolArrondNaiss, boolCadre, boolCorps, boolLieuNaiss, boolDiplomeEntre, boolSexe, boolCni, boolRegOri, boolDepOri, boolArrOro, boolGrade, boolSpecial, boolDateRetraite, boolDateEntreeFoncPub, boolStrucAttach, boolPoste, boolDateAffec, boolArronStruct, boolDepartStruct;
+    private boolean boolMat, boolNom = true, boolPrenom = true, boolNomJeunFille, boolDateSortie, boolDateNaiss, boolRegionNaiss, boolAge, boolDepartNaiss, boolArrondNaiss, boolCadre, boolCorps, boolLieuNaiss, boolDiplomeEntre, boolSexe, boolCni, boolRegOri, boolDepOri, boolArrOro, boolGrade, boolSpecial, boolDateRetraite, boolDateEntreeFoncPub, boolStrucAttach, boolPoste, boolDateAffec, boolArronStruct, boolDepartStruct;
     private List<Corps> listCorps;
     private List<Cadre> listCadre;
     private List<Fonctionnaire> listFonctionnaires;
@@ -123,7 +124,7 @@ public class FonctionnaireBean implements Serializable {
     private Departement departement;
     private CategorieStructure categorieStructure;
     private SimpleDateFormat simpleDateFormat;
-    private String dateNaissanceFonc , dateNaissanceFoncVers, dateEntreFoncPub, dateDebutGrade, dateDebutPoste, dateDebutPosteAffec, dateDebutAffec, dateRetraite;
+    private String dateNaissanceFonc, dateNaissanceFoncVers, dateEntreFoncPub, dateDebutGrade, dateDebutPoste, dateDebutPosteAffec, dateDebutAffec, dateRetraite, dateDebutGradeChangerGrade;
     private StructureAttache structureAttacheAffec;
     private Poste posteAffec;
     private Arrondissement arrondissementAffec;
@@ -133,7 +134,6 @@ public class FonctionnaireBean implements Serializable {
     private Corps corpsChangerGrade;
     private Cadre cadreChangerGrade;
     private GradeFonctio gradeChangerGrade;
-    private String dateDebutGradeChangerGrade;
 
     public FonctionnaireBean() {
     }
@@ -302,7 +302,7 @@ public class FonctionnaireBean implements Serializable {
         return iStructureService.findStructureAttacheByCategorieAndArrondissement(idArrondissement, idCategorieStructure);
     }
 
-     public List<RangerFonctio> getListRangerFonctios() {
+    public List<RangerFonctio> getListRangerFonctios() {
         return listRangerFonctios;
     }
 
@@ -341,7 +341,6 @@ public class FonctionnaireBean implements Serializable {
     public void setSelectAll(boolean selectAll) {
         this.selectAll = selectAll;
     }
-    
 
     public static Logger getLogger() {
         return logger;
@@ -611,7 +610,7 @@ public class FonctionnaireBean implements Serializable {
         this.dateDebutAffec = dateDebutAffec;
     }
 
-    public List<Fonctionnaire> getListFonctionnaires() {      
+    public List<Fonctionnaire> getListFonctionnaires() {
         return listFonctionnaires;
     }
 
@@ -755,8 +754,6 @@ public class FonctionnaireBean implements Serializable {
         this.dateDebutGradeChangerGrade = dateDebutGradeChangerGrade;
     }
 
-    
-    
     public boolean isBoolMat() {
         return boolMat;
     }
@@ -828,7 +825,7 @@ public class FonctionnaireBean implements Serializable {
     public void setBoolRegOri(boolean boolRegOri) {
         this.boolRegOri = boolRegOri;
     }
-    
+
     public boolean isBoolDepOri() {
         return boolDepOri;
     }
@@ -916,7 +913,7 @@ public class FonctionnaireBean implements Serializable {
     public void setBoolDateRetraite(boolean boolDateRetraite) {
         this.boolDateRetraite = boolDateRetraite;
     }
-    
+
     public boolean isBoolRegionNaiss() {
         return boolRegionNaiss;
     }
@@ -980,8 +977,6 @@ public class FonctionnaireBean implements Serializable {
     public void setBoolDiplomeEntre(boolean boolDiplomeEntre) {
         this.boolDiplomeEntre = boolDiplomeEntre;
     }
-    
-    
 
     /*
     ces méthodes ont pour rôle de construire tous les agents dans leur situation courrante ie. avec leur poste courrant leur structure d'attache courrante le grade courant.
@@ -997,15 +992,15 @@ public class FonctionnaireBean implements Serializable {
     public String currentGradeFonctio(Agentp agent) {
         return (iRangerFonctioService.findRangerFonctioOpenByIdAgent(agent.getId())).getGradeFonctio().getIntituleGradeFonctio();
     }
-    
+
     public String currentCadreFonctio(Agentp agent) {
         return (iRangerFonctioService.findRangerFonctioOpenByIdAgent(agent.getId())).getGradeFonctio().getCadre().getIntituleCadre();
     }
-    
+
     public String currentCorpsFonctio(Agentp agent) {
         return (iRangerFonctioService.findRangerFonctioOpenByIdAgent(agent.getId())).getGradeFonctio().getCadre().getCorps().getIntituleCorps();
     }
-     
+
     public String currentFonctio(Agentp agent) {
         return (iRangerFonctioService.findRangerFonctioOpenByIdAgent(agent.getId())).getGradeFonctio().getCadre().getCorps().getIntituleCorps();
     }
@@ -1014,40 +1009,41 @@ public class FonctionnaireBean implements Serializable {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         if (!agent.isIsBornArround()) {
             String dateNaissance = simpleDateFormat.format(agent.getDateNaissance());
-            int age = (new Date()).getYear() - agent.getDateNaissance().getYear();
-            return dateNaissance + "(" + age + ")";
+            return dateNaissance;
         } else {
             int annee = agent.getDateNaissance().getYear();
-            int age = (new Date()).getYear() - annee;
-            return "vers 19" + annee + "(" + age + ")";
+            return "vers 19" + annee;
         }
     }
-    public int currentAgeFonctio(Agentp agent){
+
+    public int currentAgeFonctio(Agentp agent) {
         Date currentDate = new Date();
         int age = currentDate.getYear() - agent.getDateNaissance().getYear();
-        if(currentDate.getMonth()>agent.getDateNaissance().getMonth()){
-            return age-1;
+        if (currentDate.getMonth() < agent.getDateNaissance().getMonth() && !agent.isIsBornArround()) {
+            return age - 1;
         }
         return age;
     }
+
     public String currentDateAffect(Agentp agent) {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Affectation affect = iAffectationService.findAffectationOpenByIdAgent(agent.getId());
         String dateEntreePoste = simpleDateFormat.format((affect).getDateDebutAffect());
         int anciennetePoste = (new Date()).getYear() - (affect).getDateDebutAffect().getYear();
-        return dateEntreePoste + "("+anciennetePoste+")";
+        return dateEntreePoste + "(" + anciennetePoste + ")";
     }
 
     public String currentDateEntreeFonctionPub(Agentp agent) {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String dateEntreeFonctionPub = simpleDateFormat.format(agent.getDateEntreFonctionPub());
         int nombreAnneeService = (new Date()).getYear() - agent.getDateEntreFonctionPub().getYear();
-        if(agent.isIsRetraite())
+        if (agent.isIsRetraite()) {
             return dateEntreeFonctionPub;
-        return dateEntreeFonctionPub + "("+nombreAnneeService+")";
+        }
+        return dateEntreeFonctionPub + "(" + nombreAnneeService + ")";
     }
-    
-    public String currentDateDepartRetraite(Fonctionnaire agent) throws Exception{
+
+    public String currentDateDepartRetraite(Fonctionnaire agent) throws Exception {
         try {
             simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
             return simpleDateFormat.format(iAffectationService.findLastAffectationByIdAgent(agent.getId()).getDateFinAffect());
@@ -1055,7 +1051,8 @@ public class FonctionnaireBean implements Serializable {
             throw e;
         }
     }
-    public String currentLasteRetraite(Fonctionnaire agent) throws Exception{
+
+    public String currentLasteRetraite(Fonctionnaire agent) throws Exception {
         try {
             simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
             return simpleDateFormat.format(iAffectationService.findLastAffectationByIdAgent(agent.getId()).getDateFinAffect());
@@ -1063,23 +1060,23 @@ public class FonctionnaireBean implements Serializable {
             throw e;
         }
     }
-    
+
     public String currentArrondissement(Agentp agent) {
         return (iAffectationService.findAffectationOpenByIdAgent(agent.getId())).getStructureAttache().getArrondissement().getIntituleArrondissement();
     }
-     public String currentDepartement(Agentp agent) {
+
+    public String currentDepartement(Agentp agent) {
         return (iAffectationService.findAffectationOpenByIdAgent(agent.getId())).getStructureAttache().getArrondissement().getDepartement().getIntituleDepartement();
     }
-    
-    public String dateToString(Date date){
+
+    public String dateToString(Date date) {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return simpleDateFormat.format(date);
-    } 
+    }
 
     /*
     fin du bloc de construction des agents dans leur situation courante. début des méthode permettant d'avoir un tableau dynamique
      */
-      
     public void initListColumn() {
         boolMat = false;
         boolNom = false;
@@ -1113,8 +1110,9 @@ public class FonctionnaireBean implements Serializable {
         listInformationToDisplay = new ArrayList<>();
         listInformationToDisplay1 = new ArrayList<>();
     }
-    public void selectAllMethod(){
-        if(selectAll){
+
+    public void selectAllMethod() {
+        if (selectAll) {
             listInformationToDisplay.add("matricule");
             listInformationToDisplay.add("nom");
             listInformationToDisplay.add("prenom");
@@ -1128,7 +1126,7 @@ public class FonctionnaireBean implements Serializable {
             listInformationToDisplay.add("departementorigine");
             listInformationToDisplay.add("arrondissementorigine");
             listInformationToDisplay.add("age");
-            
+
             listInformationToDisplay1.add("sexe");
             listInformationToDisplay1.add("numerocni");
             listInformationToDisplay1.add("grade");
@@ -1144,15 +1142,16 @@ public class FonctionnaireBean implements Serializable {
             listInformationToDisplay1.add("arrondstructureattache");
             listInformationToDisplay1.add("dateretraite");
             listInformationToDisplay1.add("datesortieregion");
-        }
-        else{
+        } else {
             listInformationToDisplay.clear();
             listInformationToDisplay1.clear();
         }
     }
-    public void selectAllCancel(){
-        selectAll=false;
+
+    public void selectAllCancel() {
+        selectAll = false;
     }
+
     public void createDynamicColumns() {
         listInformationToDisplay.addAll(listInformationToDisplay1);
         for (String column : listInformationToDisplay) {
@@ -1243,7 +1242,7 @@ public class FonctionnaireBean implements Serializable {
                     break;
                 default:
                     break;
-            
+
             }
         }
     }
@@ -1275,7 +1274,7 @@ public class FonctionnaireBean implements Serializable {
         fonctionnaire.setIsBornArround(false);
         fonctionnaire.setIsRetraite(false);
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        dateNaissanceFonc = " ";
+        dateNaissanceFonc = "";
         dateNaissanceFoncVers = "";
         dateEntreFoncPub = "";
         dateDebutGrade = "";
@@ -1293,19 +1292,18 @@ public class FonctionnaireBean implements Serializable {
         gradeFonctio = rangerFonctio.getGradeFonctio();
         idGradeFonctio = gradeFonctio.getId();
         cadre = gradeFonctio.getCadre();
-        idCadre = cadre.getId(); 
+        idCadre = cadre.getId();
         if (!fonctionnaire.isIsBornArround()) {
             dateNaissanceFonc = simpleDateFormat.format(fonctionnaire.getDateNaissance());
             dateNaissanceFoncVers = "";
-        }
-        else {
+        } else {
             dateNaissanceFonc = "";
-            dateNaissanceFoncVers = "19"+fonctionnaire.getDateNaissance().getYear();
+            dateNaissanceFoncVers = "19" + fonctionnaire.getDateNaissance().getYear();
         }
         dateEntreFoncPub = simpleDateFormat.format(fonctionnaire.getDateEntreFonctionPub());
         dateDebutGrade = simpleDateFormat.format(rangerFonctio.getDateDebutRangerFonctio());
         affectation = iAffectationService.findAffectationOpenByIdAgent(fonctionnaire.getId());
-        dateDebutPoste = simpleDateFormat.format(affectation.getDateDebutAffect());      
+        dateDebutPoste = simpleDateFormat.format(affectation.getDateDebutAffect());
         corps = cadre.getCorps();
         idCorps = corps.getId();
         structureAttache = affectation.getStructureAttache();
@@ -1344,9 +1342,9 @@ public class FonctionnaireBean implements Serializable {
         affectation.setDateDebutAffect(simpleDateFormat.parse(dateDebutPoste));
         rangerFonctio.setDateDebutRangerFonctio(simpleDateFormat.parse(dateDebutGrade));
     }
-    
-     public void beforeConfirmAffect() throws ParseException {
-        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy"); 
+
+    public void beforeConfirmAffect() throws ParseException {
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         affectation = iAffectationService.findAffectationOpenByIdAgent(fonctionnaire.getId());
         structureAttache = affectation.getStructureAttache();
         arrondissement = structureAttache.getArrondissement();
@@ -1366,6 +1364,7 @@ public class FonctionnaireBean implements Serializable {
         promotionAffec.setDateDebutPromo(simpleDateFormat.parse(dateDebutPosteAffec));
         affectationAffec.setDateDebutAffect(simpleDateFormat.parse(dateDebutPosteAffec));
     }
+
     // pour le retour d'un fonctionnaire dans la région
     public void beforeConfirmRetourFonctio() throws ParseException {
         promotionAffec = new Promotion();
@@ -1378,36 +1377,36 @@ public class FonctionnaireBean implements Serializable {
         promotionAffec.setDateDebutPromo(simpleDateFormat.parse(dateDebutPosteAffec));
         affectationAffec.setDateDebutAffect(simpleDateFormat.parse(dateDebutPosteAffec));
     }
-     
-     public void beforeConfirmChangeGrade() throws ParseException {
-        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy"); 
+
+    public void beforeConfirmChangeGrade() throws ParseException {
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         rangerFonctio = iRangerFonctioService.findRangerFonctioOpenByIdAgent(fonctionnaire.getId());
         gradeFonctio = rangerFonctio.getGradeFonctio();
         cadre = gradeFonctio.getCadre();
         corps = cadre.getCorps();
         dateDebutGrade = simpleDateFormat.format(rangerFonctio.getDateDebutRangerFonctio());
-        
+
         rangerFonctioChangerGrade = new RangerFonctio();
         corpsChangerGrade = iCorpsService.findCorpsById(idCorps);
         cadreChangerGrade = iCadreService.findCadreById(idCadre);
         gradeChangerGrade = iGradeFonctioService.findGradeFonctioById(idGradeFonctio);
         rangerFonctioChangerGrade.setDateDebutRangerFonctio(simpleDateFormat.parse(dateDebutGradeChangerGrade));
     }
-    
-     public void beforeChangerGrade() throws ParseException {
+
+    public void beforeChangerGrade() throws ParseException {
         rangerFonctio = null;
         gradeFonctio = null;
         cadre = null;
         corps = null;
         dateDebutGrade = "";
-    
+
         idCorps = 0L;
         idCadre = 0L;
         idGradeFonctio = 0L;
     }
-    
-     public void beforeConfirmRetraite() throws ParseException {
-        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy"); 
+
+    public void beforeConfirmRetraite() throws ParseException {
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         affectation = iAffectationService.findAffectationOpenByIdAgent(fonctionnaire.getId());
         structureAttache = affectation.getStructureAttache();
         arrondissement = structureAttache.getArrondissement();
@@ -1417,17 +1416,16 @@ public class FonctionnaireBean implements Serializable {
         affectation.setDateFinAffect(simpleDateFormat.parse(dateRetraite));
         promotion.setDateFinPromo(simpleDateFormat.parse(dateRetraite));
         dateDebutPoste = simpleDateFormat.format(affectation.getDateDebutAffect());
-         if (!fonctionnaire.isIsBornArround()) {
+        if (!fonctionnaire.isIsBornArround()) {
             dateNaissanceFonc = simpleDateFormat.format(fonctionnaire.getDateNaissance());
-        }
-        else{
-            dateNaissanceFonc = "vers 19"+fonctionnaire.getDateNaissance().getYear();
+        } else {
+            dateNaissanceFonc = "vers 19" + fonctionnaire.getDateNaissance().getYear();
         }
 
     }
-     
+
     public void beforeRestauration() throws ParseException {
-        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy"); 
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         affectation = iAffectationService.findLastAffectationByIdAgent(fonctionnaire.getId());
         structureAttache = affectation.getStructureAttache();
         arrondissement = structureAttache.getArrondissement();
@@ -1437,37 +1435,13 @@ public class FonctionnaireBean implements Serializable {
         affectation.setDateFinAffect(null);
         promotion.setDateFinPromo(null);
         dateDebutPoste = simpleDateFormat.format(affectation.getDateDebutAffect());
-         if (!fonctionnaire.isIsBornArround()) {
+        if (!fonctionnaire.isIsBornArround()) {
             dateNaissanceFonc = simpleDateFormat.format(fonctionnaire.getDateNaissance());
-        }
-        else{
-            dateNaissanceFonc = "vers 19"+fonctionnaire.getDateNaissance().getYear();
+        } else {
+            dateNaissanceFonc = "vers 19" + fonctionnaire.getDateNaissance().getYear();
         }
 
     }
-      
-     
-    public class AffectationPromotion{
-        private Promotion p;
-        private Affectation a;
-
-        public Promotion getP() {
-            return p;
-        }
-
-        public void setP(Promotion p) {
-            this.p = p;
-        }
-
-        public Affectation getA() {
-            return a;
-        }
-
-        public void setA(Affectation a) {
-            this.a = a;
-        }
-        
-    } 
     
     public void beforeDisplayProfil() {
         listAffectations = iAffectationService.findAffectationByIdAgent(fonctionnaire.getId());
@@ -1477,9 +1451,8 @@ public class FonctionnaireBean implements Serializable {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         if (!fonctionnaire.isIsBornArround()) {
             dateNaissanceFonc = simpleDateFormat.format(fonctionnaire.getDateNaissance());
-        }
-        else{
-            dateNaissanceFonc = "vers 19"+fonctionnaire.getDateNaissance().getYear();
+        } else {
+            dateNaissanceFonc = "vers 19" + fonctionnaire.getDateNaissance().getYear();
         }
 
         for (int i = 0; i < listPromotions.size(); i++) {
@@ -1502,8 +1475,8 @@ public class FonctionnaireBean implements Serializable {
             return event.getNewStep();
         }
     }
-    
-     public String onFlowProcessAffectation(FlowEvent event) throws ParseException {
+
+    public String onFlowProcessAffectation(FlowEvent event) throws ParseException {
         logger.log(Level.INFO, "Current wizard step:{0}", event.getOldStep());
         logger.log(Level.INFO, "Next step:{0}", event.getNewStep());
         //  event.setPhaseId(PhaseId.phaseIdValueOf("personnel"));
@@ -1515,8 +1488,8 @@ public class FonctionnaireBean implements Serializable {
             return event.getNewStep();
         }
     }
-     
-     public String onFlowProcessChangerGrade(FlowEvent event) throws ParseException {
+
+    public String onFlowProcessChangerGrade(FlowEvent event) throws ParseException {
         logger.log(Level.INFO, "Current wizard step:{0}", event.getOldStep());
         logger.log(Level.INFO, "Next step:{0}", event.getNewStep());
         //  event.setPhaseId(PhaseId.phaseIdValueOf("personnel"));
@@ -1528,7 +1501,8 @@ public class FonctionnaireBean implements Serializable {
             return event.getNewStep();
         }
     }
-     public String onFlowProcessRetraite(FlowEvent event) throws ParseException {
+
+    public String onFlowProcessRetraite(FlowEvent event) throws ParseException {
         logger.log(Level.INFO, "Current wizard step:{0}", event.getOldStep());
         logger.log(Level.INFO, "Next step:{0}", event.getNewStep());
         //  event.setPhaseId(PhaseId.phaseIdValueOf("personnel"));
@@ -1539,8 +1513,9 @@ public class FonctionnaireBean implements Serializable {
         } else {
             return event.getNewStep();
         }
-    } 
-     public String onFlowProcessRetourFonctio(FlowEvent event) throws ParseException {
+    }
+
+    public String onFlowProcessRetourFonctio(FlowEvent event) throws ParseException {
         logger.log(Level.INFO, "Current wizard step:{0}", event.getOldStep());
         logger.log(Level.INFO, "Next step:{0}", event.getNewStep());
         //  event.setPhaseId(PhaseId.phaseIdValueOf("personnel"));
@@ -1551,9 +1526,9 @@ public class FonctionnaireBean implements Serializable {
         } else {
             return event.getNewStep();
         }
-    } 
+    }
 
-    public Fonctionnaire createFonctionnaire() throws Exception {
+    public Fonctionnaire createFonctionnaire() {
         try {
             fonctionnaire.setSpecialite(specialite);
             iFonctionnaireService.createFonctionnaire(fonctionnaire);
@@ -1572,8 +1547,8 @@ public class FonctionnaireBean implements Serializable {
 
             return fonctionnaire;
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("echec d'enregitrement vérifier les informations");  
-            FacesContext.getCurrentInstance().addMessage(null, msg);  
+            FacesMessage msg = new FacesMessage("echec d'enregitrement vérifier les informations");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
             throw e;
         }
     }
@@ -1590,7 +1565,6 @@ public class FonctionnaireBean implements Serializable {
             affectation.setStructureAttache(structureAttache);
             affectation.setDateDebutAffect(simpleDateFormat.parse(dateDebutPoste));
             iAffectationService.updateAffectation(affectation);
-            iPromotionService.updatePromotion(promotion);
 
             rangerFonctio.setGradeFonctio(gradeFonctio);
             rangerFonctio.setDateDebutRangerFonctio(simpleDateFormat.parse(dateDebutGrade));
@@ -1602,8 +1576,8 @@ public class FonctionnaireBean implements Serializable {
 
             return iFonctionnaireService.updateFonctionnaire(fonctionnaire);
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("echec de modification vérifier les informations");  
-            FacesContext.getCurrentInstance().addMessage(null, msg);  
+            FacesMessage msg = new FacesMessage("echec de modification vérifier les informations");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
             throw e;
         }
     }
@@ -1611,38 +1585,42 @@ public class FonctionnaireBean implements Serializable {
     public List<Fonctionnaire> findAllFonctionnaire() {
         return iFonctionnaireService.findAllFonctionnaire();
     }
-    
+
     public List<Fonctionnaire> findFonctionnaireActif() {
         return iFonctionnaireService.findFonctionnaireActif();
     }
+
     public List<Fonctionnaire> findFonctionnaireRetraites() {
         return iFonctionnaireService.findFonctionnaireRetraites();
     }
+
     public List<Fonctionnaire> findFonctionnairesSortis() {
         List<Fonctionnaire> listAllFonctionnaires = iFonctionnaireService.findAllFonctionnaire();
         listAllFonctionnaires.removeAll(iFonctionnaireService.findFonctionnaireActif());
         listAllFonctionnaires.removeAll(iFonctionnaireService.findFonctionnaireRetraites());
         return listAllFonctionnaires;
     }
-    
+
     public Fonctionnaire retraite() {
-       fonctionnaire.setIsRetraite(true);
-       iAffectationService.updateAffectation(affectation);
-       iPromotionService.updatePromotion(promotion);
-       return iFonctionnaireService.updateFonctionnaire(fonctionnaire);
+        fonctionnaire.setIsRetraite(true);
+        iAffectationService.updateAffectation(affectation);
+        iPromotionService.updatePromotion(promotion);
+        return iFonctionnaireService.updateFonctionnaire(fonctionnaire);
     }
+
     public Fonctionnaire sortieRegion() {
-       iAffectationService.updateAffectation(affectation);
-       iPromotionService.updatePromotion(promotion);
-       return iFonctionnaireService.updateFonctionnaire(fonctionnaire);
+        iAffectationService.updateAffectation(affectation);
+        iPromotionService.updatePromotion(promotion);
+        return iFonctionnaireService.updateFonctionnaire(fonctionnaire);
     }
+
     public Fonctionnaire restaureRetraite() {
-       fonctionnaire.setIsRetraite(false);
-       iAffectationService.updateAffectation(affectation);
-       iPromotionService.updatePromotion(promotion);
-       return iFonctionnaireService.updateFonctionnaire(fonctionnaire);
+        fonctionnaire.setIsRetraite(false);
+        iAffectationService.updateAffectation(affectation);
+        iPromotionService.updatePromotion(promotion);
+        return iFonctionnaireService.updateFonctionnaire(fonctionnaire);
     }
-    
+
     public void affecterFonctionnaire() {
         try {
             affectationAffec.setAgent(fonctionnaire);
@@ -1656,11 +1634,12 @@ public class FonctionnaireBean implements Serializable {
             iAffectationService.updateAffectation(affectation);
             iPromotionService.updatePromotion(promotion);
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("echec d'affectation vérifier les informations");  
-            FacesContext.getCurrentInstance().addMessage(null, msg);  
+            FacesMessage msg = new FacesMessage("echec d'affectation vérifier les informations");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
             throw e;
         }
     }
+
     public void ChagerGradeFonctionnaire() {
         try {
             rangerFonctioChangerGrade.setFonctionnaire(fonctionnaire);
@@ -1668,23 +1647,24 @@ public class FonctionnaireBean implements Serializable {
             iRangerFonctioService.createRangerFonctio(rangerFonctioChangerGrade);
             rangerFonctio.setDateFinRangerFonctio(rangerFonctioChangerGrade.getDateDebutRangerFonctio());
             iRangerFonctioService.updateRangerFonctio(rangerFonctio);
-          
+
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("echec du changement de grade vérifier les informations");  
-            FacesContext.getCurrentInstance().addMessage(null, msg);  
+            FacesMessage msg = new FacesMessage("echec du changement de grade vérifier les informations");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
-     public void retourFonctionnaire() {
+
+    public void retourFonctionnaire() {
         try {
             affectationAffec.setAgent(fonctionnaire);
             affectationAffec.setStructureAttache(structureAttacheAffec);
             promotionAffec.setAgent(fonctionnaire);
             promotionAffec.setPoste(posteAffec);
             iAffectationService.createAffectation(affectationAffec);
-            iPromotionService.createPromotion(promotionAffec);     
+            iPromotionService.createPromotion(promotionAffec);
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("echec d'affectation vérifier les informations");  
-            FacesContext.getCurrentInstance().addMessage(null, msg);  
+            FacesMessage msg = new FacesMessage("echec d'affectation vérifier les informations");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
             throw e;
         }
     }

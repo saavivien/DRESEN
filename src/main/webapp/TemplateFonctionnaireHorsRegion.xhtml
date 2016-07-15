@@ -26,7 +26,7 @@ and open the template in the editor.
                     <p:wizard widgetVar="wizAffecter" flowListener="#{fonctionnaireBean.onFlowProcessRetourFonctio}" backLabel="retour" nextLabel="suivant">  
                         <p:tab id="promotionAffectation" title="New Affectattion/Promotion"> 
                             <p:panel id="panelNewAffectPromo" header="Affectattion/Promotion">
-                                <p:panelGrid id="panelNewAffectPromoGrid" columns="2">
+                                <h:panelGrid id="panelNewAffectPromoGrid" columns="2" cellspacing="5">
                                     <p:outputLabel value="Département de la Structure d'affectation:" for="departementStructure"/>       
                                     <p:selectOneMenu  id="departementStructure" value="#{fonctionnaireBean.idDepartement}" label="departementStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
                                         <p:ajax  event="change" update="arrondissementStructure" />
@@ -58,7 +58,7 @@ and open the template in the editor.
                                     </p:selectOneMenu>
                                     <p:outputLabel value="Date d'entrée en poste" for="datedebpost" />                                   
                                     <p:inputMask id="datedebpost" value="#{fonctionnaireBean.dateDebutPosteAffec}" mask="99/99/9999" required="true" />
-                                </p:panelGrid>
+                                </h:panelGrid>
                             </p:panel>
                         </p:tab> 
                         <p:tab id="confirmationTabAffect" title="Confirmation affectation">  
@@ -74,20 +74,20 @@ and open the template in the editor.
                                     <h:outputText value="matricule : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.matricule}" style="font-style: italic"/>
 
-                                    <h:outputText value="     Département de la Structure d'affectation : " />  
+                                    <h:outputText value="Département de la Structure d'affectation : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.departementAffec.intituleDepartement}" style="font-style: italic"/>
-                                    <h:outputText value="     Arrondissement de la Structure d'affectation : " />  
+                                    <h:outputText value="Arrondissement de la Structure d'affectation : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.arrondissementAffec.intituleArrondissement}" style="font-style: italic"/>
 
-                                    <h:outputText value="     Catégorie de la Structure d'affectation : " />  
+                                    <h:outputText value="Catégorie de la Structure d'affectation : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.categorieStructureAffec.intituleCategorieStructure}" style="font-style: italic"/>
-                                    <h:outputText value="     Structure d'attache d'affectation : " />  
+                                    <h:outputText value="Structure d'attache d'affectation : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.structureAttacheAffec.intituleStructure}" style="font-style: italic"/>
 
  
-                                    <h:outputText value="     Fonction/Poste : " />  
+                                    <h:outputText value="Fonction/Poste : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.posteAffec.intitulePoste}" style="font-style: italic"/> 
-                                    <h:outputText value="     Date d'entrée au poste d'affectation :" />  
+                                    <h:outputText value="Date d'entrée au poste d'affectation :" />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateDebutPosteAffec}" style="font-style: italic"/>
 
                                     <p:commandButton value="Confirmer Affectation" action="#{fonctionnaireBean.retourFonctionnaire()}"  oncomplete="PF('dlga').hide()" update=":tableForm:table"/>
@@ -103,7 +103,7 @@ and open the template in the editor.
             <p:dialog widgetVar="dlgc" header=" Choisir les informations à afficher" hideEffect="explode" showEffect="explode" modal="true">
                 <h:form id="formChoix" enctype="multipart/form-data"> 
                     <p:panel id="panelChoix" header="Choix des informations">
-                        <p:panelGrid id="infoToDisplay" columns="2">
+                        <h:panelGrid id="infoToDisplay" columns="2">
                              <p:selectManyCheckbox id="infoToDisplayS1" value="#{fonctionnaireBean.listInformationToDisplay}" layout="pageDirection" columns=""  style="font-style: italic"> 
                                 <p:ajax update="selectall" listener="#{fonctionnaireBean.selectAllCancel}"/>
                                 <f:selectItem itemLabel="Matricule" itemValue="matricule" />
@@ -134,7 +134,7 @@ and open the template in the editor.
                             </p:selectBooleanCheckbox>  
                             
                             <p:commandButton id="btn" update=":tableForm:table" actionListener="#{fonctionnaireBean.createDynamicColumns()}" value="Afficher" oncomplete="PF('dlgc').hide()" process="@parent"/>                           
-                        </p:panelGrid>
+                        </h:panelGrid>
                     </p:panel>
                 </h:form>
             </p:dialog>
@@ -143,7 +143,7 @@ and open the template in the editor.
             <p:dialog widgetVar="dlgr" header=" Restaurer un fonctionnaire" hideEffect="fold" showEffect="explode" resizable="true" modal="true" >
                 <h:form id="formRestauration" enctype="multipart/form-data">                
                     <p:panel header="Confirmer la restauration">  
-                        <p:panelGrid id="restaurationGrid" columns="4" >  
+                        <h:panelGrid id="restaurationGrid" columns="4" cellspacing="5">  
                             <h:outputText value="Nom : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nom}" style="font-style: italic"/>
                             <h:outputText value="Prenom : " />  
@@ -164,23 +164,23 @@ and open the template in the editor.
                             <h:outputText value="Numéro de CNI : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.cni}" style="font-style: italic"/>
 
-                            <h:outputText value="Date d'entrée à la fonction publique: " />
+                            <h:outputText value="Date d'entrée fonc. pub. : " />
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateNaissanceFonc}" style="font-style: italic"/>
-                            <h:outputText value="     Spécialite : " />  
+                            <h:outputText value="Spécialite : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.specialite.intituleSpecialite}" style="font-style: italic"/>
 
-                            <h:outputText value="     précédemment en service à(au) : " />  
+                            <h:outputText value="précédemment en service à(au) : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.structureAttache.intituleStructure}" style="font-style: italic"/>
-                            <h:outputText value="     Au poste : " />  
+                            <h:outputText value="Au poste : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.poste.intitulePoste}" style="font-style: italic"/>
 
-                            <h:outputText value="     Arrondissement de : " />  
+                            <h:outputText value="Arrondissement de : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.arrondissement.intituleArrondissement}" style="font-style: italic"/>
-                            <h:outputText value="     Département : " />  
+                            <h:outputText value="Département : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.departement.intituleDepartement}" style="font-style: italic"/>
-                            <h:outputText value="     Poste occupé depuis le : " />  
+                            <h:outputText value="Poste occupé depuis le : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateDebutPoste}" style="font-style: italic"/>    
-                        </p:panelGrid>
+                        </h:panelGrid>
                         <p:commandButton value="Confirmer restauration" action="#{fonctionnaireBean.restaureRetraite()}"  oncomplete="PF('dlgr').hide()" update=":tableForm:table"/> 
                     </p:panel>  
                 </h:form>
@@ -190,7 +190,7 @@ and open the template in the editor.
             <p:dialog widgetVar="dlgp" header=" Profil" hideEffect="explode" showEffect="explode" modal="true" width="850">
                 <h:form id="formProfil" enctype="multipart/form-data"> 
                     <p:panel id="panelProfil" header="Profil du fonctionnaire">
-                        <p:panelGrid id="profilGrid1" columns="4">
+                        <h:panelGrid id="profilGrid1" columns="4" cellspacing="5">
                             <h:outputText value="Nom : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nom}" style="font-style: italic"/>
                             <h:outputText value="Prenom : " />  
@@ -211,9 +211,9 @@ and open the template in the editor.
                             <h:outputText value="Numéro de CNI : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.cni}" style="font-style: italic"/>
 
-                            <h:outputText value="Date d'entrée à la fonction publique : " />
+                            <h:outputText value="Date entrée fonc. pub. : " />
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.dateEntreFonctionPub}" style="font-style: italic"/>
-                            <h:outputText value="     Spécialite : " />  
+                            <h:outputText value="Spécialite : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.specialite.intituleSpecialite}" style="font-style: italic"/>
 
                             <h:outputText value="Région d'origine : " />  
@@ -222,7 +222,7 @@ and open the template in the editor.
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.departementOrigine}" style="font-style: italic"/> 
                             <h:outputText value="Arrondissement d'origine : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.arrondissementOrigine}" style="font-style: italic"/>
-                        </p:panelGrid>
+                        </h:panelGrid>
                         <h5>Différents poste occupés</h5> 
 
                         <p:dataTable var="affectationPromotion" value="#{fonctionnaireBean.listAffectationsPromotions}" id="parcours" resizableColumns="true">  

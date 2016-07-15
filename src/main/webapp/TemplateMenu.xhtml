@@ -35,7 +35,7 @@ and open the template in the editor.
                     <p:submenu label="Contractuels">  
                         <p:menuitem value="En service" action="#{orientationBean.contractuel()}"/>
                         <p:menuitem value="Retraités" action="#{orientationBean.retraiteContractuel()}"/>
-                        <p:menuitem value="Sortis de la région" action="#{orientationBean.retraiteContractuel()}" />
+                        <p:menuitem value="Sortis de la région" action="#{orientationBean.horsRegionContractuel()}" />
                     </p:submenu>  
                     <p:separator />  
                     <p:submenu label="Fonctionnaires ">  
@@ -63,6 +63,9 @@ and open the template in the editor.
                     <p:menuitem value="Importer" actionListener="#{buttonBean.save}" icon="ui-icon-disk"/>  
                     <p:menuitem value="Exporter" actionListener="#{buttonBean.update}" icon="ui-icon-arrowrefresh-1-w"/>  
                 </p:submenu> 
+                <f:facet name="options"> 
+                    <h:outputText value="PERSONNEL MINESEC EXTREME NORD " style="color:#66ccff; font-size:36px; align-content: flex-start" />
+                </f:facet>  
                 <f:facet name="options">  
                     <p:inputText style="margin-right:10px"/>  
                     <p:commandButton type="button" value="Déconnexion" icon="ui-icon-extlink" />  

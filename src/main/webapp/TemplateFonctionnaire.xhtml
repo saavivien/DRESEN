@@ -19,13 +19,14 @@ and open the template in the editor.
             <ui:include src="Menu.xhtml"/>
         </div>
         <f:view>
+            <!--Création du fonctionnaire-->
             <p:dialog widgetVar="dlg" header=" Enregistrer un nouveau fonctionnaire" hideEffect="explode" showEffect="explode" modal="true">
                 <p:ajax event="close" oncomplete="PF('wizAjouter').loadStep(PF('wizAjouter').cfg.steps [0], true)"/>
                 <h:form id="formAjouter" enctype="multipart/form-data"> 
                     <p:wizard widgetVar="wizAjouter" flowListener="#{fonctionnaireBean.onFlowProcessAjouter}" backLabel="retour" nextLabel="suivant">  
                         <p:tab id="personnelAjouterTab" title="Informations personnelles" > 
                             <p:panel id="panelAjouterInfoPerso" header="Informations personnelles" >
-                                <p:panelGrid id="panelAjouterInfoPersoGrid" columns="4">
+                                <h:panelGrid id="panelAjouterInfoPersoGrid" columns="4" cellspacing="5" style="text-align: right">
                                     <p:outputLabel value="Nom :" for="nom" />  
                                     <p:inputText id="nom" value="#{fonctionnaireBean.fonctionnaire.nom}" title="nom" required="true"/>
                                     <p:outputLabel value="Sexe :" for="sexe" /> 
@@ -50,12 +51,12 @@ and open the template in the editor.
                                     <p:inputText id="arrondissementorigine" value="#{fonctionnaireBean.fonctionnaire.arrondissementOrigine}" title="arrondissementorigine"/>
 
                                     <h:outputLabel value="Né vers: " for="datenaiss2" id="labNaiss2" />
-                                    <p:panelGrid columns="2">
+                                    <h:panelGrid columns="2">
                                         <p:selectBooleanCheckbox value="#{fonctionnaireBean.fonctionnaire.isBornArround}">
                                             <p:ajax update="datenaiss1, datenaiss2, labNaiss1, labNaiss2" />
                                         </p:selectBooleanCheckbox>
-                                        <p:inputMask id="datenaiss2" value="#{fonctionnaireBean.dateNaissanceFoncVers}" mask="9999" required="#{fonctionnaireBean.fonctionnaire.isBornArround}" disabled="#{!fonctionnaireBean.fonctionnaire.isBornArround}" size="10" />
-                                    </p:panelGrid>
+                                        <p:inputMask id="datenaiss2" value="#{fonctionnaireBean.dateNaissanceFoncVers}" mask="9999" required="#{fonctionnaireBean.fonctionnaire.isBornArround}" disabled="#{!fonctionnaireBean.fonctionnaire.isBornArround}" size="15" />
+                                    </h:panelGrid>
                                     <p:outputLabel value="Numéro de CNI :" for="numerocni" />  
                                     <p:inputText id="numerocni" value="#{fonctionnaireBean.fonctionnaire.cni}" title="numerocni" required="true"/>
 
@@ -79,14 +80,14 @@ and open the template in the editor.
                                     <p:inputText id="arrondnaissance" value="#{fonctionnaireBean.fonctionnaire.arrondNaissance}" title="arrondnaissance"/>                      
 
 
-                                </p:panelGrid>
+                                </h:panelGrid>
                             </p:panel>
                         </p:tab> 
                         <p:tab id="qualifications" title="Qualifications"> 
                             <p:panel id="panelAjouterQualification" header="Qualifications">
-                                <p:panelGrid id="panelAjouterQualificationGrid" columns="2">
+                                <h:panelGrid id="panelAjouterQualificationGrid" columns="2" >
                                     <p:outputLabel value="Spécialité :" for="specialite" />  
-                                    <p:selectOneMenu  value="#{fonctionnaireBean.idSpecialite}" label="specialite" id="specialite"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                    <p:selectOneMenu  value="#{fonctionnaireBean.idSpecialite}" label="specialite" id="specialite"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
                                         <f:selectItem itemLabel="Selectionner la spécialité" itemValue="" noSelectionOption="true"  />
                                         <f:selectItems var="custe1" value="#{fonctionnaireBean.listSpecialite}"   itemLabel="#{custe1.intituleSpecialite}" itemValue="#{custe1.id}" itemLabelEscaped="true" />
                                     </p:selectOneMenu>
@@ -109,12 +110,12 @@ and open the template in the editor.
                                     </p:selectOneMenu>
                                     <p:outputLabel value="Date de l'obtention du grade :" for="dateobgrad" />                                   
                                     <p:inputMask id="dateobgrad" value="#{fonctionnaireBean.dateDebutGrade}" mask="99/99/9999" required="true" />
-                                </p:panelGrid>
+                                </h:panelGrid>
                             </p:panel>
                         </p:tab> 
                         <p:tab id="promotion" title="Affectattion/Promotion"> 
                             <p:panel id="panelAjouterAffectPromo" header="Affectattion/Promotion">
-                                <p:panelGrid id="panelAjouterAffectPromoGrid" columns="2">
+                                <h:panelGrid id="panelAjouterAffectPromoGrid" columns="2">
                                     <p:outputLabel value="Département de la Structure :" for="departementStructure"/>       
                                     <p:selectOneMenu  id="departementStructure" value="#{fonctionnaireBean.idDepartement}" label="departementStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
                                         <p:ajax  event="change" update="arrondissementStructure" />
@@ -146,7 +147,7 @@ and open the template in the editor.
                                     </p:selectOneMenu>
                                     <p:outputLabel value="Date d'entrée en poste" for="datedebpost" />                                   
                                     <p:inputMask id="datedebpost" value="#{fonctionnaireBean.dateDebutPoste}" mask="99/99/9999" required="true" />
-                                </p:panelGrid>
+                                </h:panelGrid>
                             </p:panel>
                         </p:tab> 
                         <p:tab id="confirmationTab" title="Confirmation">  
@@ -240,7 +241,7 @@ and open the template in the editor.
                     <p:wizard widgetVar="wizModifier" flowListener="#{fonctionnaireBean.onFlowProcessAjouter}" backLabel="retour" nextLabel="suivant">  
                         <p:tab id="personnelModifierTab" title="Informations personnelles"> 
                             <p:panel id="panelModifierInfoPerso" header="Informations personnelles">
-                                <p:panelGrid id="panelModifierInfoPersoGrid" columns="4">
+                                <h:panelGrid id="panelModifierInfoPersoGrid" columns="4" style="text-align: right">
                                     <p:outputLabel value="Nom :" for="nom" />  
                                     <p:inputText id="nom" value="#{fonctionnaireBean.fonctionnaire.nom}" title="nom" required="true"/>
                                     <p:outputLabel value="Sexe :" for="sexe" /> 
@@ -265,12 +266,12 @@ and open the template in the editor.
                                     <p:inputText id="arrondissementorigine" value="#{fonctionnaireBean.fonctionnaire.arrondissementOrigine}" title="arrondissementorigine"/>
 
                                     <h:outputLabel value="Né vers: " for="datenaiss2" id="labNaiss2" />
-                                    <p:panelGrid columns="2">
+                                    <h:panelGrid columns="2">
                                         <p:selectBooleanCheckbox value="#{fonctionnaireBean.fonctionnaire.isBornArround}">
                                             <p:ajax update="datenaiss1, datenaiss2, labNaiss1, labNaiss2" />
                                         </p:selectBooleanCheckbox>
-                                        <p:inputMask id="datenaiss2" value="#{fonctionnaireBean.dateNaissanceFoncVers}" mask="9999" required="#{fonctionnaireBean.fonctionnaire.isBornArround}" disabled="#{!fonctionnaireBean.fonctionnaire.isBornArround}" size="10" />
-                                    </p:panelGrid>
+                                        <p:inputMask id="datenaiss2" value="#{fonctionnaireBean.dateNaissanceFoncVers}" mask="9999" required="#{fonctionnaireBean.fonctionnaire.isBornArround}" disabled="#{!fonctionnaireBean.fonctionnaire.isBornArround}" size="15" />
+                                    </h:panelGrid>
                                     <p:outputLabel value="Numéro de CNI :" for="numerocni" />  
                                     <p:inputText id="numerocni" value="#{fonctionnaireBean.fonctionnaire.cni}" title="numerocni" required="true"/>
 
@@ -294,12 +295,12 @@ and open the template in the editor.
                                     <p:inputText id="arrondnaissance" value="#{fonctionnaireBean.fonctionnaire.arrondNaissance}" title="arrondnaissance"/>                      
                                     <h:inputHidden id="number" value="#{fonctionnaireBean.fonctionnaire.id}" />
 
-                                </p:panelGrid>
+                                </h:panelGrid>
                             </p:panel>
                         </p:tab> 
                         <p:tab id="qualifications" title="Qualifications"> 
                             <p:panel id="panelModifierQualification" header="Qualifications">
-                                <p:panelGrid id="panelModifierQualificationGrid" columns="2">
+                                <h:panelGrid id="panelModifierQualificationGrid" columns="2">
                                     <p:outputLabel value="Spécialité :" for="specialite" />  
                                     <p:selectOneMenu  value="#{fonctionnaireBean.idSpecialite}" label="specialite" id="specialite"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
                                         <f:selectItem itemLabel="Selectionner la spécialité" itemValue="" noSelectionOption="true"  />
@@ -325,12 +326,12 @@ and open the template in the editor.
                                     <p:outputLabel value="Date de l'obtention du grade" for="dateobgrad" />                                   
                                     <p:inputMask id="dateobgrad" value="#{fonctionnaireBean.dateDebutGrade}" mask="99/99/9999" required="true" />
 
-                                </p:panelGrid>
+                                </h:panelGrid>
                             </p:panel>
                         </p:tab> 
                         <p:tab id="promotion" title="Affectattion/Promotion"> 
                             <p:panel id="panelModifierAffectPromo" header="Affectattion/Promotion">
-                                <p:panelGrid id="panelModifierAffectPromoGrid" columns="2">
+                                <h:panelGrid id="panelModifierAffectPromoGrid" columns="2">
                                     <p:outputLabel value="Département de la Structure:" for="departementStructure"/>       
                                     <p:selectOneMenu  id="departementStructure" value="#{fonctionnaireBean.idDepartement}" label="departementStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
                                         <p:ajax  event="change" update="arrondissementStructure" />
@@ -362,7 +363,7 @@ and open the template in the editor.
                                     </p:selectOneMenu>
                                     <p:outputLabel value="Date d'entrée en poste" for="datedebpost" />                                   
                                     <p:inputMask id="datedebpost" value="#{fonctionnaireBean.dateDebutPoste}" mask="99/99/9999" required="true" />
-                                </p:panelGrid>
+                                </h:panelGrid>
                             </p:panel>
                         </p:tab> 
                         <p:tab id="confirmationTab" title="Confirmation">  
@@ -451,7 +452,7 @@ and open the template in the editor.
             <p:dialog widgetVar="dlgc" header=" Choisir les informations à afficher" hideEffect="explode" showEffect="explode" modal="true">
                 <h:form id="formChoix" enctype="multipart/form-data"> 
                     <p:panel id="panelChoix" header="Choix des informations">
-                        <p:panelGrid id="infoToDisplay" columns="2">
+                        <h:panelGrid id="infoToDisplay" columns="2">
                             <p:selectManyCheckbox id="infoToDisplayS1" value="#{fonctionnaireBean.listInformationToDisplay}" layout="pageDirection"  style="font-style: italic">  
                                 <p:ajax update="selectall" listener="#{fonctionnaireBean.selectAllCancel}"/>
                                 <f:selectItem itemLabel="Matricule" itemValue="matricule" />
@@ -488,7 +489,7 @@ and open the template in the editor.
                             <p:selectBooleanCheckbox id="selectall" value="#{fonctionnaireBean.selectAll}" itemLabel="Tout cocher">  
                                 <p:ajax update="infoToDisplayS1, infoToDisplayS2" listener="#{fonctionnaireBean.selectAllMethod}"/>  
                             </p:selectBooleanCheckbox>  
-                        </p:panelGrid>                       
+                        </h:panelGrid>                       
                         <p:commandButton id="btn" update=":tableForm:table" actionListener="#{fonctionnaireBean.createDynamicColumns()}" value="Afficher" oncomplete="PF('dlgc').hide()" process="@parent"/>     
                     </p:panel>
                 </h:form>
@@ -501,7 +502,7 @@ and open the template in the editor.
                     <p:wizard widgetVar="wizAffecter" flowListener="#{fonctionnaireBean.onFlowProcessAffectation}" backLabel="retour" nextLabel="suivant">  
                         <p:tab id="promotionAffectation" title="New Affectattion/Promotion"> 
                             <p:panel id="panelNewAffectPromo" header="Affectattion/Promotion">
-                                <p:panelGrid id="panelNewAffectPromoGrid" columns="2">
+                                <h:panelGrid id="panelNewAffectPromoGrid" columns="2">
                                     <p:outputLabel value="Département de la Structure d'affectation:" for="departementStructure"/>       
                                     <p:selectOneMenu  id="departementStructure" value="#{fonctionnaireBean.idDepartement}" label="departementStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
                                         <p:ajax  event="change" update="arrondissementStructure" />
@@ -533,7 +534,7 @@ and open the template in the editor.
                                     </p:selectOneMenu>
                                     <p:outputLabel value="Date d'entrée en poste" for="datedebpost" />                                   
                                     <p:inputMask id="datedebpost" value="#{fonctionnaireBean.dateDebutPosteAffec}" mask="99/99/9999" required="true" />
-                                </p:panelGrid>
+                                </h:panelGrid>
                             </p:panel>
                         </p:tab> 
                         <p:tab id="confirmationTabAffect" title="Confirmation affectation">  
@@ -594,7 +595,7 @@ and open the template in the editor.
                     <p:wizard widgetVar="wizChangerGrade" flowListener="#{fonctionnaireBean.onFlowProcessChangerGrade}" backLabel="retour" nextLabel="suivant">  
                         <p:tab id="formChangerGradeTab" title="New Grade"> 
                             <p:panel id="panelChangerGrade" header="Changer grade">
-                                <p:panelGrid id="panelChangerGradeGrid" columns="2">
+                                <h:panelGrid id="panelChangerGradeGrid" columns="2">
                                     <p:outputLabel value="Nouveau corps:" for="corps" />  
                                     <p:selectOneMenu  value="#{fonctionnaireBean.idCorps}" label="corps" id="corps"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
                                         <p:ajax event="change" update="cadre"/>
@@ -614,7 +615,7 @@ and open the template in the editor.
                                     </p:selectOneMenu>
                                     <p:outputLabel value="Date d'obtention du nouveau grade" for="dateobgrad" />                                   
                                     <p:inputMask id="dateobgrad" value="#{fonctionnaireBean.dateDebutGradeChangerGrade}" mask="99/99/9999" required="true" />
-                                </p:panelGrid>
+                                </h:panelGrid>
                             </p:panel>
                         </p:tab> 
                         <p:tab id="confirmationTabChangerGrade" title="Confirmation du nouveau grade">  
@@ -662,7 +663,7 @@ and open the template in the editor.
             <p:dialog widgetVar="dlgp" header=" Profil" hideEffect="explode" showEffect="explode" modal="true" width="850">
                 <h:form id="formProfil" enctype="multipart/form-data"> 
                     <p:panel id="panelProfil" header="Profil du fonctionnaire">
-                        <p:panelGrid id="profilGrid1" columns="4">
+                        <h:panelGrid id="profilGrid1" columns="4" cellspacing="5">
                             <h:outputText value="Nom : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nom}" style="font-style: italic"/>
                             <h:outputText value="Prenom : " />  
@@ -683,7 +684,7 @@ and open the template in the editor.
                             <h:outputText value="Numéro de CNI : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.cni}" style="font-style: italic"/>
 
-                            <h:outputText value="Date d'entrée à la fonction publique : " />
+                            <h:outputText value="Date entrée fonc. pub. : " />
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.dateEntreFonctionPub}" style="font-style: italic"/>
                             <h:outputText value="     Spécialite : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.specialite.intituleSpecialite}" style="font-style: italic"/>
@@ -694,7 +695,7 @@ and open the template in the editor.
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.departementOrigine}" style="font-style: italic"/> 
                             <h:outputText value="Arrondissement d'origine : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.arrondissementOrigine}" style="font-style: italic"/>
-                        </p:panelGrid>
+                        </h:panelGrid>
                         <h5>Différents poste occupés</h5> 
 
                         <p:dataTable var="affectationPromotion" value="#{fonctionnaireBean.listAffectationsPromotions}" id="parcours" resizableColumns="true">  
@@ -739,15 +740,15 @@ and open the template in the editor.
                     <p:wizard widgetVar="wizRetraite" flowListener="#{fonctionnaireBean.onFlowProcessRetraite}" backLabel="retour" nextLabel="suivant">  
                         <p:tab id="formRetraiteTab" title="Mise en retraite"> 
                             <p:panel id="panelRetraite" header="Mise en retraite">
-                                <p:panelGrid id="panelRetraiteGrid" columns="2">
+                                <h:panelGrid id="panelRetraiteGrid" columns="2" cellspacing="5">
                                     <p:outputLabel value="Date de mise en retraite" for="dateRetraite" />                                   
                                     <p:inputMask id="dateRetraite" value="#{fonctionnaireBean.dateRetraite}" mask="99/99/9999" required="true" />
-                                </p:panelGrid>
+                                </h:panelGrid>
                             </p:panel>
                         </p:tab> 
                         <p:tab id="confirmationRetraite" title="confirmation retraite">
                             <p:panel id="panelProfil" header="Retraite du fonctionnaire">
-                                <p:panelGrid id="retraiteGridRetraite" columns="4" layout="grid">
+                                <h:panelGrid id="retraiteGridRetraite" columns="4" cellspacing="5">
                                     <h:outputText value="Nom : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nom}" style="font-style: italic"/>
                                     <h:outputText value="Prenom : " />  
@@ -784,7 +785,7 @@ and open the template in the editor.
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.departement.intituleDepartement}" style="font-style: italic"/>
                                     <h:outputText value="     Poste occupé depuis le : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateDebutPoste}" style="font-style: italic"/>    
-                                </p:panelGrid>
+                                </h:panelGrid>
                                 <p:commandButton value="Valider la mise en retraite" action="#{fonctionnaireBean.retraite()}"  oncomplete="PF('dlgr').hide()" update=":tableForm:table"/>
                             </p:panel>
                         </p:tab>
@@ -796,17 +797,17 @@ and open the template in the editor.
                 <p:ajax event="close" oncomplete="PF('wizSortie').loadStep(PF('wizSortie').cfg.steps [0], true)"/>
                 <h:form id="formSortie" enctype="multipart/form-data"> 
                     <p:wizard widgetVar="wizSortie" flowListener="#{fonctionnaireBean.onFlowProcessRetraite}" backLabel="retour" nextLabel="suivant">  
-                        <p:tab id="formSortieTab" title="Mise en retraite"> 
-                            <p:panel id="panelSortie" header="Mise en retraite">
-                                <p:panelGrid id="panelSortieGrid" columns="2">
+                        <p:tab id="formSortieTab" title="Date"> 
+                            <p:panel id="panelSortie" header=" Date affectation">
+                                <h:panelGrid id="panelSortieGrid" columns="2" cellspacing="5">
                                     <p:outputLabel value="Date d'affectation" for="dateSortie" />                                   
                                     <p:inputMask id="dateSortie" value="#{fonctionnaireBean.dateRetraite}" mask="99/99/9999" required="true" />
-                                </p:panelGrid>
+                                </h:panelGrid>
                             </p:panel>
                         </p:tab> 
                         <p:tab id="confirmationRetraite" title="confirmation Affectation hors région">
                             <p:panel id="panelProfil" header="Affectation du fonctionnaire hors de la région">
-                                <p:panelGrid id="retraiteGridSortie" columns="4" layout="grid">
+                                <h:panelGrid id="retraiteGridSortie" columns="4" cellspacing="5">
                                     <h:outputText value="Nom : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nom}" style="font-style: italic"/>
                                     <h:outputText value="Prenom : " />  
@@ -818,7 +819,7 @@ and open the template in the editor.
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nomJeuneFille}" style="font-style: italic"/>
 
                                     <h:outputText value="Date de naissance : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.dateNaissance}" style="font-style: italic"/>
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateNaissanceFonc}" style="font-style: italic"/>
                                     <h:outputText value="Lieu de naissance : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.lieuNaissance}" style="font-style: italic"/>
 
@@ -827,23 +828,23 @@ and open the template in the editor.
                                     <h:outputText value="Numéro de CNI : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.cni}" style="font-style: italic"/>
 
-                                    <h:outputText value="Date d'entrée à la fonction publique: " />
+                                    <h:outputText value="Date entrée fonc. pub.: " />
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.dateEntreFonctionPub}" style="font-style: italic"/>
-                                    <h:outputText value="     Spécialite : " />  
+                                    <h:outputText value="Spécialite : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.specialite.intituleSpecialite}" style="font-style: italic"/>
 
-                                    <h:outputText value="     Actuellement en service à(au) : " />  
+                                    <h:outputText value="Actuellement en service à(au) : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.structureAttache.intituleStructure}" style="font-style: italic"/>
-                                    <h:outputText value="     Au poste de : " />  
+                                    <h:outputText value="Au poste de : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.poste.intitulePoste}" style="font-style: italic"/>
 
-                                    <h:outputText value="     Arrondissement de : " />  
+                                    <h:outputText value="Arrondissement de : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.arrondissement.intituleArrondissement}" style="font-style: italic"/>
-                                    <h:outputText value="     Département : " />  
+                                    <h:outputText value="Département : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.departement.intituleDepartement}" style="font-style: italic"/>
-                                    <h:outputText value="     Poste occupé depuis le : " />  
+                                    <h:outputText value="Poste occupé depuis le : " />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateDebutPoste}" style="font-style: italic"/>    
-                                </p:panelGrid>
+                                </h:panelGrid>
                                 <p:commandButton value="Valider la sortie de la région" action="#{fonctionnaireBean.sortieRegion()}"  oncomplete="PF('dlgs').hide()" update=":tableForm:table"/>
                             </p:panel>
                         </p:tab>
@@ -855,7 +856,7 @@ and open the template in the editor.
         <f:view>
             <h:form id='tableForm'>
                 <p:contextMenu for="table">  
-                    <p:menuitem value="Nouv. fonctionnaire" actionListener="#{fonctionnaireBean.initFonctio()}" onclick="PF('dlg').show();"  icon="ui-icon-pencil"/>
+                    <p:menuitem value="Nouv. fonctionnaire" actionListener="#{fonctionnaireBean.initFonctio()}" update=":formAjouter" onclick="PF('dlg').show();"  icon="ui-icon-pencil"/>
                     <p:menuitem value="Modi. fonctionnaire" actionListener="#{fonctionnaireBean.beforeUpdateFonctio()}" update=":formModifier" onclick="PF('dl').show()" icon="ui-icon-pencil"/>  
                     <p:submenu label="Nouvel affectattion">  
                         <p:menuitem value="Dans la région" oncomplete="PF('dlga').show()"/>
@@ -868,6 +869,7 @@ and open the template in the editor.
                 </p:contextMenu> 
 
                 <p:dataTable value="#{fonctionnaireBean.findFonctionnaireActif()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" resizableColumns="true" liveResize="true" id="table" scrollable="true" rowsPerPageTemplate="10,15" selectionMode="single" selection="#{fonctionnaireBean.fonctionnaire}" rowKey="#{item.id}">
+                    <p:ajax event="onchange" listener=""/>  
                     <f:facet name="header">
                         La liste des fonctionnaires
                     </f:facet>
@@ -1062,7 +1064,7 @@ and open the template in the editor.
                             <p:dataExporter type="xls" target="table" fileName="listFonctionnaireActifs" postProcessor="#{excelDocumentBean.postProcessXLS}"/>  
                         </h:commandLink>  
 
-                     
+
                     </p:panel> 
                 </h:panelGrid>  
 
@@ -1071,7 +1073,7 @@ and open the template in the editor.
 
                 <p:toolbar>
                     <f:facet name="left">
-                        <p:commandButton type="push" actionListener="#{fonctionnaireBean.initFonctio()}" onclick="PF('dlg').show();" value="Nouveau Fonctionnaire" icon="ui-icon-disk"/>                      
+                        <p:commandButton type="push" actionListener="#{fonctionnaireBean.initFonctio()}" update=":formAjouter" onclick="PF('dlg').show();" value="Nouveau Fonctionnaire" icon="ui-icon-disk"/>                      
                         <p:commandButton type="push" actionListener="#{fonctionnaireBean.initListColumn()}" onclick="PF('dlgc').show();" value="Choix des colonnes à afficher" icon="ui-icon-disk"/>                      
                         <span class="ui-separator">
                             <span class="ui-icon ui-icon-grip-dotted-vertical" />

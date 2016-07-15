@@ -24,7 +24,7 @@ and open the template in the editor.
             <p:dialog widgetVar="dlgc" header=" Choisir les informations à afficher" hideEffect="explode" showEffect="explode" modal="true">
                 <h:form id="formChoix" enctype="multipart/form-data"> 
                     <p:panel id="panelChoix" header="Choix des informations">
-                        <p:panelGrid id="infoToDisplay" columns="2">
+                        <h:panelGrid id="infoToDisplay" columns="2">
                             <p:selectManyCheckbox id="infoToDisplayS1" value="#{fonctionnaireBean.listInformationToDisplay}" layout="pageDirection" columns=""  style="font-style: italic"> 
                                 <p:ajax update="selectall" listener="#{fonctionnaireBean.selectAllCancel}"/>
                                 <f:selectItem itemLabel="Matricule" itemValue="matricule" />
@@ -53,7 +53,7 @@ and open the template in the editor.
                                 <p:ajax update="infoToDisplayS1, infoToDisplayS2" listener="#{fonctionnaireBean.selectAllMethod}"/>  
                             </p:selectBooleanCheckbox>  
                             <p:commandButton id="btn" update=":tableForm:table" actionListener="#{fonctionnaireBean.createDynamicColumns()}" value="Afficher" oncomplete="PF('dlgc').hide()" process="@parent"/>                           
-                        </p:panelGrid>
+                        </h:panelGrid>
                     </p:panel>
                 </h:form>
             </p:dialog>
@@ -62,7 +62,7 @@ and open the template in the editor.
             <p:dialog widgetVar="dlgr" header=" Restaurer un fonctionnaire" hideEffect="fold" showEffect="explode" resizable="true" modal="true" >
                 <h:form id="formRestauration" enctype="multipart/form-data">                
                     <p:panel header="Confirmer la restauration">  
-                        <p:panelGrid id="restaurationGrid" columns="4" >  
+                        <h:panelGrid id="restaurationGrid" columns="4" cellspacing="5">  
                             <h:outputText value="Nom : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nom}" style="font-style: italic"/>
                             <h:outputText value="Prenom : " />  
@@ -99,7 +99,7 @@ and open the template in the editor.
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.departement.intituleDepartement}" style="font-style: italic"/>
                             <h:outputText value="     Poste occupé depuis le : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateDebutPoste}" style="font-style: italic"/>    
-                        </p:panelGrid>
+                        </h:panelGrid>
                         <p:commandButton value="Confirmer restauration" action="#{fonctionnaireBean.restaureRetraite()}"  oncomplete="PF('dlgr').hide()" update=":tableForm:table"/> 
                     </p:panel>  
                 </h:form>
@@ -109,7 +109,7 @@ and open the template in the editor.
             <p:dialog widgetVar="dlgp" header=" Profil" hideEffect="explode" showEffect="explode" modal="true" width="850">
                 <h:form id="formProfil" enctype="multipart/form-data"> 
                     <p:panel id="panelProfil" header="Profil du fonctionnaire">
-                        <p:panelGrid id="profilGrid1" columns="4">
+                        <h:panelGrid id="profilGrid1" columns="4" cellspacing="5">
                             <h:outputText value="Nom : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.nom}" style="font-style: italic"/>
                             <h:outputText value="Prenom : " />  
@@ -141,7 +141,7 @@ and open the template in the editor.
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.departementOrigine}" style="font-style: italic"/> 
                             <h:outputText value="Arrondissement d'origine : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.arrondissementOrigine}" style="font-style: italic"/>
-                        </p:panelGrid>
+                        </h:panelGrid>
                         <h5>Différents poste occupés</h5> 
 
                         <p:dataTable var="affectationPromotion" value="#{fonctionnaireBean.listAffectationsPromotions}" id="parcours" resizableColumns="true">  
@@ -291,7 +291,7 @@ and open the template in the editor.
                         <h:outputText value="#{item.arrondissementOrigine}"/>
                     </p:column>            
 
-                    <p:column rendered="#{fonctionnaireBean.boolSpecial}" filterBy="#{item.specialite.intituleSpecialite}" sortBy="#{item.specialite.intituleSpecialite}" width="100">
+                    <p:column rendered="#{fonctionnaireBean.boolSpecial}" filterBy="#{item.specialite.intituleSpecialite}" sortBy="#{item.specialite.intituleSpecialite}" width="150">
                         <f:facet name="header">
                             <h:outputText value="Spécialité"/>
                         </f:facet>

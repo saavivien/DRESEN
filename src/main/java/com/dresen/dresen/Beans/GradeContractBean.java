@@ -7,6 +7,7 @@ package com.dresen.dresen.Beans;
 
 import com.dresen.dresen.ServiceInterface.IGradeContractService;
 import com.dresen.dresen.entities.GradeContract;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -38,7 +39,16 @@ public class GradeContractBean {
     public GradeContract getGradeContract() {
         return gradeContract;
     }
-
+ 
+     public List ages(){
+        List listAges = new ArrayList();
+        listAges.add(45);
+        listAges.add(50);
+        listAges.add(55);
+        listAges.add(60);
+        listAges.add(65);
+        return listAges;
+    }
     public void setGradeContract(GradeContract gradeContract) {
         this.gradeContract = gradeContract;
     }

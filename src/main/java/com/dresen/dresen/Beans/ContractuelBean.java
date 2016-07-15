@@ -14,8 +14,10 @@ import com.dresen.dresen.ServiceInterface.IGradeContractService;
 import com.dresen.dresen.ServiceInterface.IPosteService;
 import com.dresen.dresen.ServiceInterface.IPromotionService;
 import com.dresen.dresen.ServiceInterface.IRangerContractService;
+import com.dresen.dresen.ServiceInterface.ISpecialiteService;
 import com.dresen.dresen.ServiceInterface.IStructureService;
 import com.dresen.dresen.entities.Affectation;
+import com.dresen.dresen.entities.AffectationPromotion;
 import com.dresen.dresen.entities.Agentp;
 import com.dresen.dresen.entities.Arrondissement;
 import com.dresen.dresen.entities.CategorieStructure;
@@ -26,6 +28,7 @@ import com.dresen.dresen.entities.Poste;
 import com.dresen.dresen.entities.Promotion;
 import com.dresen.dresen.entities.RangerContract;
 import com.dresen.dresen.entities.Sexe;
+import com.dresen.dresen.entities.Specialite;
 import com.dresen.dresen.entities.StructureAttache;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -70,31 +73,47 @@ public class ContractuelBean {
     private IArrondissementService iArrondissementService;
     @ManagedProperty(value = "#{ICategorieStructureService}")
     private ICategorieStructureService iCategorieStructureService;
+    @ManagedProperty(value = "#{ISpecialiteService}")
+    private ISpecialiteService iSpecialiteService;
 
-    private static Logger logger = Logger.getLogger(FonctionnaireBean.class.getName());
+    private static Logger logger = Logger.getLogger(ContractuelBean.class.getName());
     private Contractuel contractuel = new Contractuel();
-    private GradeContract gradeContract;
-    private RangerContract rangerContract;
-    private Promotion promotion;
-    private Poste poste;
-    private Arrondissement arrondissement;
-    private Departement departement;
-    private CategorieStructure categorieStructure;
+    private GradeContract gradeContract = new GradeContract();
+    private GradeContract gradeChangerGrade;
+    private RangerContract rangerContract = new RangerContract();
+    private RangerContract rangerContractChangerGrade;
+    private Promotion promotion = new Promotion();
+    private Promotion promotionAffec;
+    private Poste poste = new Poste(), posteAffec;
+    private Specialite specialite = new Specialite();
+//    private GradeContract gradeContract;
+//    private RangerContract rangerContract;
+//    private Promotion promotion;
+//    private Poste poste;
+    private Arrondissement arrondissement, arrondissementAffec;
+    private Departement departement, departementAffec;
+    private CategorieStructure categorieStructure, categorieStructureAffec;
     private SimpleDateFormat simpleDateFormat;
-    private Affectation affectation;
-    private StructureAttache structureAttache;
+    private Affectation affectation, affectationAffec;
+    private StructureAttache structureAttache, structureAttacheAffec;
     private List<Departement> listDepartement;
     private List<Arrondissement> listArrondissement;
+    private List<Specialite> listSpecialite;
     private List<CategorieStructure> listCategorieStructure;
     private List<StructureAttache> listStructureAttache;
     private List<Poste> listPoste;
-    private List<RangerContract> listrangerContracts;
+    private List<Affectation> listAffectations;
+    private List<Promotion> listPromotions;
+    private List<RangerContract> listRangerContracts;
     private List<GradeContract> listGradeContract;
-    private List<String> listInformationToDisplay;
-    private String dateNaissanceContract, dateEntreFoncPub, dateDebutGrade, dateDebutPoste, dateDebutPosteAffec, dateDebutAffec, dateRetraite;
-    private long idGradeContract, idRangerContract, idStructure, idPoste, idRangerFonctio, idDepartement, idArrondissement, idCategorieStructure;
+    private List<AffectationPromotion> listAffectationsPromotions;
+    private List<String> listInformationToDisplay, listInformationToDisplay1;
+    private String dateNaissanceContract, dateNaissanceContractVers, dateEntreFoncPub, dateDebutGrade, dateDebutPoste, dateDebutPosteAffec, dateDebutAffec, dateRetraite, dateDebutGradeChangerGrade;
+    ;
+    private long idGradeContract, idRangerContract, idStructure, idPoste, idDepartement, idArrondissement, idCategorieStructure, idSpecialite;
     // ces variable permettent de contrôler les colonnes à afficher dans le dataTable
-    private boolean boolMat, boolNom = true, boolPrenom = true, boolNomJeunFille, boolDateNaiss, boolLieuNaiss, boolSexe, boolCni, boolRegOri, boolDepOri, boolArrOro, boolGrade, boolDateRetraite, boolDateEntreeFoncPub, boolStrucAttach, boolPoste, boolDateAffec, boolArronStruct, boolDepartStruct;
+    private boolean boolMat, boolNom = true, boolPrenom = true, boolNomJeunFille, boolDateSortie, boolDateNaiss, boolRegionNaiss, boolAge, boolDepartNaiss, boolArrondNaiss, boolLieuNaiss, boolDiplomeEntre, boolSexe, boolCni, boolRegOri, boolDepOri, boolArrOro, boolGrade, boolSpecial, boolDateRetraite, boolDateEntreeFoncPub, boolStrucAttach, boolPoste, boolDateAffec, boolArronStruct, boolDepartStruct;
+    private boolean selectAll;
 
     public ContractuelBean() {
         idGradeContract = 0L;
@@ -143,6 +162,22 @@ public class ContractuelBean {
         this.idGradeContract = idGradeContract;
     }
 
+    public Promotion getPromotionAffec() {
+        return promotionAffec;
+    }
+
+    public void setPromotionAffec(Promotion promotionAffec) {
+        this.promotionAffec = promotionAffec;
+    }
+
+    public Specialite getSpecialite() {
+        return specialite;
+    }
+
+    public void setSpecialite(Specialite specialite) {
+        this.specialite = specialite;
+    }
+
     public long getIdRangerContract() {
         return idRangerContract;
     }
@@ -174,7 +209,6 @@ public class ContractuelBean {
     public void setContractuel(Contractuel contractuel) {
         this.contractuel = contractuel;
     }
-
 
     public IPromotionService getiPromotionService() {
         return iPromotionService;
@@ -296,6 +330,14 @@ public class ContractuelBean {
         this.dateEntreFoncPub = dateEntreFoncPub;
     }
 
+    public String getDateNaissanceContractVers() {
+        return dateNaissanceContractVers;
+    }
+
+    public void setDateNaissanceContractVers(String dateNaissanceContractVers) {
+        this.dateNaissanceContractVers = dateNaissanceContractVers;
+    }
+
     public String getDateDebutGrade() {
         return dateDebutGrade;
     }
@@ -335,15 +377,7 @@ public class ContractuelBean {
     public void setDateRetraite(String dateRetraite) {
         this.dateRetraite = dateRetraite;
     }
-
-    public long getIdRangerFonctio() {
-        return idRangerFonctio;
-    }
-
-    public void setIdRangerFonctio(long idRangerFonctio) {
-        this.idRangerFonctio = idRangerFonctio;
-    }
-
+    
     public long getIdDepartement() {
         return idDepartement;
     }
@@ -392,12 +426,60 @@ public class ContractuelBean {
         this.listCategorieStructure = listCategorieStructure;
     }
 
-    public List<RangerContract> getListrangerContracts() {
-        return listrangerContracts;
+    public GradeContract getGradeChangerGrade() {
+        return gradeChangerGrade;
     }
 
-    public void setListrangerContracts(List<RangerContract> listrangerContracts) {
-        this.listrangerContracts = listrangerContracts;
+    public void setGradeChangerGrade(GradeContract gradeChangerGrade) {
+        this.gradeChangerGrade = gradeChangerGrade;
+    }
+
+    public RangerContract getRangerContractChangerGrade() {
+        return rangerContractChangerGrade;
+    }
+
+    public void setRangerContractChangerGrade(RangerContract rangerContractChangerGrade) {
+        this.rangerContractChangerGrade = rangerContractChangerGrade;
+    }
+
+    public Affectation getAffectationAffec() {
+        return affectationAffec;
+    }
+
+    public void setAffectationAffec(Affectation affectationAffec) {
+        this.affectationAffec = affectationAffec;
+    }
+
+    public List<AffectationPromotion> getListAffectationsPromotions() {
+        return listAffectationsPromotions;
+    }
+
+    public void setListAffectationsPromotions(List<AffectationPromotion> listAffectationsPromotions) {
+        this.listAffectationsPromotions = listAffectationsPromotions;
+    }
+
+    public String getDateDebutGradeChangerGrade() {
+        return dateDebutGradeChangerGrade;
+    }
+
+    public void setDateDebutGradeChangerGrade(String dateDebutGradeChangerGrade) {
+        this.dateDebutGradeChangerGrade = dateDebutGradeChangerGrade;
+    }
+
+    public ISpecialiteService getiSpecialiteService() {
+        return iSpecialiteService;
+    }
+
+    public void setiSpecialiteService(ISpecialiteService iSpecialiteService) {
+        this.iSpecialiteService = iSpecialiteService;
+    }
+
+    public List<RangerContract> getListRangerContracts() {
+        return listRangerContracts;
+    }
+
+    public void setListRangerContracts(List<RangerContract> listRangerContracts) {
+        this.listRangerContracts = listRangerContracts;
     }
 
     public IDepartementService getiDepartementService() {
@@ -406,6 +488,22 @@ public class ContractuelBean {
 
     public void setiDepartementService(IDepartementService iDepartementService) {
         this.iDepartementService = iDepartementService;
+    }
+
+    public List<Specialite> getListSpecialite() {
+        return iSpecialiteService.findAllSpecialite();
+    }
+
+    public void setListSpecialite(List<Specialite> listSpecialite) {
+        this.listSpecialite = listSpecialite;
+    }
+
+    public long getIdSpecialite() {
+        return idSpecialite;
+    }
+
+    public void setIdSpecialite(long idSpecialite) {
+        this.idSpecialite = idSpecialite;
     }
 
     public IArrondissementService getiArrondissementService() {
@@ -536,6 +634,62 @@ public class ContractuelBean {
         this.boolRegOri = boolRegOri;
     }
 
+    public boolean isBoolDateSortie() {
+        return boolDateSortie;
+    }
+
+    public void setBoolDateSortie(boolean boolDateSortie) {
+        this.boolDateSortie = boolDateSortie;
+    }
+
+    public boolean isBoolRegionNaiss() {
+        return boolRegionNaiss;
+    }
+
+    public void setBoolRegionNaiss(boolean boolRegionNaiss) {
+        this.boolRegionNaiss = boolRegionNaiss;
+    }
+
+    public boolean isBoolAge() {
+        return boolAge;
+    }
+
+    public void setBoolAge(boolean boolAge) {
+        this.boolAge = boolAge;
+    }
+
+    public boolean isBoolDepartNaiss() {
+        return boolDepartNaiss;
+    }
+
+    public void setBoolDepartNaiss(boolean boolDepartNaiss) {
+        this.boolDepartNaiss = boolDepartNaiss;
+    }
+
+    public boolean isBoolArrondNaiss() {
+        return boolArrondNaiss;
+    }
+
+    public void setBoolArrondNaiss(boolean boolArrondNaiss) {
+        this.boolArrondNaiss = boolArrondNaiss;
+    }
+
+    public boolean isBoolDiplomeEntre() {
+        return boolDiplomeEntre;
+    }
+
+    public void setBoolDiplomeEntre(boolean boolDiplomeEntre) {
+        this.boolDiplomeEntre = boolDiplomeEntre;
+    }
+
+    public boolean isBoolSpecial() {
+        return boolSpecial;
+    }
+
+    public void setBoolSpecial(boolean boolSpecial) {
+        this.boolSpecial = boolSpecial;
+    }
+
     public boolean isBoolDepOri() {
         return boolDepOri;
     }
@@ -562,6 +716,22 @@ public class ContractuelBean {
 
     public boolean isBoolDateRetraite() {
         return boolDateRetraite;
+    }
+
+    public List<String> getListInformationToDisplay1() {
+        return listInformationToDisplay1;
+    }
+
+    public void setListInformationToDisplay1(List<String> listInformationToDisplay1) {
+        this.listInformationToDisplay1 = listInformationToDisplay1;
+    }
+
+    public boolean isSelectAll() {
+        return selectAll;
+    }
+
+    public void setSelectAll(boolean selectAll) {
+        this.selectAll = selectAll;
     }
 
     public void setBoolDateRetraite(boolean boolDateRetraite) {
@@ -623,7 +793,63 @@ public class ContractuelBean {
     public void setListInformationToDisplay(List<String> listInformationToDisplay) {
         this.listInformationToDisplay = listInformationToDisplay;
     }
-    
+
+    public Poste getPosteAffec() {
+        return posteAffec;
+    }
+
+    public void setPosteAffec(Poste posteAffec) {
+        this.posteAffec = posteAffec;
+    }
+
+    public List<Affectation> getListAffectations() {
+        return listAffectations;
+    }
+
+    public void setListAffectations(List<Affectation> listAffectations) {
+        this.listAffectations = listAffectations;
+    }
+
+    public List<Promotion> getListPromotions() {
+        return listPromotions;
+    }
+
+    public void setListPromotions(List<Promotion> listPromotions) {
+        this.listPromotions = listPromotions;
+    }
+
+    public Arrondissement getArrondissementAffec() {
+        return arrondissementAffec;
+    }
+
+    public void setArrondissementAffec(Arrondissement arrondissementAffec) {
+        this.arrondissementAffec = arrondissementAffec;
+    }
+
+    public Departement getDepartementAffec() {
+        return departementAffec;
+    }
+
+    public void setDepartementAffec(Departement departementAffec) {
+        this.departementAffec = departementAffec;
+    }
+
+    public CategorieStructure getCategorieStructureAffec() {
+        return categorieStructureAffec;
+    }
+
+    public void setCategorieStructureAffec(CategorieStructure categorieStructureAffec) {
+        this.categorieStructureAffec = categorieStructureAffec;
+    }
+
+    public StructureAttache getStructureAttacheAffec() {
+        return structureAttacheAffec;
+    }
+
+    public void setStructureAttacheAffec(StructureAttache structureAttacheAffec) {
+        this.structureAttacheAffec = structureAttacheAffec;
+    }
+
 
     /*
     ces méthodes ont pour rôle de construire tous les agents dans leur situation courrante ie. avec leur poste courrant leur structure d'attache courrante le grade courant.
@@ -636,15 +862,28 @@ public class ContractuelBean {
         return (iAffectationService.findAffectationOpenByIdAgent(agent.getId())).getStructureAttache();
     }
 
-    public GradeContract currentGradeContract(Agentp agent) {
-        return (iRangerContractService.findRangerContractOpenByIdAgent(agent.getId())).getGradeContract();
+    public String currentGradeContract(Agentp agent) {
+        return (iRangerContractService.findRangerContractOpenByIdAgent(agent.getId())).getGradeContract().getIntituleGradeContract();
     }
 
     public String currentDateNaissance(Agentp agent) {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String dateNaissance = simpleDateFormat.format(agent.getDateNaissance());
-        int age = (new Date()).getYear() - agent.getDateNaissance().getYear();
-        return dateNaissance + "(" + age + ")";
+        if (!agent.isIsBornArround()) {
+            String dateNaissance = simpleDateFormat.format(agent.getDateNaissance());
+            return dateNaissance;
+        } else {
+            int annee = agent.getDateNaissance().getYear();
+            return "vers 19" + annee;
+        }
+    }
+
+    public int currentAgeContract(Agentp agent) {
+        Date currentDate = new Date();
+        int age = currentDate.getYear() - agent.getDateNaissance().getYear();
+        if (currentDate.getMonth() < agent.getDateNaissance().getMonth() && !agent.isIsBornArround()) {
+            return age - 1;
+        }
+        return age;
     }
 
     public String currentDateEntreeFonctionPub(Agentp agent) {
@@ -685,7 +924,6 @@ public class ContractuelBean {
     /*
     fin du bloc de construction des agents dans leur situation courante. début des méthode permettant d'avoir un tableau dynamique
      */
-
     public void initListColumn() {
         boolMat = false;
         boolNom = false;
@@ -700,17 +938,65 @@ public class ContractuelBean {
         boolDepOri = false;
         boolArrOro = false;
         boolGrade = false;
+        boolSpecial = false;
         boolDateRetraite = false;
+        boolDateSortie = false;
         boolDateEntreeFoncPub = false;
         boolStrucAttach = false;
         boolPoste = false;
         boolDateAffec = false;
         boolArronStruct = false;
         boolDepartStruct = false;
+        boolArrondNaiss = false;
+        boolDepartNaiss = false;
+        boolRegionNaiss = false;
+        boolAge = false;
+        boolDiplomeEntre = false;
         listInformationToDisplay = new ArrayList<>();
+        listInformationToDisplay1 = new ArrayList<>();
+    }
+
+    public void selectAllMethod() {
+        if (selectAll) {
+            listInformationToDisplay.add("matricule");
+            listInformationToDisplay.add("nom");
+            listInformationToDisplay.add("prenom");
+            listInformationToDisplay.add("nomjeunefille");
+            listInformationToDisplay.add("datenaissance");
+            listInformationToDisplay.add("lieunaissance");
+            listInformationToDisplay.add("regionnaissance");
+            listInformationToDisplay.add("departnaissance");
+            listInformationToDisplay.add("arrondnaissance");
+            listInformationToDisplay.add("regionorigine");
+            listInformationToDisplay.add("departementorigine");
+            listInformationToDisplay.add("arrondissementorigine");
+            listInformationToDisplay.add("age");
+
+            listInformationToDisplay1.add("sexe");
+            listInformationToDisplay1.add("numerocni");
+            listInformationToDisplay1.add("grade");
+            listInformationToDisplay1.add("specialite");
+            listInformationToDisplay1.add("diplomefoncpub");
+            listInformationToDisplay1.add("dateentreefoncpub");
+            listInformationToDisplay1.add("structureattache");
+            listInformationToDisplay1.add("poste");
+            listInformationToDisplay1.add("ancienneteposte");
+            listInformationToDisplay1.add("departstructureattache");
+            listInformationToDisplay1.add("arrondstructureattache");
+            listInformationToDisplay1.add("dateretraite");
+            listInformationToDisplay1.add("datesortieregion");
+        } else {
+            listInformationToDisplay.clear();
+            listInformationToDisplay1.clear();
+        }
+    }
+
+    public void selectAllCancel() {
+        selectAll = false;
     }
 
     public void createDynamicColumns() {
+        listInformationToDisplay.addAll(listInformationToDisplay1);
         for (String column : listInformationToDisplay) {
             switch (column) {
                 case "matricule":
@@ -749,11 +1035,17 @@ public class ContractuelBean {
                 case "grade":
                     boolGrade = true;
                     break;
+                case "specialite":
+                    boolSpecial = true;
+                    break;
                 case "dateentreefoncpub":
                     boolDateEntreeFoncPub = true;
                     break;
                 case "dateretraite":
                     boolDateRetraite = true;
+                    break;
+                case "datesortieregion":
+                    boolDateSortie = true;
                     break;
                 case "structureattache":
                     boolStrucAttach = true;
@@ -770,6 +1062,21 @@ public class ContractuelBean {
                 case "departstructureattache":
                     boolDepartStruct = true;
                     break;
+                case "regionnaissance":
+                    boolRegionNaiss = true;
+                    break;
+                case "departnaissance":
+                    boolDepartNaiss = true;
+                    break;
+                case "arrondnaissance":
+                    boolArrondNaiss = true;
+                    break;
+                case "diplomefoncpub":
+                    boolDiplomeEntre = true;
+                    break;
+                case "age":
+                    boolAge = true;
+                    break;
                 default:
                     break;
 
@@ -780,17 +1087,168 @@ public class ContractuelBean {
     //this is to initialize the various element an display them before confirmation
     public void beforeConfirm() throws ParseException {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        specialite = iSpecialiteService.findSpecialiteById(idSpecialite);
         structureAttache = iStructureService.findStructureAttacheById(idStructure);
         gradeContract = iGradeContractService.findGradeContractById(idGradeContract);
         poste = iPosteService.findPosteById(idPoste);
         arrondissement = iArrondissementService.findArrondissementById(idArrondissement);
         departement = iDepartementService.findDepartementById(idDepartement);
         categorieStructure = iCategorieStructureService.findCategorieStructureById(idCategorieStructure);
-        contractuel.setDateNaissance(simpleDateFormat.parse(dateNaissanceContract));
+        if (!contractuel.isIsBornArround()) {
+            contractuel.setDateNaissance(simpleDateFormat.parse(dateNaissanceContract));
+        } else {
+            contractuel.setDateNaissance(simpleDateFormat.parse("31/12/" + dateNaissanceContractVers));
+            dateNaissanceContract = "vers " + dateNaissanceContractVers;
+        }
         contractuel.setDateEntreFonctionPub(simpleDateFormat.parse(dateEntreFoncPub));
         promotion.setDateDebutPromo(simpleDateFormat.parse(dateDebutPoste));
         affectation.setDateDebutAffect(simpleDateFormat.parse(dateDebutPoste));
         rangerContract.setDateDebutRangerContract(simpleDateFormat.parse(dateDebutGrade));
+    }
+
+    /*
+    this is aim to initialize the oneMenu to nothing before updating
+     */
+    public void beforeUpdateContract() {
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        idSpecialite = contractuel.getSpecialite().getId();
+        rangerContract = iRangerContractService.findRangerContractOpenByIdAgent(contractuel.getId());
+        gradeContract = rangerContract.getGradeContract();
+        idGradeContract = gradeContract.getId();
+        if (!contractuel.isIsBornArround()) {
+            dateNaissanceContract = simpleDateFormat.format(contractuel.getDateNaissance());
+            dateNaissanceContractVers = "";
+        } else {
+            dateNaissanceContract = "";
+            dateNaissanceContractVers = "19" + contractuel.getDateNaissance().getYear();
+        }
+        dateEntreFoncPub = simpleDateFormat.format(contractuel.getDateEntreFonctionPub());
+        dateDebutGrade = simpleDateFormat.format(rangerContract.getDateDebutRangerContract());
+        affectation = iAffectationService.findAffectationOpenByIdAgent(contractuel.getId());
+        dateDebutPoste = simpleDateFormat.format(affectation.getDateDebutAffect());
+        structureAttache = affectation.getStructureAttache();
+        idStructure = structureAttache.getId();
+        arrondissement = structureAttache.getArrondissement();
+        idArrondissement = arrondissement.getId();
+        departement = arrondissement.getDepartement();
+        idDepartement = departement.getId();
+        categorieStructure = structureAttache.getCategorieStructure();
+        idCategorieStructure = categorieStructure.getId();
+        promotion = iPromotionService.findPromotionOpenByIdAgent(contractuel.getId());
+        poste = promotion.getPoste();
+        idPoste = poste.getId();
+    }
+
+    public void beforeConfirmAffect() throws ParseException {
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        affectation = iAffectationService.findAffectationOpenByIdAgent(contractuel.getId());
+        structureAttache = affectation.getStructureAttache();
+        arrondissement = structureAttache.getArrondissement();
+        departement = arrondissement.getDepartement();
+        categorieStructure = structureAttache.getCategorieStructure();
+        promotion = iPromotionService.findPromotionOpenByIdAgent(contractuel.getId());
+        poste = promotion.getPoste();
+        dateDebutPoste = simpleDateFormat.format(affectation.getDateDebutAffect());
+
+        promotionAffec = new Promotion();
+        affectationAffec = new Affectation();
+        structureAttacheAffec = iStructureService.findStructureAttacheById(idStructure);
+        posteAffec = iPosteService.findPosteById(idPoste);
+        arrondissementAffec = iArrondissementService.findArrondissementById(idArrondissement);
+        departementAffec = iDepartementService.findDepartementById(idDepartement);
+        categorieStructureAffec = iCategorieStructureService.findCategorieStructureById(idCategorieStructure);
+        promotionAffec.setDateDebutPromo(simpleDateFormat.parse(dateDebutPosteAffec));
+        affectationAffec.setDateDebutAffect(simpleDateFormat.parse(dateDebutPosteAffec));
+    }
+
+    public void beforeConfirmChangeGrade() throws ParseException {
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        rangerContract = iRangerContractService.findRangerContractOpenByIdAgent(contractuel.getId());
+        gradeContract = rangerContract.getGradeContract();
+        dateDebutGrade = simpleDateFormat.format(rangerContract.getDateDebutRangerContract());
+
+        rangerContractChangerGrade = new RangerContract();
+        gradeChangerGrade = iGradeContractService.findGradeContractById(idGradeContract);
+        rangerContractChangerGrade.setDateDebutRangerContract(simpleDateFormat.parse(dateDebutGradeChangerGrade));
+    }
+
+    public void beforeChangerGrade() throws ParseException {
+        rangerContract = null;
+        gradeContract = null;
+        dateDebutGrade = "";
+
+        idGradeContract = 0L;
+    }
+
+    // pour le retour d'un contractuel dans la région
+    public void beforeConfirmRetourContract() throws ParseException {
+        promotionAffec = new Promotion();
+        affectationAffec = new Affectation();
+        structureAttacheAffec = iStructureService.findStructureAttacheById(idStructure);
+        posteAffec = iPosteService.findPosteById(idPoste);
+        arrondissementAffec = iArrondissementService.findArrondissementById(idArrondissement);
+        departementAffec = iDepartementService.findDepartementById(idDepartement);
+        categorieStructureAffec = iCategorieStructureService.findCategorieStructureById(idCategorieStructure);
+        promotionAffec.setDateDebutPromo(simpleDateFormat.parse(dateDebutPosteAffec));
+        affectationAffec.setDateDebutAffect(simpleDateFormat.parse(dateDebutPosteAffec));
+    }
+
+    public void beforeConfirmRetraite() throws ParseException {
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        affectation = iAffectationService.findAffectationOpenByIdAgent(contractuel.getId());
+        structureAttache = affectation.getStructureAttache();
+        arrondissement = structureAttache.getArrondissement();
+        departement = arrondissement.getDepartement();
+        promotion = iPromotionService.findPromotionOpenByIdAgent(contractuel.getId());
+        poste = promotion.getPoste();
+        affectation.setDateFinAffect(simpleDateFormat.parse(dateRetraite));
+        promotion.setDateFinPromo(simpleDateFormat.parse(dateRetraite));
+        dateDebutPoste = simpleDateFormat.format(affectation.getDateDebutAffect());
+        if (!contractuel.isIsBornArround()) {
+            dateNaissanceContract = simpleDateFormat.format(contractuel.getDateNaissance());
+        } else {
+            dateNaissanceContract = "vers 19" + contractuel.getDateNaissance().getYear();
+        }
+
+    }
+
+    public void beforeDisplayProfil() {
+        listAffectations = iAffectationService.findAffectationByIdAgent(contractuel.getId());
+        listPromotions = iPromotionService.findPromotionByIdAgent(contractuel.getId());
+        listRangerContracts = iRangerContractService.findRangerContractByIdAgent(contractuel.getId());
+        listAffectationsPromotions = new ArrayList<>();
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        if (!contractuel.isIsBornArround()) {
+            dateNaissanceContract = simpleDateFormat.format(contractuel.getDateNaissance());
+        } else {
+            dateNaissanceContract = "vers 19" + contractuel.getDateNaissance().getYear();
+        }
+
+        for (int i = 0; i < listPromotions.size(); i++) {
+            AffectationPromotion ap = new AffectationPromotion();
+            ap.setA(listAffectations.get(i));
+            ap.setP(listPromotions.get(i));
+            listAffectationsPromotions.add(ap);
+        }
+    }
+
+    public void beforeRestauration() throws ParseException {
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        affectation = iAffectationService.findLastAffectationByIdAgent(contractuel.getId());
+        structureAttache = affectation.getStructureAttache();
+        arrondissement = structureAttache.getArrondissement();
+        departement = arrondissement.getDepartement();
+        promotion = iPromotionService.findLastPromotionByIdAgent(contractuel.getId());
+        poste = promotion.getPoste();
+        affectation.setDateFinAffect(null);
+        promotion.setDateFinPromo(null);
+        dateDebutPoste = simpleDateFormat.format(affectation.getDateDebutAffect());
+        if (!contractuel.isIsBornArround()) {
+            dateNaissanceContract = simpleDateFormat.format(contractuel.getDateNaissance());
+        } else {
+            dateNaissanceContract = "vers 19" + contractuel.getDateNaissance().getYear();
+        }
+
     }
 
     public String onFlowProcessAjouter(FlowEvent event) throws ParseException {
@@ -806,12 +1264,78 @@ public class ContractuelBean {
         }
     }
 
+    public String onFlowProcessAffectation(FlowEvent event) throws ParseException {
+        logger.log(Level.INFO, "Current wizard step:{0}", event.getOldStep());
+        logger.log(Level.INFO, "Next step:{0}", event.getNewStep());
+        //  event.setPhaseId(PhaseId.phaseIdValueOf("personnel"));
+
+        if (event.getNewStep().equals("confirmationTabAffect")) {
+            beforeConfirmAffect();
+            return "confirmationTabAffect";
+        } else {
+            return event.getNewStep();
+        }
+    }
+
+    public String onFlowProcessChangerGrade(FlowEvent event) throws ParseException {
+        logger.log(Level.INFO, "Current wizard step:{0}", event.getOldStep());
+        logger.log(Level.INFO, "Next step:{0}", event.getNewStep());
+        //  event.setPhaseId(PhaseId.phaseIdValueOf("personnel"));
+
+        if (event.getNewStep().equals("confirmationTabChangerGrade")) {
+            beforeConfirmChangeGrade();
+            return "confirmationTabChangerGrade";
+        } else {
+            return event.getNewStep();
+        }
+    }
+
+    public String onFlowProcessRetraite(FlowEvent event) throws ParseException {
+        logger.log(Level.INFO, "Current wizard step:{0}", event.getOldStep());
+        logger.log(Level.INFO, "Next step:{0}", event.getNewStep());
+        //  event.setPhaseId(PhaseId.phaseIdValueOf("personnel"));
+
+        if (event.getNewStep().equals("confirmationRetraite")) {
+            beforeConfirmRetraite();
+            return "confirmationRetraite";
+        } else {
+            return event.getNewStep();
+        }
+    }
+
+    public String onFlowProcessRetourContract(FlowEvent event) throws ParseException {
+        logger.log(Level.INFO, "Current wizard step:{0}", event.getOldStep());
+        logger.log(Level.INFO, "Next step:{0}", event.getNewStep());
+        //  event.setPhaseId(PhaseId.phaseIdValueOf("personnel"));
+
+        if (event.getNewStep().equals("confirmationTabAffect")) {
+            beforeConfirmRetourContract();
+            return "confirmationTabAffect";
+        } else {
+            return event.getNewStep();
+        }
+    }
+
     public List<Sexe> sexes() {
         List<Sexe> listSexe = new ArrayList<>();
         listSexe.addAll(Arrays.asList(Sexe.values()));
         return listSexe;
     }
-
+ public List ages(){
+        List listAges = new ArrayList();
+        listAges.add(45);
+        listAges.add(50);
+        listAges.add(55);
+        listAges.add(60);
+        listAges.add(65);
+        return listAges;
+    }
+    /*
+    fin du bloc de construction des agents dans leur situation courante. début des méthode permettant d'avoir un tableau dynamique
+     */
+ /*
+    this is to reinitialize the entity contractuel before creating another
+     */
     public void initContract() {
         idDepartement = 0L;
         idGradeContract = 0L;
@@ -819,22 +1343,29 @@ public class ContractuelBean {
         idArrondissement = 0L;
         idCategorieStructure = 0L;
         idStructure = 0L;
+        idSpecialite = 0L;
         idPoste = 0L;
         promotion = new Promotion();
         affectation = new Affectation();
         rangerContract = new RangerContract();
+        contractuel = null;
         contractuel = new Contractuel();
         contractuel.setIsRetraite(false);
+        contractuel.setIsBornArround(false);
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         dateNaissanceContract = "";
+        dateNaissanceContractVers = "";
         dateEntreFoncPub = "";
         dateDebutGrade = "";
         dateDebutAffec = "";
+        dateDebutPoste = "";
     }
 
     public Contractuel createContractuel() {
         try {
+            contractuel.setSpecialite(specialite);
             iContractuelService.createContractuel(contractuel);
+
             affectation.setAgent(contractuel);
             affectation.setStructureAttache(structureAttache);
             iAffectationService.createAffectation(affectation);
@@ -859,20 +1390,29 @@ public class ContractuelBean {
         return iContractuelService.findContractuelById(contractuel.getId());
     }
 
-    public Contractuel updateContractuel() {
-        gradeContract = iGradeContractService.findGradeContractById(idGradeContract);
-        structureAttache = iStructureService.findStructureAttacheById(idStructure);
-        poste = iPosteService.findPosteById(idPoste);
-        rangerContract.setContratuel(contractuel);
-        rangerContract.setGradeContract(gradeContract);
-        affectation.setAgent(contractuel);
-        affectation.setStructureAttache(structureAttache);
-        promotion.setAgent(contractuel);
-        promotion.setPoste(poste);
-        iRangerContractService.createRangerContract(rangerContract);
-        iPromotionService.createPromotion(promotion);
-        iAffectationService.createAffectation(affectation);
-        return iContractuelService.updateContractuel(contractuel);
+    public Contractuel updateContractuel() throws Exception {
+        try {
+            specialite = iSpecialiteService.findSpecialiteById(idSpecialite);
+            contractuel.setSpecialite(specialite);
+
+            affectation.setStructureAttache(structureAttache);
+            affectation.setDateDebutAffect(simpleDateFormat.parse(dateDebutPoste));
+            iAffectationService.updateAffectation(affectation);
+
+            rangerContract.setGradeContract(gradeContract);
+            rangerContract.setDateDebutRangerContract(simpleDateFormat.parse(dateDebutGrade));
+            iRangerContractService.updateRangerContract(rangerContract);
+
+            promotion.setPoste(poste);
+            promotion.setDateDebutPromo(simpleDateFormat.parse(dateDebutPoste));
+            iPromotionService.updatePromotion(promotion);
+
+            return iContractuelService.updateContractuel(contractuel);
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("echec de modification vérifier les informations");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
     }
 
     public List<Contractuel> findAllContractuel() {
@@ -914,4 +1454,36 @@ public class ContractuelBean {
         return iContractuelService.updateContractuel(contractuel);
     }
 
+    public void affecterContractuel() {
+        try {
+            affectationAffec.setAgent(contractuel);
+            affectationAffec.setStructureAttache(structureAttacheAffec);
+            promotionAffec.setAgent(contractuel);
+            promotionAffec.setPoste(posteAffec);
+            iAffectationService.createAffectation(affectationAffec);
+            iPromotionService.createPromotion(promotionAffec);
+            affectation.setDateFinAffect(affectationAffec.getDateDebutAffect());
+            promotion.setDateFinPromo(promotionAffec.getDateDebutPromo());
+            iAffectationService.updateAffectation(affectation);
+            iPromotionService.updatePromotion(promotion);
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("echec d'affectation, vérifier les informations");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
+    }
+    public void retourContractuel() {
+        try {
+            affectationAffec.setAgent(contractuel);
+            affectationAffec.setStructureAttache(structureAttacheAffec);
+            promotionAffec.setAgent(contractuel);
+            promotionAffec.setPoste(posteAffec);
+            iAffectationService.createAffectation(affectationAffec);
+            iPromotionService.createPromotion(promotionAffec);
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("echec d'affectation vérifier les informations");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
+    }
 }
