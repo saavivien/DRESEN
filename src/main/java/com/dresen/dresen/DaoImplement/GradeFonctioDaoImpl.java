@@ -18,9 +18,16 @@ import java.util.List;
  */
 public class GradeFonctioDaoImpl extends GenericDao<GradeFonctio, Long> implements IGradeFonctioDao, Serializable{
 
+    @Override
     public List<GradeFonctio> findGradeFonctioByIdCadre(long idCadre) throws DataAccessException {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         return (getManager().createNamedQuery("GradeFonctio.findGradeFonctioByIdCadre").setParameter("param", idCadre).getResultList());
+    }
+
+    @Override
+    public GradeFonctio findGradeFonctioByIntitule(String intitule) throws DataAccessException {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (GradeFonctio)(getManager().createNamedQuery("GradeFonctio.findGradeFonctioByIntitule").setParameter("param", intitule).getSingleResult());
     }
     
 }

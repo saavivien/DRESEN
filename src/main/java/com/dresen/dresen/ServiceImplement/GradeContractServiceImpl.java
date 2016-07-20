@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class GradeContractServiceImpl implements IGradeContractService, Serializable {
+
     private IGradeContractDao iGradeContractDao;
 
     public IGradeContractDao getiGradeContractDao() {
@@ -31,9 +32,10 @@ public class GradeContractServiceImpl implements IGradeContractService, Serializ
     public void setiGradeContractDao(IGradeContractDao iGradeContractDao) {
         this.iGradeContractDao = iGradeContractDao;
     }
-    
+
+    @Override
     public GradeContract createGradeContract(GradeContract gradeContract) throws ServiceException {
-         try {
+        try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iGradeContractDao.create(gradeContract);
         } catch (DataAccessException ex) {
@@ -42,8 +44,9 @@ public class GradeContractServiceImpl implements IGradeContractService, Serializ
         }
     }
 
+    @Override
     public GradeContract findGradeContractById(Long id) throws ServiceException {
-         try {
+        try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iGradeContractDao.findById(id);
         } catch (DataAccessException ex) {
@@ -52,6 +55,7 @@ public class GradeContractServiceImpl implements IGradeContractService, Serializ
         }
     }
 
+    @Override
     public GradeContract updateGradeContract(GradeContract gradeContract) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -62,6 +66,7 @@ public class GradeContractServiceImpl implements IGradeContractService, Serializ
         }
     }
 
+    @Override
     public List<GradeContract> findAllGradeContract() throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -69,7 +74,18 @@ public class GradeContractServiceImpl implements IGradeContractService, Serializ
         } catch (DataAccessException ex) {
             Logger.getLogger(GradeContractServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la liste des gradesContracts");
-        }        
+        }
     }
-    
+
+    @Override
+    public GradeContract findGradeContractByIntitule(String intitule) throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iGradeContractDao.findGradeContractByIntitule(intitule);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(GradeContractServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible rechercher le gradeContract par l'intitulé");
+        }
+    }
+
 }

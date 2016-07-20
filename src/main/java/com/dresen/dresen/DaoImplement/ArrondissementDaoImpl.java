@@ -18,9 +18,16 @@ import java.util.List;
  */
 public class ArrondissementDaoImpl extends GenericDao<Arrondissement, Long> implements IArrondissementDao, Serializable{
 
+    @Override
     public List<Arrondissement> findArrondissementByIdDepart(long idDepart) throws DataAccessException {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         return (getManager().createNamedQuery("Arrondissement.findArrondissementByIdDepart").setParameter("param", idDepart).getResultList());
+    }
+
+    @Override
+    public Arrondissement findArrondissementByIntitule(String intitule) throws DataAccessException {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (Arrondissement)(getManager().createNamedQuery("Arrondissement.findArrondissementByIntitule").setParameter("param", intitule).getSingleResult());
     }
     
 }

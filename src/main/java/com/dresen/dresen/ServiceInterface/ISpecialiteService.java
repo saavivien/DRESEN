@@ -20,4 +20,5 @@ public interface ISpecialiteService {
     public Specialite findSpecialiteById(Long id) throws ServiceException;
     public Specialite updateSpecialite(Specialite rangerContract) throws ServiceException;
     public List<Specialite> findAllSpecialite() throws ServiceException;
+    public Specialite findSpecialiteByIntitule(String intitule) throws ServiceException;
 }

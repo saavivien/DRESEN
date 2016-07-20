@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -19,6 +21,9 @@ import javax.persistence.OneToMany;
  * @author Vivien Saa
  */
 @Entity
+@NamedQueries({ 
+    @NamedQuery(name = "Specialite.findSpecialiteByIntitule", query = "SELECT s FROM Specialite s WHERE s.intituleSpecialite = :param")
+})
 public class Specialite implements Serializable {
 
     private static final long serialVersionUID = 1L;

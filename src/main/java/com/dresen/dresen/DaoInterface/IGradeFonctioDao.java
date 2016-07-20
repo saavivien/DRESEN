@@ -14,6 +14,8 @@ import java.util.List;
  *
  * @author Vivien Saa
  */
-public interface IGradeFonctioDao extends IDao<GradeFonctio, Long>{
-         public List<GradeFonctio> findGradeFonctioByIdCadre(long idCadre) throws DataAccessException; 
+public interface IGradeFonctioDao extends IDao<GradeFonctio, Long> {
+
+    public List<GradeFonctio> findGradeFonctioByIdCadre(long idCadre) throws DataAccessException;
+    public GradeFonctio findGradeFonctioByIntitule(String intitule) throws DataAccessException;
 }

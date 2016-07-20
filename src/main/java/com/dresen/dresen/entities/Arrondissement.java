@@ -24,7 +24,9 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "Arrondissement.findArrondissementByIdDepart", query = "SELECT a FROM Arrondissement a WHERE a.departement.id = :param")       
+    @NamedQuery(name = "Arrondissement.findArrondissementByIdDepart", query = "SELECT a FROM Arrondissement a WHERE a.departement.id = :param"),
+    @NamedQuery(name = "Arrondissement.findArrondissementByIntitule", query = "SELECT a FROM Arrondissement a WHERE a.intituleArrondissement = :param")
+
 })
 public class Arrondissement implements Serializable {
 

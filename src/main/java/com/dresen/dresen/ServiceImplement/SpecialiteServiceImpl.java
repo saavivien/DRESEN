@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class SpecialiteServiceImpl implements ISpecialiteService, Serializable {
+
     private ISpecialiteDao iSpecialiteDao;
 
     public ISpecialiteDao getiSpecialiteDao() {
@@ -31,8 +32,8 @@ public class SpecialiteServiceImpl implements ISpecialiteService, Serializable {
     public void setiSpecialiteDao(ISpecialiteDao iSpecialiteDao) {
         this.iSpecialiteDao = iSpecialiteDao;
     }
-    
 
+    @Override
     public Specialite createSpecialite(Specialite specialite) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -43,6 +44,7 @@ public class SpecialiteServiceImpl implements ISpecialiteService, Serializable {
         }
     }
 
+    @Override
     public Specialite findSpecialiteById(Long id) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -50,9 +52,10 @@ public class SpecialiteServiceImpl implements ISpecialiteService, Serializable {
         } catch (DataAccessException ex) {
             Logger.getLogger(SpecialiteServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible de trouver la specialite par son id");
-        }    
+        }
     }
 
+    @Override
     public Specialite updateSpecialite(Specialite specialite) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -63,6 +66,7 @@ public class SpecialiteServiceImpl implements ISpecialiteService, Serializable {
         }
     }
 
+    @Override
     public List<Specialite> findAllSpecialite() throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -70,7 +74,18 @@ public class SpecialiteServiceImpl implements ISpecialiteService, Serializable {
         } catch (DataAccessException ex) {
             Logger.getLogger(SpecialiteServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la liste des specialites");
-        }      
+        }
     }
-    
+
+    @Override
+    public Specialite findSpecialiteByIntitule(String intitule) throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iSpecialiteDao.findSpecialiteByIntitule(intitule);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(SpecialiteServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible rechercher la specialité dont l'intitulé est passé en paramètre");
+        }
+    }
+
 }

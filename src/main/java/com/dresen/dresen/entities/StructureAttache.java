@@ -23,7 +23,8 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "StructureAttache.findStructureAttacheByCategorieAndArrondissement", query = "SELECT sa FROM StructureAttache sa WHERE sa.arrondissement.id = :param1 AND sa.categorieStructure.id = :param2")       
+    @NamedQuery(name = "StructureAttache.findStructureAttacheByCategorieAndArrondissement", query = "SELECT sa FROM StructureAttache sa WHERE sa.arrondissement.id = :param1 AND sa.categorieStructure.id = :param2"),
+    @NamedQuery(name = "StructureAttache.findStructureAttacheByIntitule", query = "SELECT sa FROM StructureAttache sa WHERE sa.intituleStructure = :param")
 })
 public class StructureAttache implements Serializable {
 

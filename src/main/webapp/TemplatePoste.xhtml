@@ -37,7 +37,7 @@ and open the template in the editor.
             </p:dialog>
             <p:dialog widgetVar="dl" header=" Modifier un Poste" hideEffect="fold" showEffect="explode" resizable="true" modal="true">
                 <h:form id="formModifier" enctype="multipart/form-data">                
-                    <p:panelGrid columns="2" id="panelGModifier">
+                    <h:panelGrid columns="2" id="panelGModifier">
                         <p:outputLabel value="Intitulé du Poste:" for="intitule" />
                         <p:inputText id="intitule" value="#{posteBean.poste.intitulePoste}" title="Intitule" />
                         <p:outputLabel value="Code/Abréviation du Poste:" for="code" />
@@ -47,7 +47,7 @@ and open the template in the editor.
                             <f:selectItems var="categorie" itemLabel="#{categorie.intituleCategorieStructure}" value="#{posteBean.listCategorieStructure}"/>
                         </p:selectManyCheckbox>
                         <h:inputHidden id="number" value="#{posteBean.poste.id}" />
-                    </p:panelGrid>
+                    </h:panelGrid>
                     <p:commandButton value="Modifier" action="#{posteBean.updatePoste()}"  oncomplete="PF('dl').hide()" update=":tableForm:table" />
                 </h:form>
             </p:dialog> 
@@ -80,7 +80,7 @@ and open the template in the editor.
                     </p:column>
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="Structure concernées"/>
+                            <h:outputText value="Structures concernées"/>
                         </f:facet>
                         <p:dataList value="#{posteBean.listPosteStructures(item)}" var="posteStructure" type="ordered" >  
                             #{posteStructure.categorieStructure} 

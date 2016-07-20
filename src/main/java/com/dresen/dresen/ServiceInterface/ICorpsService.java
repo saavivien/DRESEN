@@ -20,5 +20,5 @@ public interface ICorpsService {
     public Corps findCorpsById(Long id) throws ServiceException;
     public Corps updateCorps(Corps corps) throws ServiceException;
     public List<Corps> findAllCorps() throws ServiceException;
-    
+    public Corps findCorpsByIntitule(String intitule) throws ServiceException; 
 }

@@ -21,4 +21,5 @@ public interface IGradeFonctioService {
     public GradeFonctio updateGradeFonctio(GradeFonctio gradeFonctio) throws ServiceException;
     public List<GradeFonctio> findAllGradeFonctio() throws ServiceException;
     public List<GradeFonctio> findGradeFonctioByIdCadre(long idCadre) throws ServiceException;
+    public GradeFonctio findGradeFonctioByIntitule(String intitule) throws ServiceException;
 }

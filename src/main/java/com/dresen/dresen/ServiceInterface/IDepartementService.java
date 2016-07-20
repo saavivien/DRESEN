@@ -28,5 +28,5 @@ public interface IDepartementService {
     public Departement findDepartementById(Long id) throws ServiceException;
     public Departement updateDepartement(Departement departement) throws ServiceException;
     public List<Departement> findAllDepartement() throws ServiceException;
-
+    public Departement findDepartementByIntitule(String intitule) throws ServiceException;
 }

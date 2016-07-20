@@ -868,8 +868,7 @@ and open the template in the editor.
 
                 </p:contextMenu> 
 
-                <p:dataTable value="#{fonctionnaireBean.findFonctionnaireActif()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" resizableColumns="true" liveResize="true" id="table" scrollable="true" rowsPerPageTemplate="10,15" selectionMode="single" selection="#{fonctionnaireBean.fonctionnaire}" rowKey="#{item.id}">
-                    <p:ajax event="onchange" listener=""/>  
+                <p:dataTable value="#{fonctionnaireBean.findFonctionnaireActif()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" resizableColumns="true" liveResize="true" id="table" scrollable="true" rowsPerPageTemplate="10,15" selectionMode="single" selection="#{fonctionnaireBean.fonctionnaire}" rowKey="#{item.id}">                    
                     <f:facet name="header">
                         La liste des fonctionnaires
                     </f:facet>

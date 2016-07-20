@@ -68,18 +68,7 @@ public class PosteBean {
     public void setListPosteStructures(List<PosteStructure> listPosteStructures) {
         this.listPosteStructures = listPosteStructures;
     }
-    /**
-     * this to built up a string containing the list of structure of this post in order to display it in the datatable
-     * @return 
-     */
-    public String listStructure() {
-        String listStructure = "";
-        for(PosteStructure lisPos:listPosteStructures){
-            listStructure = listStructure+", "+lisPos.getCategorieStructure().getIntituleCategorieStructure();
-         } 
-        return listStructure;
-    }
-
+    
     public Poste getPoste() {
         return poste;
     }

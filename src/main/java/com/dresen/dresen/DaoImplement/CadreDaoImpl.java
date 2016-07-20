@@ -18,8 +18,15 @@ import java.util.List;
  */
 public class CadreDaoImpl extends GenericDao<Cadre, Long> implements ICadreDao, Serializable{
 
+    @Override
     public List<Cadre> findCadreByIdCorps(long idCorps) throws DataAccessException {
         return (getManager().createNamedQuery("Cadre.findCadreByIdCorps").setParameter("param", idCorps).getResultList());
+    }
+
+    @Override
+    public Cadre findCadreByIntitule(String intitule) throws DataAccessException {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (Cadre)(getManager().createNamedQuery("Cadre.findCadreByIntitule").setParameter("param", intitule).getSingleResult());
     }
     
 }

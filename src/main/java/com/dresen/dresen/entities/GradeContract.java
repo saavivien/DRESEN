@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 /**
@@ -20,6 +22,9 @@ import javax.persistence.OneToMany;
  * @author Vivien Saa
  */
 @Entity
+@NamedQueries({ 
+    @NamedQuery(name = "GradeContract.findGradeContractByIntitule", query = "SELECT gc FROM GradeContract gc WHERE gc.intituleGradeContract = :param")
+})
 public class GradeContract implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -5,6 +5,7 @@
  */
 package com.dresen.dresen.DaoInterface;
 
+import com.douwe.generic.dao.DataAccessException;
 import com.douwe.generic.dao.IDao;
 import com.dresen.dresen.entities.Specialite;
 
@@ -13,5 +14,5 @@ import com.dresen.dresen.entities.Specialite;
  * @author Vivien Saa
  */
 public interface ISpecialiteDao extends IDao<Specialite, Long>{
-    
+    public Specialite findSpecialiteByIntitule(String intitule) throws DataAccessException;
 }

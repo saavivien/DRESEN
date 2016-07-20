@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class GradeFonctioServiceImpl implements IGradeFonctioService, Serializable {
 
-   private IGradeFonctioDao iGradeFonctioDao;
+    private IGradeFonctioDao iGradeFonctioDao;
 
     public IGradeFonctioDao getiGradeFonctioDao() {
         return iGradeFonctioDao;
@@ -32,9 +32,10 @@ public class GradeFonctioServiceImpl implements IGradeFonctioService, Serializab
     public void setiGradeFonctioDao(IGradeFonctioDao iGradeFonctioDao) {
         this.iGradeFonctioDao = iGradeFonctioDao;
     }
-    
+
+    @Override
     public GradeFonctio createGradeFonctio(GradeFonctio gradefonctio) throws ServiceException {
-         try {
+        try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iGradeFonctioDao.create(gradefonctio);
         } catch (DataAccessException ex) {
@@ -43,8 +44,9 @@ public class GradeFonctioServiceImpl implements IGradeFonctioService, Serializab
         }
     }
 
+    @Override
     public GradeFonctio findGradeFonctioById(Long id) throws ServiceException {
-         try {
+        try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iGradeFonctioDao.findById(id);
         } catch (DataAccessException ex) {
@@ -53,6 +55,7 @@ public class GradeFonctioServiceImpl implements IGradeFonctioService, Serializab
         }
     }
 
+    @Override
     public GradeFonctio updateGradeFonctio(GradeFonctio gradeFonctio) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -63,6 +66,7 @@ public class GradeFonctioServiceImpl implements IGradeFonctioService, Serializab
         }
     }
 
+    @Override
     public List<GradeFonctio> findAllGradeFonctio() throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -70,9 +74,10 @@ public class GradeFonctioServiceImpl implements IGradeFonctioService, Serializab
         } catch (DataAccessException ex) {
             Logger.getLogger(GradeFonctioServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la liste des gradesFonctionnaires");
-        }        
+        }
     }
 
+    @Override
     public List<GradeFonctio> findGradeFonctioByIdCadre(long idCadre) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -82,5 +87,16 @@ public class GradeFonctioServiceImpl implements IGradeFonctioService, Serializab
             throw new ServiceException("impossible de lister les grade Fonctionnaires liés au cadre");
         }
     }
-    
+
+    @Override
+    public GradeFonctio findGradeFonctioByIntitule(String intitule) throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iGradeFonctioDao.findGradeFonctioByIntitule(intitule);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(GradeFonctioServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible de lister le grade Fonctionnaire liés par l'intitulé");
+        }
+    }
+
 }

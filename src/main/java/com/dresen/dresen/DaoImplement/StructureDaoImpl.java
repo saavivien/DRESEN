@@ -16,11 +16,18 @@ import java.util.List;
  *
  * @author Vivien Saa
  */
-public class StructureDaoImpl extends GenericDao<StructureAttache, Long> implements IStructureDao, Serializable{
+public class StructureDaoImpl extends GenericDao<StructureAttache, Long> implements IStructureDao, Serializable {
 
+    @Override
     public List<StructureAttache> findStructureAttacheByCategorieAndArrondissement(long idArrondissement, long idCategorie) throws DataAccessException {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         return (getManager().createNamedQuery("StructureAttache.findStructureAttacheByCategorieAndArrondissement").setParameter("param1", idArrondissement).setParameter("param2", idCategorie).getResultList());
     }
-    
+
+    @Override
+    public StructureAttache findStructureAttacheByIntitule(String intitule) throws DataAccessException {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (StructureAttache)(getManager().createNamedQuery("StructureAttache.findStructureAttacheByIntitule").setParameter("param", intitule).getSingleResult());
+    }
+
 }

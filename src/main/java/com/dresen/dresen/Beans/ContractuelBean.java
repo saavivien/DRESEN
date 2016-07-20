@@ -30,6 +30,7 @@ import com.dresen.dresen.entities.RangerContract;
 import com.dresen.dresen.entities.Sexe;
 import com.dresen.dresen.entities.Specialite;
 import com.dresen.dresen.entities.StructureAttache;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ import org.primefaces.event.FlowEvent;
  */
 @ManagedBean
 @ViewScoped
-public class ContractuelBean {
+public class ContractuelBean implements Serializable{
 
     @ManagedProperty(value = "#{IContractuelService}")
     private IContractuelService iContractuelService;
@@ -1231,6 +1232,7 @@ public class ContractuelBean {
             listAffectationsPromotions.add(ap);
         }
     }
+    
 
     public void beforeRestauration() throws ParseException {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");

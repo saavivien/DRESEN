@@ -21,4 +21,5 @@ public interface ICadreService {
     public Cadre updateCadre(Cadre cadre) throws ServiceException;
     public List<Cadre> findAllCadre() throws ServiceException;  
     public List<Cadre> findCadreByIdCorps(long idCorps) throws ServiceException;
+    public Cadre findCadreByIntitule(String intitule) throws ServiceException;
 }

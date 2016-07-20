@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class ArrondissementServiceImpl implements IArrondissementService, Serializable {
+
     private IArrondissementDao iArrondissementDao;
 
     public IArrondissementDao getiArrondissementDao() {
@@ -32,8 +33,7 @@ public class ArrondissementServiceImpl implements IArrondissementService, Serial
         this.iArrondissementDao = iArrondissementDao;
     }
 
-    
-    
+    @Override
     public Arrondissement createArrondissement(Arrondissement arrondissement) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -44,6 +44,7 @@ public class ArrondissementServiceImpl implements IArrondissementService, Serial
         }
     }
 
+    @Override
     public Arrondissement findArrondissementById(Long id) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -51,9 +52,10 @@ public class ArrondissementServiceImpl implements IArrondissementService, Serial
         } catch (DataAccessException ex) {
             Logger.getLogger(ArrondissementServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher l'arrondissement par l'id");
-        }    
+        }
     }
 
+    @Override
     public Arrondissement updateArrondissement(Arrondissement arrondissement) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -61,9 +63,10 @@ public class ArrondissementServiceImpl implements IArrondissementService, Serial
         } catch (DataAccessException ex) {
             Logger.getLogger(ArrondissementServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible de mettre à l'arrondissement");
-        }        
+        }
     }
 
+    @Override
     public List<Arrondissement> findAllArrondissement() throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -71,9 +74,10 @@ public class ArrondissementServiceImpl implements IArrondissementService, Serial
         } catch (DataAccessException ex) {
             Logger.getLogger(ArrondissementServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la liste des arrondissements");
-        }        
+        }
     }
 
+    @Override
     public List<Arrondissement> findArrondissementByIdDepart(long idDepart) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -81,7 +85,18 @@ public class ArrondissementServiceImpl implements IArrondissementService, Serial
         } catch (DataAccessException ex) {
             Logger.getLogger(ArrondissementServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la liste des arrondissements du département");
-        }        
+        }
     }
-    
+
+    @Override
+    public Arrondissement findArrondissementByIntitule(String intitule) throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iArrondissementDao.findArrondissementByIntitule(intitule);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(ArrondissementServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible rechercher l'arrondissements par l'intitulé");
+        }
+    }
+
 }

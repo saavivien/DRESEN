@@ -16,5 +16,5 @@ import java.util.List;
  */
 public interface ICadreDao extends IDao<Cadre, Long>{
     public List<Cadre> findCadreByIdCorps(long idCorps) throws DataAccessException;
-    
+    public Cadre findCadreByIntitule(String intitule) throws DataAccessException;
 }

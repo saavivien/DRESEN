@@ -40,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -100,10 +101,11 @@ public class FonctionnaireBean implements Serializable {
     private boolean selectAll;
     private static Logger logger = Logger.getLogger(FonctionnaireBean.class.getName());
     // ces variable permettent de contrôler les colonnes à afficher dans le dataTable
-    private boolean boolMat, boolNom = true, boolPrenom = true, boolNomJeunFille, boolDateSortie, boolDateNaiss, boolRegionNaiss, boolAge, boolDepartNaiss, boolArrondNaiss, boolCadre, boolCorps, boolLieuNaiss, boolDiplomeEntre, boolSexe, boolCni, boolRegOri, boolDepOri, boolArrOro, boolGrade, boolSpecial, boolDateRetraite, boolDateEntreeFoncPub, boolStrucAttach, boolPoste, boolDateAffec, boolArronStruct, boolDepartStruct;
+    private boolean boolMat, boolNom = true, boolPrenom = true, boolNomJeunFille, boolDateSortie, boolDateNaiss, boolRegionNaiss, boolAge, boolDepartNaiss, boolArrondNaiss, boolCadre, boolCorps, boolLieuNaiss, boolDiplomeEntre, boolSexe, boolCni, boolRegOri, boolDepOri, boolArrOro, boolGrade, boolSpecial, boolDateRetraite, boolDateEntreeFoncPub, boolStrucAttach, boolPoste, boolDateAffec, boolArronStruct, boolDepartStruct, boolNotif;
     private List<Corps> listCorps;
     private List<Cadre> listCadre;
     private List<Fonctionnaire> listFonctionnaires;
+    private List<Fonctionnaire> listFonctioRetraiteMensuel;
     private List<GradeFonctio> listGradeFonctio;
     private List<Specialite> listSpecialite;
     private List<Departement> listDepartement;
@@ -414,6 +416,14 @@ public class FonctionnaireBean implements Serializable {
         return iDepartementService;
     }
 
+    public List<Fonctionnaire> getListFonctioRetraiteMensuel() {
+        return listFonctioRetraiteMensuel;
+    }
+
+    public void setListFonctioRetraiteMensuel(List<Fonctionnaire> listFonctioRetraiteMensuel) {
+        this.listFonctioRetraiteMensuel = listFonctioRetraiteMensuel;
+    }
+    
     public void setiDepartementService(IDepartementService iDepartementService) {
         this.iDepartementService = iDepartementService;
     }
@@ -978,31 +988,35 @@ public class FonctionnaireBean implements Serializable {
         this.boolDiplomeEntre = boolDiplomeEntre;
     }
 
+    public boolean isBoolNotif() {
+        return boolNotif;
+    }
+
+    public void setBoolNotif(boolean boolNotif) {
+        this.boolNotif = boolNotif;
+    }
+
     /*
     ces méthodes ont pour rôle de construire tous les agents dans leur situation courrante ie. avec leur poste courrant leur structure d'attache courrante le grade courant.
      */
-    public String currentPoste(Agentp agent) {
-        return (iPromotionService.findPromotionOpenByIdAgent(agent.getId())).getPoste().getIntitulePoste();
+    public Poste currentPoste(Agentp agent) {
+        return (iPromotionService.findPromotionOpenByIdAgent(agent.getId())).getPoste();
     }
 
-    public String currentStructureAttache(Agentp agent) {
-        return (iAffectationService.findAffectationOpenByIdAgent(agent.getId())).getStructureAttache().getIntituleStructure();
+    public StructureAttache currentStructureAttache(Agentp agent) {
+        return (iAffectationService.findAffectationOpenByIdAgent(agent.getId())).getStructureAttache();
     }
 
-    public String currentGradeFonctio(Agentp agent) {
-        return (iRangerFonctioService.findRangerFonctioOpenByIdAgent(agent.getId())).getGradeFonctio().getIntituleGradeFonctio();
+    public GradeFonctio currentGradeFonctio(Agentp agent) {
+        return (iRangerFonctioService.findRangerFonctioOpenByIdAgent(agent.getId())).getGradeFonctio();
     }
 
-    public String currentCadreFonctio(Agentp agent) {
-        return (iRangerFonctioService.findRangerFonctioOpenByIdAgent(agent.getId())).getGradeFonctio().getCadre().getIntituleCadre();
+    public Cadre currentCadreFonctio(Agentp agent) {
+        return (iRangerFonctioService.findRangerFonctioOpenByIdAgent(agent.getId())).getGradeFonctio().getCadre();
     }
 
-    public String currentCorpsFonctio(Agentp agent) {
-        return (iRangerFonctioService.findRangerFonctioOpenByIdAgent(agent.getId())).getGradeFonctio().getCadre().getCorps().getIntituleCorps();
-    }
-
-    public String currentFonctio(Agentp agent) {
-        return (iRangerFonctioService.findRangerFonctioOpenByIdAgent(agent.getId())).getGradeFonctio().getCadre().getCorps().getIntituleCorps();
+    public Corps currentCorpsFonctio(Agentp agent) {
+        return (iRangerFonctioService.findRangerFonctioOpenByIdAgent(agent.getId())).getGradeFonctio().getCadre().getCorps();
     }
 
     public String currentDateNaissance(Agentp agent) {
@@ -1052,28 +1066,14 @@ public class FonctionnaireBean implements Serializable {
         }
     }
 
-    public String currentLasteRetraite(Fonctionnaire agent) throws Exception {
-        try {
-            simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            return simpleDateFormat.format(iAffectationService.findLastAffectationByIdAgent(agent.getId()).getDateFinAffect());
-        } catch (Exception e) {
-            throw e;
-        }
+    public Arrondissement currentArrondissement(Agentp agent) {
+        return (iAffectationService.findAffectationOpenByIdAgent(agent.getId())).getStructureAttache().getArrondissement();
     }
 
-    public String currentArrondissement(Agentp agent) {
-        return (iAffectationService.findAffectationOpenByIdAgent(agent.getId())).getStructureAttache().getArrondissement().getIntituleArrondissement();
+    public Departement currentDepartement(Agentp agent) {
+        return (iAffectationService.findAffectationOpenByIdAgent(agent.getId())).getStructureAttache().getArrondissement().getDepartement();
     }
-
-    public String currentDepartement(Agentp agent) {
-        return (iAffectationService.findAffectationOpenByIdAgent(agent.getId())).getStructureAttache().getArrondissement().getDepartement().getIntituleDepartement();
-    }
-
-    public String dateToString(Date date) {
-        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        return simpleDateFormat.format(date);
-    }
-
+    
     /*
     fin du bloc de construction des agents dans leur situation courante. début des méthode permettant d'avoir un tableau dynamique
      */
@@ -1668,4 +1668,13 @@ public class FonctionnaireBean implements Serializable {
             throw e;
         }
     }
+//    public void retraiteMensuelFonctio(){
+//        listFonctioRetraiteMensuel = iFonctionnaireService.findFonctionnaireActif();
+//        for (Fonctionnaire fonctio : listFonctioRetraiteMensuel) {
+//            if(currentAgeFonctio(fonctio) < currentGradeFonctio(fonctio).getRetraite())
+//                listFonctioRetraiteMensuel.remove(fonctio);
+//        }
+//        if(!listFonctioRetraiteMensuel.isEmpty())
+//            boolNotif = true;
+//    }
 }

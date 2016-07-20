@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class CorpsServiceImpl implements ICorpsService, Serializable {
+
     private ICorpsDao iCorpsDao;
 
     public ICorpsDao getiCorpsDao() {
@@ -31,9 +32,8 @@ public class CorpsServiceImpl implements ICorpsService, Serializable {
     public void setiCorpsDao(ICorpsDao iCorpsDao) {
         this.iCorpsDao = iCorpsDao;
     }
-    
-    
 
+    @Override
     public Corps createCorps(Corps corps) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -44,6 +44,7 @@ public class CorpsServiceImpl implements ICorpsService, Serializable {
         }
     }
 
+    @Override
     public Corps findCorpsById(Long id) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -54,6 +55,7 @@ public class CorpsServiceImpl implements ICorpsService, Serializable {
         }
     }
 
+    @Override
     public Corps updateCorps(Corps corps) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -64,6 +66,7 @@ public class CorpsServiceImpl implements ICorpsService, Serializable {
         }
     }
 
+    @Override
     public List<Corps> findAllCorps() throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -71,7 +74,18 @@ public class CorpsServiceImpl implements ICorpsService, Serializable {
         } catch (DataAccessException ex) {
             Logger.getLogger(CorpsServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la liste des corps");
-        }        
+        }
     }
-    
+
+    @Override
+    public Corps findCorpsByIntitule(String intitule) throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iCorpsDao.findCorpsByIntitule(intitule);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(CorpsServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible rechercher le corps par l'intitulé");
+        }
+    }
+
 }

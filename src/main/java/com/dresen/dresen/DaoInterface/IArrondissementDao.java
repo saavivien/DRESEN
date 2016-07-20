@@ -16,5 +16,6 @@ import java.util.List;
  */
 public interface IArrondissementDao extends IDao<Arrondissement, Long>{
     public List<Arrondissement> findArrondissementByIdDepart(long idDepart) throws DataAccessException;
+    public Arrondissement findArrondissementByIntitule (String intitule) throws DataAccessException;
     
 }

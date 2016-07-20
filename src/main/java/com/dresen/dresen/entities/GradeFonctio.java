@@ -22,7 +22,8 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQueries({ 
-    @NamedQuery(name = "GradeFonctio.findGradeFonctioByIdCadre", query = "SELECT gf FROM GradeFonctio gf WHERE gf.cadre.id = :param")
+    @NamedQuery(name = "GradeFonctio.findGradeFonctioByIdCadre", query = "SELECT gf FROM GradeFonctio gf WHERE gf.cadre.id = :param"),
+    @NamedQuery(name = "GradeFonctio.findGradeFonctioByIntitule", query = "SELECT gf FROM GradeFonctio gf WHERE gf.intituleGradeFonctio = :param")
 })
 public class GradeFonctio implements Serializable {
 

@@ -5,6 +5,7 @@
  */
 package com.dresen.dresen.DaoInterface;
 
+import com.douwe.generic.dao.DataAccessException;
 import com.douwe.generic.dao.IDao;
 import com.dresen.dresen.entities.Departement;
 
@@ -13,5 +14,6 @@ import com.dresen.dresen.entities.Departement;
  * @author Vivien Saa
  */
 public interface IDepartementDao extends IDao<Departement, Long> {
+    public Departement findDepartementByIntitule(String intitule) throws DataAccessException;
     
 }

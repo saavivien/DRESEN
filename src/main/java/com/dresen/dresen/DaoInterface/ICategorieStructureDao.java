@@ -13,8 +13,8 @@ import com.dresen.dresen.entities.CategorieStructure;
  *
  * @author Vivien Saa
  */
-public interface ICategorieStructureDao extends IDao<CategorieStructure, Long>{
-        public CategorieStructure findCategorieStructureByName(String name)throws DataAccessException;
+public interface ICategorieStructureDao extends IDao<CategorieStructure, Long> {
 
-    
+    public CategorieStructure findCategorieStructureByName(String name) throws DataAccessException;
+
 }

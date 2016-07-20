@@ -22,21 +22,21 @@ and open the template in the editor.
 
             <p:dialog widgetVar="dlg" header=" Enregistrer un nouveau Departement" hideEffect="explode" showEffect="explode" modal="true">
                 <h:form id="formAjouter" enctype="multipart/form-data" >
-                     <p:panelGrid id="panelAjouter" columns="2">
+                     <h:panelGrid id="panelAjouter" columns="2">
                                 <p:outputLabel value="Nom du département:" for="intitule" />
                                 <p:inputText id="intitule" value="#{departementBean.departement.intituleDepartement}" title="Intitule" required="true"/>
                                
-                    </p:panelGrid>
+                    </h:panelGrid>
                     <p:commandButton value="Enregistrer" action="#{departementBean.createDepartement()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
                 </h:form>
             </p:dialog>
             <p:dialog widgetVar="dl" header=" Modifier un Departement" hideEffect="fold" showEffect="explode" resizable="true" modal="true">
                 <h:form id="formModifier" enctype="multipart/form-data">                
-                    <p:panelGrid columns="2" id="panelGModifier">
+                    <h:panelGrid columns="2" id="panelGModifier">
                                 <p:outputLabel value="Nom du département:" for="intitule" />
                                 <p:inputText id="intitule" value="#{departementBean.departement.intituleDepartement}" title="Intitule" required="true" />
                                 <h:inputHidden id="number" value="#{departementBean.departement.id}" />
-                    </p:panelGrid>
+                    </h:panelGrid>
                     <p:commandButton value="Modifier" action="#{departementBean.updateDepartement()}"  oncomplete="PF('dl').hide()" update=":tableForm:table" />
                 </h:form>
             </p:dialog> 

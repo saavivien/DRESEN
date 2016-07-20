@@ -21,7 +21,7 @@ and open the template in the editor.
          <f:view>
             <p:dialog widgetVar="dlg" header=" Enregistrer une nouveau grade pour les fonctionnaires " hideEffect="explode" showEffect="explode" modal="true">
                 <h:form id="formAjouter" >
-                     <p:panelGrid id="panelAjouter" columns="2">
+                     <h:panelGrid id="panelAjouter" columns="2">
                                 <p:outputLabel value="Corps:" />       
                                 <p:selectOneMenu id="corps" value="#{gradeFonctioBean.idCorps}"  label="corps"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
                                     <p:ajax  event="change" update="cadre" />
@@ -45,14 +45,14 @@ and open the template in the editor.
                                     <f:selectItems var="age" value="#{gradeFonctioBean.ages()}" itemLabelEscaped="true"/> 
                                 </p:selectOneMenu>  
                                 <p:commandButton value="Enregistrer" action="#{gradeFonctioBean.createGradeFonction()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table" id="bout1" ajax="false" />
-                    </p:panelGrid>
+                    </h:panelGrid>
                     
                     
                 </h:form>
             </p:dialog>
              <p:dialog widgetVar="dl" header=" Modifier une structure d'attache" hideEffect="fold" showEffect="explode" resizable="true" modal="true">
                 <h:form id="formModifier" enctype="multipart/form-data">                
-                    <p:panelGrid id="panelGModifier" columns="2">
+                    <h:panelGrid id="panelGModifier" columns="2">
                                  <p:outputLabel value="Corps:" />       
                                 <p:selectOneMenu id="corps" value="#{gradeFonctioBean.idCorps}"  label="corps"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
                                     <p:ajax  event="change" update="cadre" />
@@ -77,7 +77,7 @@ and open the template in the editor.
                                 </p:selectOneMenu>  
                                 <h:inputHidden id="number" value="#{gradeFonctioBean.gradeFonctio.id}" />
                                 <p:commandButton value="Modifier" action="#{gradeFonctioBean.updateGradeFonction()}"  oncomplete="PF('dl').hide()" update=":tableForm:table" id="bout1" ajax="false" />
-                    </p:panelGrid>
+                    </h:panelGrid>
                 </h:form>
             </p:dialog> 
         </f:view>

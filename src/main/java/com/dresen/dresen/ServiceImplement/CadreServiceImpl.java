@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class CadreServiceImpl implements ICadreService, Serializable {
+
     private ICadreDao iCadreDao;
 
     public ICadreDao getiCadreDao() {
@@ -31,9 +32,8 @@ public class CadreServiceImpl implements ICadreService, Serializable {
     public void setiCadreDao(ICadreDao iCadreDao) {
         this.iCadreDao = iCadreDao;
     }
-    
-    
 
+    @Override
     public Cadre createCadre(Cadre cadre) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -44,6 +44,7 @@ public class CadreServiceImpl implements ICadreService, Serializable {
         }
     }
 
+    @Override
     public Cadre findCadreById(Long id) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -51,9 +52,10 @@ public class CadreServiceImpl implements ICadreService, Serializable {
         } catch (DataAccessException ex) {
             Logger.getLogger(CadreServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher le cadre par l'id");
-        }       
+        }
     }
 
+    @Override
     public Cadre updateCadre(Cadre cadre) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -61,9 +63,10 @@ public class CadreServiceImpl implements ICadreService, Serializable {
         } catch (DataAccessException ex) {
             Logger.getLogger(CadreServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible de mettre à le cadre à jour");
-        }        
-    }    
+        }
+    }
 
+    @Override
     public List<Cadre> findAllCadre() throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -71,16 +74,27 @@ public class CadreServiceImpl implements ICadreService, Serializable {
         } catch (DataAccessException ex) {
             Logger.getLogger(CadreServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la liste des cadres");
-        }        
-    }    
-
-    public List<Cadre> findCadreByIdCorps(long idCorps) throws ServiceException {
-       try{// throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-           return iCadreDao.findCadreByIdCorps(idCorps);
-       }catch(DataAccessException ex){
-           Logger.getLogger(CadreServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-           throw new ServiceException("impossible rechercher la liste des cadres du coprs");
-       }
+        }
     }
-    
+
+    @Override
+    public List<Cadre> findCadreByIdCorps(long idCorps) throws ServiceException {
+        try {// throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iCadreDao.findCadreByIdCorps(idCorps);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(CadreServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible rechercher la liste des cadres du coprs");
+        }
+    }
+
+    @Override
+    public Cadre findCadreByIntitule(String intitule) throws ServiceException {
+        try {// throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iCadreDao.findCadreByIntitule(intitule);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(CadreServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible rechercher le cadres par l'intitulé");
+        }
+    }
+
 }

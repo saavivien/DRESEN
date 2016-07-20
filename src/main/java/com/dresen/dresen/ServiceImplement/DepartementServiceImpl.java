@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class DepartementServiceImpl implements IDepartementService, Serializable {
-   
+
     IDepartementDao iDepartementDao;
 
     public IDepartementDao getiDepartementDao() {
@@ -32,46 +32,60 @@ public class DepartementServiceImpl implements IDepartementService, Serializable
     public void setiDepartementDao(IDepartementDao iDepartementDao) {
         this.iDepartementDao = iDepartementDao;
     }
-    
-    
+
+    @Override
     public Departement createDepartement(Departement departement) throws ServiceException {
         try {
             //    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iDepartementDao.create(departement);
         } catch (DataAccessException ex) {
             Logger.getLogger(DepartementServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-             throw new ServiceException("impossible de faire le create");
+            throw new ServiceException("impossible de faire le create");
         }
     }
 
+    @Override
     public Departement findDepartementById(Long id) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iDepartementDao.findById(id);
         } catch (DataAccessException ex) {
             Logger.getLogger(DepartementServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-             throw new ServiceException("impossible de creer le département");
+            throw new ServiceException("impossible de creer le département");
         }
-        
+
     }
 
+    @Override
     public Departement updateDepartement(Departement departement) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iDepartementDao.update(departement);
         } catch (DataAccessException ex) {
             Logger.getLogger(DepartementServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-             throw new ServiceException("impossible de mettre à jour le département");
+            throw new ServiceException("impossible de mettre à jour le département");
         }
     }
 
+    @Override
     public List<Departement> findAllDepartement() throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iDepartementDao.findAll();
         } catch (DataAccessException ex) {
             Logger.getLogger(DepartementServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-             throw new ServiceException("impossible de lister tous les dépattements");
+            throw new ServiceException("impossible de lister tous les dépattements");
+        }
+    }
+
+    @Override
+    public Departement findDepartementByIntitule(String intitule) throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iDepartementDao.findDepartementByIntitule(intitule);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(DepartementServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible de trouver le dépattement par l'intitulé");
         }
     }
 }

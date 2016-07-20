@@ -14,11 +14,6 @@ import org.apache.poi.hssf.util.HSSFColor;
 //POI libraries to read Excel File
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  *
@@ -34,10 +29,7 @@ public class ExcelDocumentBean implements Serializable {
         HSSFRow header = sheet.getRow(0);
         int nbCol = header.getPhysicalNumberOfCells();
         int nbRow = sheet.getPhysicalNumberOfRows();
-        //HSSFRow row1 = sheet.createRow(0);
-        //Aply style for all cells
-        //Iterator rowIter = sheet.rowIterator();
-//        boolean first_row = true;
+
         HSSFCellStyle cell_style = wb.createCellStyle();
         cell_style.setVerticalAlignment(HSSFCellStyle.ALIGN_CENTER);
         cell_style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
@@ -58,16 +50,13 @@ public class ExcelDocumentBean implements Serializable {
             for (int j = 0; j < nbCol; j++) {
                 HSSFCell cell = row.getCell(j);
                 if (i == 0) { //Header cell
-                   // cell.;
                     cell.setCellStyle(cell_styleForHeader);
                 } else {
                     cell.setCellStyle(cell_style);
                 }
             }
-//            first_row = false;
         }
         //Resize columns to fit data
-//        int noOfColumns = sheet.getRow(0).getLastCellNum();
         for (int i = 0; i < nbCol; i++) {
             sheet.autoSizeColumn(i);
         }

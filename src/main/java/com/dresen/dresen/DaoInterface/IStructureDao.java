@@ -16,4 +16,5 @@ import java.util.List;
  */
 public interface IStructureDao extends IDao<StructureAttache, Long>{
     public List<StructureAttache> findStructureAttacheByCategorieAndArrondissement(long idArrondissement, long idCategorie) throws DataAccessException;  
+    public StructureAttache findStructureAttacheByIntitule(String intitule) throws DataAccessException;
 }

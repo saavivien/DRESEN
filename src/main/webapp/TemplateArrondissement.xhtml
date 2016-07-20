@@ -21,7 +21,7 @@ and open the template in the editor.
          <f:view>
             <p:dialog widgetVar="dlg" header=" Enregistrer un nouvel Arrondissement" hideEffect="explode" showEffect="explode" modal="true">
                 <h:form id="formAjouter" enctype="multipart/form-data">
-                     <p:panelGrid id="panelAjouter" columns="2">
+                     <h:panelGrid id="panelAjouter" columns="2">
                                 <p:outputLabel value="Département:" />       
                                 <p:selectOneMenu  value="#{arrondissementBean.idDepartement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
                                     <f:selectItem itemLabel="Selectionner le département" itemValue="" noSelectionOption="true"  />
@@ -29,13 +29,13 @@ and open the template in the editor.
                                 </p:selectOneMenu>
                                 <p:outputLabel value="Intitule :" for="intitule" />
                                 <p:inputText id="intitule" value="#{arrondissementBean.arrondissement.intituleArrondissement}" title="intitulé" />
-                    </p:panelGrid>
+                    </h:panelGrid>
                     <p:commandButton value="Enregistrer" action="#{arrondissementBean.createArrondissement()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
                 </h:form>
             </p:dialog>
             <p:dialog widgetVar="dl" header=" Modifier un Arrondissement" hideEffect="fold" showEffect="explode" resizable="true" modal="true">
                 <h:form id="formModifier" enctype="multipart/form-data">                
-                    <p:panelGrid columns="2" id="panelGModifier">
+                    <h:panelGrid columns="2" id="panelGModifier">
                                 <p:outputLabel value="Département:" />       
                                 <p:selectOneMenu  value="#{arrondissementBean.idDepartement}" label="programme"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
                                     <f:selectItem itemLabel="Selectionner le département" itemValue="" noSelectionOption="true"  />
@@ -45,7 +45,7 @@ and open the template in the editor.
                                <p:outputLabel value="Intitule :" for="intitule" />
                                <p:inputText id="intitule" value="#{arrondissementBean.arrondissement.intituleArrondissement}" title="intitulé" />
                                <h:inputHidden id="number" value="#{arrondissementBean.arrondissement.id}" />
-                    </p:panelGrid>
+                    </h:panelGrid>
                     <p:commandButton value="Modifier" action="#{arrondissementBean.updateArrondissement()}"  oncomplete="PF('dl').hide()" update=":tableForm:table" />
                 </h:form>
             </p:dialog> 

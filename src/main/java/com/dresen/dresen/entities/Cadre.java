@@ -24,7 +24,8 @@ import javax.persistence.OneToMany;
  */
 @Entity
 @NamedQueries({ 
-    @NamedQuery(name = "Cadre.findCadreByIdCorps", query = "SELECT c FROM Cadre c WHERE c.corps.id = :param")
+    @NamedQuery(name = "Cadre.findCadreByIdCorps", query = "SELECT c FROM Cadre c WHERE c.corps.id = :param"),
+    @NamedQuery(name = "Cadre.findCadreByIntitule", query = "SELECT c FROM Cadre c WHERE c.intituleCadre = :param")
 })
 public class Cadre implements Serializable {
 

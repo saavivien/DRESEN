@@ -18,11 +18,13 @@ import java.util.List;
  */
 public class PosteDaoImpl extends GenericDao<Poste, Long> implements IPosteDao, Serializable{
     
+    @Override
     public Poste findPosteByName(String name)throws DataAccessException{
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         return (Poste)(getManager().createNamedQuery("Poste.findPosteByName").setParameter("param", name).getSingleResult());    
     }
 
+    @Override
     public List<Poste> findPosteByCategorieStructure(long idCategorieStructure) throws DataAccessException {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         return (getManager().createNamedQuery("Poste.findPosteByCategorieStructure").setParameter("param", idCategorieStructure).getResultList());

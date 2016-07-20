@@ -20,6 +20,7 @@ public interface IArrondissementService{
     public Arrondissement findArrondissementById(Long id) throws ServiceException;
     public Arrondissement updateArrondissement(Arrondissement arrondissement) throws ServiceException;
     public List<Arrondissement> findAllArrondissement() throws ServiceException;
-    public List<Arrondissement> findArrondissementByIdDepart(long idDepart) throws ServiceException;  
+    public List<Arrondissement> findArrondissementByIdDepart(long idDepart) throws ServiceException; 
+    public Arrondissement findArrondissementByIntitule (String intitule) throws ServiceException;
 }
 

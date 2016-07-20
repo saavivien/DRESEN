@@ -20,5 +20,5 @@ public interface IGradeContractService {
     public GradeContract findGradeContractById(Long id) throws ServiceException;
     public GradeContract updateGradeContract(GradeContract gradeContract) throws ServiceException;
     public List<GradeContract> findAllGradeContract() throws ServiceException;
-    
+    public GradeContract findGradeContractByIntitule(String intitule) throws ServiceException;
 }
