@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class RangerContractServiceImpl implements IRangerContractService, Serializable {
+
     private IRangerContractDao iRangerContractDao;
 
     public IRangerContractDao getiRangerContractDao() {
@@ -31,8 +32,8 @@ public class RangerContractServiceImpl implements IRangerContractService, Serial
     public void setiRangerContractDao(IRangerContractDao iRangerContractDao) {
         this.iRangerContractDao = iRangerContractDao;
     }
-    
 
+    @Override
     public RangerContract createRangerContract(RangerContract rangerContract) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -40,9 +41,10 @@ public class RangerContractServiceImpl implements IRangerContractService, Serial
         } catch (DataAccessException ex) {
             Logger.getLogger(RangerContractServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible de créer la RangerContract");
-        } 
+        }
     }
 
+    @Override
     public RangerContract findRangerContractById(Long id) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -53,6 +55,7 @@ public class RangerContractServiceImpl implements IRangerContractService, Serial
         }
     }
 
+    @Override
     public RangerContract updateRangerContract(RangerContract rangerContract) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -60,9 +63,10 @@ public class RangerContractServiceImpl implements IRangerContractService, Serial
         } catch (DataAccessException ex) {
             Logger.getLogger(RangerContractServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible mettre la RangerContract à jour");
-        }        
+        }
     }
 
+    @Override
     public List<RangerContract> findAllRangerContract() throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -70,9 +74,10 @@ public class RangerContractServiceImpl implements IRangerContractService, Serial
         } catch (DataAccessException ex) {
             Logger.getLogger(RangerContractServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la liste des RangerContracts");
-        }       
+        }
     }
 
+    @Override
     public List<RangerContract> findRangerContractByIdAgent(long idAgent) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -80,9 +85,10 @@ public class RangerContractServiceImpl implements IRangerContractService, Serial
         } catch (DataAccessException ex) {
             Logger.getLogger(RangerContractServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la liste des des RangerContracts d'un contractuel");
-        }      
+        }
     }
 
+    @Override
     public RangerContract findRangerContractOpenByIdAgent(long idAgent) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -90,9 +96,10 @@ public class RangerContractServiceImpl implements IRangerContractService, Serial
         } catch (DataAccessException ex) {
             Logger.getLogger(RangerContractServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la RangerContract ouverte de l'agent");
-        }       
+        }
     }
 
+    @Override
     public List<RangerContract> findAllRangerContractOpen() throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -100,6 +107,18 @@ public class RangerContractServiceImpl implements IRangerContractService, Serial
         } catch (DataAccessException ex) {
             Logger.getLogger(RangerContractServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher les RangerContract ouvertes");
-        }           }
-    
+        }
+    }
+
+    @Override
+    public RangerContract findLastRangerContractByIdAgent(long idAgent) throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iRangerContractDao.findLastRangerContractByIdAgent(idAgent);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(RangerContractServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible rechercher la dernière RangerContract");
+        }
+    }
+
 }

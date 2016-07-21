@@ -40,11 +40,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -101,7 +99,7 @@ public class FonctionnaireBean implements Serializable {
     private boolean selectAll;
     private static Logger logger = Logger.getLogger(FonctionnaireBean.class.getName());
     // ces variable permettent de contrôler les colonnes à afficher dans le dataTable
-    private boolean boolMat, boolNom = true, boolPrenom = true, boolNomJeunFille, boolDateSortie, boolDateNaiss, boolRegionNaiss, boolAge, boolDepartNaiss, boolArrondNaiss, boolCadre, boolCorps, boolLieuNaiss, boolDiplomeEntre, boolSexe, boolCni, boolRegOri, boolDepOri, boolArrOro, boolGrade, boolSpecial, boolDateRetraite, boolDateEntreeFoncPub, boolStrucAttach, boolPoste, boolDateAffec, boolArronStruct, boolDepartStruct, boolNotif;
+    private boolean boolMat, boolNom = true, boolPrenom = true, boolNomJeunFille, boolDateSortie, boolDateNaiss, boolRegionNaiss, boolAge, boolDepartNaiss, boolArrondNaiss, boolCadre, boolCorps, boolLieuNaiss, boolDiplomeEntre, boolSexe, boolCni, boolRegOri, boolDepOri, boolArrOro, boolGrade, boolSpecial, boolDateRetraite, boolDateEntreeFoncPub, boolStrucAttach, boolPoste, boolDateAffec, boolArronStruct, boolDepartStruct, boolNotif, boolLieuCni, boolDateCni, boolTel;
     private List<Corps> listCorps;
     private List<Cadre> listCadre;
     private List<Fonctionnaire> listFonctionnaires;
@@ -126,7 +124,7 @@ public class FonctionnaireBean implements Serializable {
     private Departement departement;
     private CategorieStructure categorieStructure;
     private SimpleDateFormat simpleDateFormat;
-    private String dateNaissanceFonc, dateNaissanceFoncVers, dateEntreFoncPub, dateDebutGrade, dateDebutPoste, dateDebutPosteAffec, dateDebutAffec, dateRetraite, dateDebutGradeChangerGrade;
+    private String dateNaissanceFonc, dateNaissanceFoncVers, dateEntreFoncPub, dateDebutGrade, dateDebutPoste, dateDebutPosteAffec, dateDebutAffec, dateRetraite, dateDebutGradeChangerGrade, dateCni;
     private StructureAttache structureAttacheAffec;
     private Poste posteAffec;
     private Arrondissement arrondissementAffec;
@@ -423,7 +421,7 @@ public class FonctionnaireBean implements Serializable {
     public void setListFonctioRetraiteMensuel(List<Fonctionnaire> listFonctioRetraiteMensuel) {
         this.listFonctioRetraiteMensuel = listFonctioRetraiteMensuel;
     }
-    
+
     public void setiDepartementService(IDepartementService iDepartementService) {
         this.iDepartementService = iDepartementService;
     }
@@ -668,6 +666,14 @@ public class FonctionnaireBean implements Serializable {
         this.dateDebutPosteAffec = dateDebutPosteAffec;
     }
 
+    public String getDateCni() {
+        return dateCni;
+    }
+
+    public void setDateCni(String dateCni) {
+        this.dateCni = dateCni;
+    }
+
     public String getDateRetraite() {
         return dateRetraite;
     }
@@ -822,6 +828,30 @@ public class FonctionnaireBean implements Serializable {
 
     public boolean isBoolCni() {
         return boolCni;
+    }
+
+    public boolean isBoolLieuCni() {
+        return boolLieuCni;
+    }
+
+    public void setBoolLieuCni(boolean boolLieuCni) {
+        this.boolLieuCni = boolLieuCni;
+    }
+
+    public boolean isBoolDateCni() {
+        return boolDateCni;
+    }
+
+    public void setBoolDateCni(boolean boolDateCni) {
+        this.boolDateCni = boolDateCni;
+    }
+
+    public boolean isBoolTel() {
+        return boolTel;
+    }
+
+    public void setBoolTel(boolean boolTel) {
+        this.boolTel = boolTel;
     }
 
     public void setBoolCni(boolean boolCni) {
@@ -1047,6 +1077,11 @@ public class FonctionnaireBean implements Serializable {
         return dateEntreePoste + "(" + anciennetePoste + ")";
     }
 
+    public String currentDateCni(Agentp agent) {
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return simpleDateFormat.format(agent.getDateDelivranceCni());
+    }
+
     public String currentDateEntreeFonctionPub(Agentp agent) {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String dateEntreeFonctionPub = simpleDateFormat.format(agent.getDateEntreFonctionPub());
@@ -1073,7 +1108,7 @@ public class FonctionnaireBean implements Serializable {
     public Departement currentDepartement(Agentp agent) {
         return (iAffectationService.findAffectationOpenByIdAgent(agent.getId())).getStructureAttache().getArrondissement().getDepartement();
     }
-    
+
     /*
     fin du bloc de construction des agents dans leur situation courante. début des méthode permettant d'avoir un tableau dynamique
      */
@@ -1081,8 +1116,10 @@ public class FonctionnaireBean implements Serializable {
         boolMat = false;
         boolNom = false;
         boolPrenom = false;
+        boolTel = false;
+        boolLieuCni = false;
+        boolDateCni = false;
         boolNomJeunFille = false;
-        boolDateNaiss = false;
         boolDateNaiss = false;
         boolLieuNaiss = false;
         boolSexe = false;
@@ -1126,6 +1163,8 @@ public class FonctionnaireBean implements Serializable {
             listInformationToDisplay.add("departementorigine");
             listInformationToDisplay.add("arrondissementorigine");
             listInformationToDisplay.add("age");
+            listInformationToDisplay.add("sexe");
+            listInformationToDisplay.add("numerocni");
 
             listInformationToDisplay1.add("sexe");
             listInformationToDisplay1.add("numerocni");
@@ -1142,6 +1181,9 @@ public class FonctionnaireBean implements Serializable {
             listInformationToDisplay1.add("arrondstructureattache");
             listInformationToDisplay1.add("dateretraite");
             listInformationToDisplay1.add("datesortieregion");
+            listInformationToDisplay1.add("numtel");
+            listInformationToDisplay1.add("datecni");
+            listInformationToDisplay1.add("lieucni");
         } else {
             listInformationToDisplay.clear();
             listInformationToDisplay1.clear();
@@ -1240,6 +1282,15 @@ public class FonctionnaireBean implements Serializable {
                 case "age":
                     boolAge = true;
                     break;
+                case "numtel":
+                    boolTel = true;
+                    break;
+                case "datecni":
+                    boolDateCni = true;
+                    break;
+                case "lieucni":
+                    boolLieuCni = true;
+                    break;
                 default:
                     break;
 
@@ -1280,6 +1331,7 @@ public class FonctionnaireBean implements Serializable {
         dateDebutGrade = "";
         dateDebutAffec = "";
         dateDebutPoste = "";
+        dateCni = "";
     }
 
     /*
@@ -1317,6 +1369,7 @@ public class FonctionnaireBean implements Serializable {
         promotion = iPromotionService.findPromotionOpenByIdAgent(fonctionnaire.getId());
         poste = promotion.getPoste();
         idPoste = poste.getId();
+        dateCni = simpleDateFormat.format(fonctionnaire.getDateDelivranceCni());
     }
 
     //this is to initialize the various element an display them before confirmation
@@ -1341,6 +1394,7 @@ public class FonctionnaireBean implements Serializable {
         promotion.setDateDebutPromo(simpleDateFormat.parse(dateDebutPoste));
         affectation.setDateDebutAffect(simpleDateFormat.parse(dateDebutPoste));
         rangerFonctio.setDateDebutRangerFonctio(simpleDateFormat.parse(dateDebutGrade));
+        dateCni = simpleDateFormat.format(fonctionnaire.getDateDelivranceCni());
     }
 
     public void beforeConfirmAffect() throws ParseException {
@@ -1442,7 +1496,7 @@ public class FonctionnaireBean implements Serializable {
         }
 
     }
-    
+
     public void beforeDisplayProfil() {
         listAffectations = iAffectationService.findAffectationByIdAgent(fonctionnaire.getId());
         listPromotions = iPromotionService.findPromotionByIdAgent(fonctionnaire.getId());

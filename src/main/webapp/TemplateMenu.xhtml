@@ -60,7 +60,7 @@ and open the template in the editor.
                     <p:menuitem value="Grade Contractuel" action="#{orientationBean.gradeContract()}" icon="ui-icon-extlink"/>
                 </p:submenu>
                 <p:submenu label="Import/Export">  
-                    <p:menuitem value="Importer" actionListener="#{buttonBean.save}" icon="ui-icon-disk"/>  
+                    <p:menuitem value="Importer" actionListener="#{orientationBean.importation()}" icon="ui-icon-disk"/>  
                     <p:menuitem value="Exporter" actionListener="#{buttonBean.update}" icon="ui-icon-arrowrefresh-1-w"/>  
                 </p:submenu> 
                 <f:facet name="options"> 

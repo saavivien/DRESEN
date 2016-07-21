@@ -24,7 +24,5 @@ public interface IRangerFonctioDao extends IDao<RangerFonctio, Long>{
     public List<RangerFonctio> findRangerFonctioByIdAgent(long idAgent) throws DataAccessException;
     public RangerFonctio findRangerFonctioOpenByIdAgent(long idAgent) throws DataAccessException;
     public List<RangerFonctio> findAllRangerFonctioOpen() throws DataAccessException;
-
-    
-    
+    public RangerFonctio findLastRangerFonctioByIdAgent(long idAgent) throws DataAccessException;
 }

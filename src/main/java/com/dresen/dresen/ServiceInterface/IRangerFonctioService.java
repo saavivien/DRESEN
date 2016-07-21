@@ -5,7 +5,6 @@
  */
 package com.dresen.dresen.ServiceInterface;
 
-import com.dresen.dresen.entities.RangerContract;
 import com.dresen.dresen.entities.RangerFonctio;
 import java.util.List;
 import org.hibernate.service.spi.ServiceException;
@@ -22,5 +21,5 @@ public interface IRangerFonctioService {
     public List<RangerFonctio> findRangerFonctioByIdAgent(long idAgent) throws ServiceException;
     public List<RangerFonctio> findAllRangerFonctioOpen() throws ServiceException;
     public RangerFonctio findRangerFonctioOpenByIdAgent(long idAgent) throws ServiceException;
-    
+    public RangerFonctio findLastRangerFonctioByIdAgent(long idAgent) throws ServiceException;
 }

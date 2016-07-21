@@ -120,7 +120,7 @@ public class Cadre implements Serializable {
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.Cadre[ id=" + id + " ]";
+        return intituleCadre;
     }
     
 }

@@ -109,11 +109,11 @@ public class ContractuelBean implements Serializable{
     private List<GradeContract> listGradeContract;
     private List<AffectationPromotion> listAffectationsPromotions;
     private List<String> listInformationToDisplay, listInformationToDisplay1;
-    private String dateNaissanceContract, dateNaissanceContractVers, dateEntreFoncPub, dateDebutGrade, dateDebutPoste, dateDebutPosteAffec, dateDebutAffec, dateRetraite, dateDebutGradeChangerGrade;
+    private String dateNaissanceContract, dateNaissanceContractVers, dateEntreFoncPub, dateDebutGrade, dateDebutPoste, dateDebutPosteAffec, dateDebutAffec, dateRetraite, dateDebutGradeChangerGrade, dateCni;
     ;
     private long idGradeContract, idRangerContract, idStructure, idPoste, idDepartement, idArrondissement, idCategorieStructure, idSpecialite;
     // ces variable permettent de contrôler les colonnes à afficher dans le dataTable
-    private boolean boolMat, boolNom = true, boolPrenom = true, boolNomJeunFille, boolDateSortie, boolDateNaiss, boolRegionNaiss, boolAge, boolDepartNaiss, boolArrondNaiss, boolLieuNaiss, boolDiplomeEntre, boolSexe, boolCni, boolRegOri, boolDepOri, boolArrOro, boolGrade, boolSpecial, boolDateRetraite, boolDateEntreeFoncPub, boolStrucAttach, boolPoste, boolDateAffec, boolArronStruct, boolDepartStruct;
+    private boolean boolMat, boolNom = true, boolPrenom = true, boolNomJeunFille, boolDateSortie, boolDateNaiss, boolRegionNaiss, boolAge, boolDepartNaiss, boolArrondNaiss, boolLieuNaiss, boolDiplomeEntre, boolSexe, boolCni, boolRegOri, boolDepOri, boolArrOro, boolGrade, boolSpecial, boolDateRetraite, boolDateEntreeFoncPub, boolStrucAttach, boolPoste, boolDateAffec, boolArronStruct, boolDepartStruct, boolLieuCni, boolDateCni, boolTel;
     private boolean selectAll;
 
     public ContractuelBean() {
@@ -563,6 +563,39 @@ public class ContractuelBean implements Serializable{
         ContractuelBean.logger = logger;
     }
 
+    public String getDateCni() {
+        return dateCni;
+    }
+
+    public void setDateCni(String dateCni) {
+        this.dateCni = dateCni;
+    }
+
+    public boolean isBoolLieuCni() {
+        return boolLieuCni;
+    }
+
+    public void setBoolLieuCni(boolean boolLieuCni) {
+        this.boolLieuCni = boolLieuCni;
+    }
+
+    public boolean isBoolDateCni() {
+        return boolDateCni;
+    }
+
+    public void setBoolDateCni(boolean boolDateCni) {
+        this.boolDateCni = boolDateCni;
+    }
+
+    public boolean isBoolTel() {
+        return boolTel;
+    }
+
+    public void setBoolTel(boolean boolTel) {
+        this.boolTel = boolTel;
+    }
+
+    
     public boolean isBoolMat() {
         return boolMat;
     }
@@ -904,6 +937,10 @@ public class ContractuelBean implements Serializable{
         int anciennetePoste = (new Date()).getYear() - (affect).getDateDebutAffect().getYear();
         return dateEntreePoste + "(" + anciennetePoste + ")";
     }
+    public String currentDateCni(Agentp agent) {
+        simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return simpleDateFormat.format(agent.getDateDelivranceCni());
+    }
 
     public String currentDateDepartRetraite(Contractuel agent) throws Exception {
         try {
@@ -933,6 +970,9 @@ public class ContractuelBean implements Serializable{
         boolDateNaiss = false;
         boolDateNaiss = false;
         boolLieuNaiss = false;
+        boolTel = false;
+        boolLieuCni = false;
+        boolDateCni = false;
         boolSexe = false;
         boolCni = false;
         boolRegOri = false;
@@ -972,7 +1012,8 @@ public class ContractuelBean implements Serializable{
             listInformationToDisplay.add("departementorigine");
             listInformationToDisplay.add("arrondissementorigine");
             listInformationToDisplay.add("age");
-
+            listInformationToDisplay.add("sexe");
+            
             listInformationToDisplay1.add("sexe");
             listInformationToDisplay1.add("numerocni");
             listInformationToDisplay1.add("grade");
@@ -986,6 +1027,9 @@ public class ContractuelBean implements Serializable{
             listInformationToDisplay1.add("arrondstructureattache");
             listInformationToDisplay1.add("dateretraite");
             listInformationToDisplay1.add("datesortieregion");
+            listInformationToDisplay1.add("numtel");
+            listInformationToDisplay1.add("datecni");
+            listInformationToDisplay1.add("lieucni");
         } else {
             listInformationToDisplay.clear();
             listInformationToDisplay1.clear();
@@ -1078,6 +1122,14 @@ public class ContractuelBean implements Serializable{
                 case "age":
                     boolAge = true;
                     break;
+                case "numtel":
+                    boolTel = true;
+                    break;
+                case "datecni":
+                    boolDateCni = true;
+                    break;
+                case "lieucni":
+                    boolLieuCni = true;
                 default:
                     break;
 
@@ -1105,6 +1157,7 @@ public class ContractuelBean implements Serializable{
         promotion.setDateDebutPromo(simpleDateFormat.parse(dateDebutPoste));
         affectation.setDateDebutAffect(simpleDateFormat.parse(dateDebutPoste));
         rangerContract.setDateDebutRangerContract(simpleDateFormat.parse(dateDebutGrade));
+        dateCni = simpleDateFormat.format(contractuel.getDateDelivranceCni());
     }
 
     /*
@@ -1138,6 +1191,7 @@ public class ContractuelBean implements Serializable{
         promotion = iPromotionService.findPromotionOpenByIdAgent(contractuel.getId());
         poste = promotion.getPoste();
         idPoste = poste.getId();
+        dateCni = simpleDateFormat.format(contractuel.getDateDelivranceCni());
     }
 
     public void beforeConfirmAffect() throws ParseException {
@@ -1361,6 +1415,7 @@ public class ContractuelBean implements Serializable{
         dateDebutGrade = "";
         dateDebutAffec = "";
         dateDebutPoste = "";
+        dateCni = "";
     }
 
     public Contractuel createContractuel() {

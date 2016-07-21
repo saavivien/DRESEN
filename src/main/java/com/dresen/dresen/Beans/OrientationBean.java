@@ -91,4 +91,13 @@ public class OrientationBean {
     public String horsRegionContractuel() {
         return "ContractuelsHorsRegion";
     }
+     //// MENU IMPORT EXPORT
+    public String importation() {
+        return "Importation";
+    }
+
+    public String Exportation() {
+        return "Exportation";
+    }
+
 }

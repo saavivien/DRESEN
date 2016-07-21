@@ -25,7 +25,8 @@ import javax.persistence.Temporal;
 @NamedQueries({
      @NamedQuery(name = "RangerFonctio.findAllRangerFonctioOpen", query = "SELECT rf FROM RangerFonctio rf WHERE rf.dateFinRangerFonctio = NULL"),
      @NamedQuery(name = "RangerFonctio.findRangerFonctioByIdAgent", query = "SELECT rf FROM RangerFonctio rf WHERE rf.fonctionnaire.id = :param"),
-     @NamedQuery(name = "RangerFonctio.findRangerFonctioOpenByIdAgent", query = "SELECT rf FROM RangerFonctio rf WHERE rf.fonctionnaire.id = :param AND rf.dateFinRangerFonctio = NULL")
+     @NamedQuery(name = "RangerFonctio.findRangerFonctioOpenByIdAgent", query = "SELECT rf FROM RangerFonctio rf WHERE rf.fonctionnaire.id = :param AND rf.dateFinRangerFonctio = NULL"),
+     @NamedQuery(name = "RangerFonctio.findLastRangerFonctioByIdAgent", query = "SELECT rf FROM RangerFonctio rf WHERE rf.fonctionnaire.id = :param AND rf.dateDebutRangerFonctio >= ALL(SELECT rf.dateDebutRangerFonctio FROM RangerFonctio rf WHERE rf.fonctionnaire.id = :param)")       
 })
 public class RangerFonctio implements Serializable {
 

@@ -414,8 +414,9 @@ public class ExporterBean {
         int i = 0;
         for (Iterator<GradeFonctio> it = iGradeFonctioService.findAllGradeFonctio().iterator(); it.hasNext();) {
             GradeFonctio gradeFonctio = it.next();
-            Label label1 = new Label(0, i, gradeFonctio.getIntituleGradeFonctio());
-            Label label2 = new Label(1, i, gradeFonctio.getCadre().getIntituleCadre());
+            Label label0 = new Label(0, i, gradeFonctio.getIntituleGradeFonctio());
+            Label label1 = new Label(1, i, gradeFonctio.getCodeGradeFonctio());
+            Label label2 = new Label(2, i, gradeFonctio.getCadre().getIntituleCadre());
             sheet.addCell(label1);
             sheet.addCell(label2);
             i++;
@@ -540,9 +541,14 @@ public class ExporterBean {
             } else {
                 label17 = new Label(17, i, fonctionnaire.getSpecialite().getIntituleSpecialite());
             }
-            Label label18 = new Label(18, i, iRangerFonctioService.findRangerFonctioOpenByIdAgent(fonctionnaire.getId()).getGradeFonctio().getIntituleGradeFonctio());
-            Label label19 = new Label(19, i, iPromotionService.findPromotionOpenByIdAgent(fonctionnaire.getId()).getPoste().getIntitulePoste());
-            Label label20 = new Label(20, i, iAffectationService.findAffectationOpenByIdAgent(fonctionnaire.getId()).getStructureAttache().getIntituleStructure());
+            Label label18 = new Label(18, i, iRangerFonctioService.findRangerFonctioOpenByIdAgent(fonctionnaire.getId()).getGradeFonctio().getCodeGradeFonctio());
+            Label label19 = new Label(19, i, simpleDateFormat.format(iRangerFonctioService.findRangerFonctioOpenByIdAgent(fonctionnaire.getId()).getDateDebutRangerFonctio()));
+            Label label20 = new Label(20, i, iPromotionService.findPromotionOpenByIdAgent(fonctionnaire.getId()).getPoste().getIntitulePoste());
+            Label label21 = new Label(21, i, iAffectationService.findAffectationOpenByIdAgent(fonctionnaire.getId()).getStructureAttache().getIntituleStructure());
+            Label label22 = new Label(22, i, simpleDateFormat.format(iPromotionService.findPromotionOpenByIdAgent(fonctionnaire.getId()).getDateDebutPromo()));
+            Label label23 = new Label(23, i, simpleDateFormat.format(fonctionnaire.getDateDelivranceCni()));
+            Label label24 = new Label(24, i, fonctionnaire.getLieuDelivranceCni());
+            Label label25 = new Label(25, i, fonctionnaire.getNumeroTel());
             sheet.addCell(label0);
             sheet.addCell(label1);
             sheet.addCell(label2);
@@ -564,6 +570,11 @@ public class ExporterBean {
             sheet.addCell(label18);
             sheet.addCell(label19);
             sheet.addCell(label20);
+            sheet.addCell(label21);
+            sheet.addCell(label22);
+            sheet.addCell(label23);
+            sheet.addCell(label24);
+            sheet.addCell(label25);
             i++;
         }
         workbook.write();
@@ -613,8 +624,13 @@ public class ExporterBean {
                 label17 = new Label(17, i, contractuel.getSpecialite().getIntituleSpecialite());
             }
             Label label18 = new Label(18, i, iRangerContractService.findRangerContractOpenByIdAgent(contractuel.getId()).getGradeContract().getIntituleGradeContract());
-            Label label19 = new Label(19, i, iPromotionService.findPromotionOpenByIdAgent(contractuel.getId()).getPoste().getIntitulePoste());
-            Label label20 = new Label(20, i, iAffectationService.findAffectationOpenByIdAgent(contractuel.getId()).getStructureAttache().getIntituleStructure());
+            Label label19 = new Label(19, i, simpleDateFormat.format(iRangerContractService.findRangerContractOpenByIdAgent(contractuel.getId()).getDateDebutRangerContract()));
+            Label label20 = new Label(20, i, iPromotionService.findPromotionOpenByIdAgent(contractuel.getId()).getPoste().getIntitulePoste());
+            Label label21 = new Label(21, i, iAffectationService.findAffectationOpenByIdAgent(contractuel.getId()).getStructureAttache().getIntituleStructure());
+            Label label22 = new Label(22, i, simpleDateFormat.format(iPromotionService.findPromotionOpenByIdAgent(contractuel.getId()).getDateDebutPromo()));
+            Label label23 = new Label(23, i, simpleDateFormat.format(contractuel.getDateDelivranceCni()));
+            Label label24 = new Label(24, i, contractuel.getLieuDelivranceCni());
+            Label label25 = new Label(25, i, contractuel.getNumeroTel());
             sheet.addCell(label0);
             sheet.addCell(label1);
             sheet.addCell(label2);
@@ -636,6 +652,11 @@ public class ExporterBean {
             sheet.addCell(label18);
             sheet.addCell(label19);
             sheet.addCell(label20);
+            sheet.addCell(label21);
+            sheet.addCell(label22);
+            sheet.addCell(label23);
+            sheet.addCell(label24);
+            sheet.addCell(label25);
             i++;
         }
         workbook.write();
@@ -644,7 +665,6 @@ public class ExporterBean {
 
     /**
      *
-     * @param nomArchive nom de l'archive
      * @param nomFichier nom du fichier à compresser
      */
     public void compresser(String nomFichier) {
@@ -662,7 +682,7 @@ public class ExporterBean {
             // fermeture des flux
             zip.closeEntry();
             fis.close();
-            
+
         } catch (FileNotFoundException fnfe) {
             fnfe.printStackTrace();
         } catch (IOException ioe) {
@@ -692,16 +712,16 @@ public class ExporterBean {
         } catch (WriteException we) {
             throw we;
         }
-        
+
         //création de l'archive
-        zip = new ZipOutputStream(new FileOutputStream(path+nomArchive));
+        zip = new ZipOutputStream(new FileOutputStream(path + nomArchive));
         zip.setMethod(ZipOutputStream.DEFLATED);
         zip.setLevel(Deflater.BEST_COMPRESSION);
 
         //compression des fichier  
         File fichier = new File("Export");
         for (File file : fichier.listFiles()) {
-            compresser(""+file);
+            compresser("" + file);
         }
         //fermeture de l'archive
         zip.close();

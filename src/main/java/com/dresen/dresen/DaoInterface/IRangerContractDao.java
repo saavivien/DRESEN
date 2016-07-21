@@ -25,5 +25,5 @@ public interface IRangerContractDao extends IDao<RangerContract, Long>{
     public List<RangerContract> findRangerContractByIdAgent(long idAgent) throws DataAccessException;
     public RangerContract findRangerContractOpenByIdAgent(long idAgent) throws DataAccessException;
     public List<RangerContract> findAllRangerContractOpen() throws DataAccessException;
-
+    public RangerContract findLastRangerContractByIdAgent(long idAgent) throws DataAccessException;
 }

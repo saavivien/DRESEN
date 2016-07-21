@@ -22,7 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class RangerFonctioServiceImpl implements IRangerFonctioService, Serializable {
-     private IRangerFonctioDao iRangerFonctioDao;
+
+    private IRangerFonctioDao iRangerFonctioDao;
 
     public IRangerFonctioDao getiRangerFonctioDao() {
         return iRangerFonctioDao;
@@ -31,20 +32,21 @@ public class RangerFonctioServiceImpl implements IRangerFonctioService, Serializ
     public void setiRangerFonctioDao(IRangerFonctioDao iRangerFonctioDao) {
         this.iRangerFonctioDao = iRangerFonctioDao;
     }
-     
 
-    public RangerFonctio createRangerFonctio(RangerFonctio rangerFonctio) throws ServiceException{
+    @Override
+    public RangerFonctio createRangerFonctio(RangerFonctio rangerFonctio) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iRangerFonctioDao.create(rangerFonctio);
         } catch (DataAccessException ex) {
             Logger.getLogger(RangerFonctioServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible de créer la Rangerfonctio");
-        } 
+        }
     }
 
+    @Override
     public RangerFonctio findRangerFonctioById(Long id) throws ServiceException {
-         try {
+        try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iRangerFonctioDao.findById(id);
         } catch (DataAccessException ex) {
@@ -53,16 +55,18 @@ public class RangerFonctioServiceImpl implements IRangerFonctioService, Serializ
         }
     }
 
+    @Override
     public RangerFonctio updateRangerFonctio(RangerFonctio rangerFonctio) throws ServiceException {
-          try {
+        try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             return iRangerFonctioDao.update(rangerFonctio);
         } catch (DataAccessException ex) {
             Logger.getLogger(RangerFonctioServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible mettre la RangerFonctio à jour");
-        }        
+        }
     }
 
+    @Override
     public List<RangerFonctio> findAllRangerFonctio() throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -70,9 +74,10 @@ public class RangerFonctioServiceImpl implements IRangerFonctioService, Serializ
         } catch (DataAccessException ex) {
             Logger.getLogger(RangerFonctioServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la liste des RangerFonctios");
-        }     
+        }
     }
 
+    @Override
     public List<RangerFonctio> findRangerFonctioByIdAgent(long idAgent) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -80,9 +85,10 @@ public class RangerFonctioServiceImpl implements IRangerFonctioService, Serializ
         } catch (DataAccessException ex) {
             Logger.getLogger(RangerFonctioServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la liste des des RangerFonctios d'un contractuel");
-        }      
+        }
     }
 
+    @Override
     public RangerFonctio findRangerFonctioOpenByIdAgent(long idAgent) throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -90,9 +96,10 @@ public class RangerFonctioServiceImpl implements IRangerFonctioService, Serializ
         } catch (DataAccessException ex) {
             Logger.getLogger(RangerFonctioServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la RangerFonctio ouverte de l'agent");
-        }     
+        }
     }
 
+    @Override
     public List<RangerFonctio> findAllRangerFonctioOpen() throws ServiceException {
         try {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -100,6 +107,18 @@ public class RangerFonctioServiceImpl implements IRangerFonctioService, Serializ
         } catch (DataAccessException ex) {
             Logger.getLogger(RangerFonctioServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new ServiceException("impossible rechercher la liste de RangerFonctio ouverte");
-        }         }
-    
+        }
+    }
+
+    @Override
+    public RangerFonctio findLastRangerFonctioByIdAgent(long idAgent) throws ServiceException {
+        try {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            return iRangerFonctioDao.findLastRangerFonctioByIdAgent(idAgent);
+        } catch (DataAccessException ex) {
+            Logger.getLogger(RangerFonctioServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new ServiceException("impossible rechercher la dernière rangerFonctio");
+        }
+    }
+
 }

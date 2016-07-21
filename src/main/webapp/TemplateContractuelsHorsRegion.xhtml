@@ -127,6 +127,9 @@ and open the template in the editor.
                                 <f:selectItem itemLabel="Numéro de CNI" itemValue="numerocni"/>
                                 <f:selectItem itemLabel="Spécialité" itemValue="specialite"/>
                                 <f:selectItem itemLabel="Date de sortie de la région" itemValue="datesortieregion"/>
+                                <f:selectItem itemLabel="Numéro de téléphone" itemValue="numtel"/>
+                                <f:selectItem itemLabel="Date de délivrance de la CNI" itemValue="datecni"/>
+                                <f:selectItem itemLabel="Lieu de délivrance de la CNI" itemValue="lieucni"/>
                                 
                             </p:selectManyCheckbox>
                             <p:selectBooleanCheckbox id="selectall" value="#{contractuelBean.selectAll}" itemLabel="Tout cocher">  
@@ -270,24 +273,46 @@ and open the template in the editor.
                     <p:menuitem value="Profil" actionListener="#{contractuelBean.beforeDisplayProfil()}" update=":formProfil" oncomplete="PF('dlgp').show()"/>
                 </p:contextMenu> 
 
-                <p:dataTable value="#{contractuelBean.findContractuelsSortis()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " resizableColumns="true" liveResize="true" id="table" scrollable="true" rowsPerPageTemplate="10,15" selectionMode="single" selection="#{contractuelBean.contractuel}" rowKey="#{item.id}">
+                <p:dataTable value="#{contractuelBean.findContractuelsSortis()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " resizableColumns="true" liveResize="true" id="table" scrollable="true" draggableColumns="true" rowsPerPageTemplate="10,15" selectionMode="single" selection="#{contractuelBean.contractuel}" rowKey="#{item.id}">
                     <f:facet name="header">
                         La liste des contractuels sortis de la région
                     </f:facet>
 
-                    <p:column rendered="#{contractuelBean.boolMat}" filterBy="#{item.matricule}" width="120">
+                    <p:column rendered="#{contractuelBean.boolMat}" filterBy="#{item.matricule}" width="150">
                         <f:facet name="header">
                             <h:outputText value="Matricule"/>
                         </f:facet>
                         <h:outputText value="#{item.matricule}"/>
                     </p:column>
                     
-                     <p:column rendered="#{contractuelBean.boolCni}" filterBy="#{item.cni}" width="100">
+                    <p:column rendered="#{contractuelBean.boolTel}" filterBy="#{item.numeroTel}" width="150">
+                        <f:facet name="header">
+                            <h:outputText value="Numéro tél."/>
+                        </f:facet>
+                        <h:outputText value="#{item.numeroTel}"/>
+                    </p:column>
+                    
+                     <p:column rendered="#{contractuelBean.boolCni}" filterBy="#{item.cni}" width="150">
                         <f:facet name="header">
                             <h:outputText value="Numéro CNI"/>
                         </f:facet>
                         <h:outputText value="#{item.cni}"/>
                     </p:column>
+                    
+                    <p:column rendered="#{contractuelBean.boolLieuCni}" filterBy="#{item.lieuDelivranceCni}" width="150">
+                        <f:facet name="header">
+                            <h:outputText value="Lieu délivrance CNI"/>
+                        </f:facet>
+                        <h:outputText value="#{item.lieuDelivranceCni}"/>
+                    </p:column>
+
+                    <p:column rendered="#{contractuelBean.boolDateCni}" filterBy="#{contractuelBean.currentDateCni(item)}" width="150">
+                        <f:facet name="header">
+                            <h:outputText value="Date délivrance CNI"/>
+                        </f:facet>
+                        <h:outputText value="#{contractuelBean.currentDateCni(item)}"/>
+                    </p:column>
+
 
                     <p:column rendered="#{contractuelBean.boolNom}" filterBy="#{item.nom}" width="150">
                         <f:facet name="header">
@@ -310,7 +335,7 @@ and open the template in the editor.
                         <h:outputText value="#{item.nomJeuneFille}"/>
                     </p:column>
 
-                    <p:column rendered="#{contractuelBean.boolDateNaiss}" width="140">
+                    <p:column rendered="#{contractuelBean.boolDateNaiss}" width="150">
                         <f:facet name="header">
                             <h:outputText value="Date naissance"/>
                         </f:facet>
@@ -346,7 +371,7 @@ and open the template in the editor.
                     </p:column>
 
 
-                    <p:column rendered="#{contractuelBean.boolSexe}" filterBy="#{item.sexe}" width="80">
+                    <p:column rendered="#{contractuelBean.boolSexe}" filterBy="#{item.sexe}" width="150">
                         <f:facet name="header">
                             <h:outputText value="Sexe"/>
                         </f:facet>

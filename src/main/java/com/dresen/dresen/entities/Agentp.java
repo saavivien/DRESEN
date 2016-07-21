@@ -38,6 +38,13 @@ public class Agentp implements Serializable {
 
     @Column(unique = true, nullable = false)
     private int cni;
+    
+    @Column
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dateDelivranceCni;
+    
+    @Column
+    private String lieuDelivranceCni;
 
     @Column(nullable = false)
     private String nom;
@@ -79,6 +86,9 @@ public class Agentp implements Serializable {
 
     @Column
     private String nomJeuneFille;
+    
+    @Column
+    private String numeroTel;
     
     @Column
     private String diplomeEntreeFoncPub;
@@ -248,6 +258,30 @@ public class Agentp implements Serializable {
 
     public void setArrondNaissance(String arrondNaissance) {
         this.arrondNaissance = arrondNaissance;
+    }
+
+    public Date getDateDelivranceCni() {
+        return dateDelivranceCni;
+    }
+
+    public void setDateDelivranceCni(Date dateDelivranceCni) {
+        this.dateDelivranceCni = dateDelivranceCni;
+    }
+
+    public String getLieuDelivranceCni() {
+        return lieuDelivranceCni;
+    }
+
+    public void setLieuDelivranceCni(String lieuDelivranceCni) {
+        this.lieuDelivranceCni = lieuDelivranceCni;
+    }
+
+    public String getNumeroTel() {
+        return numeroTel;
+    }
+
+    public void setNumeroTel(String numeroTel) {
+        this.numeroTel = numeroTel;
     }
 
     public String getDiplomeEntreeFoncPub() {

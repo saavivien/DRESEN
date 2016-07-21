@@ -29,26 +29,23 @@ and open the template in the editor.
                                 <h:panelGrid id="panelAjouterInfoPersoGrid" columns="4" cellspacing="5" style="text-align: right">
                                     <p:outputLabel value="Nom :" for="nom" />  
                                     <p:inputText id="nom" value="#{contractuelBean.contractuel.nom}" title="nom" required="true"/>
-                                    <p:outputLabel value="Sexe :" for="sexe" /> 
-                                    <p:selectOneMenu  value="#{contractuelBean.contractuel.sexe}" label="sexe" id="sexe" filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
-                                        <f:selectItem itemLabel="Selectionner le sexe" itemValue="" noSelectionOption="true"  />
-                                        <f:selectItems var="custe" value="#{contractuelBean.sexes()}"/>
-                                    </p:selectOneMenu>  
-
-                                    <p:outputLabel value="Prénom :" for="prenom" />  
-                                    <p:inputText id="prenom" value="#{contractuelBean.contractuel.prenom}" title="prenom"/>
                                     <p:outputLabel value="Région d'origine :" for="regionorigine" />  
                                     <p:inputText id="regionorigine" value="#{contractuelBean.contractuel.regionOrigine}" title="regionorigine"/>
 
+                                    <p:outputLabel value="Prénom :" for="prenom" />  
+                                    <p:inputText id="prenom" value="#{contractuelBean.contractuel.prenom}" title="prenom"/>
+                                    <p:outputLabel value="Département d'origine :" for="departementorigine" />  
+                                    <p:inputText id="departementorigine" value="#{contractuelBean.contractuel.departementOrigine}" title="departementorigine"/>
+
                                     <p:outputLabel value="Nom de jeune fille :" for="nomjeunefille" />  
                                     <p:inputText id="nomjeunefille" value="#{contractuelBean.contractuel.nomJeuneFille}" title="nomjeunefille"/>
-                                    <p:outputLabel value="Département d'origine :" for="departementorigine" />  
-                                    <p:inputText id="departementorigine" value="#{contractuelBean.contractuel.departementOrigine}" title="departementorigine" />
+                                    <p:outputLabel value="Arrondissement d'origine :" for="arrondissementorigine" />  
+                                    <p:inputText id="arrondissementorigine" value="#{contractuelBean.contractuel.arrondissementOrigine}" title="arrondissementorigine"/>
 
                                     <p:outputLabel value="Né le :" for="datenaiss1" id="labNaiss1"/>
                                     <p:inputMask id="datenaiss1" value="#{contractuelBean.dateNaissanceContract}" mask="99/99/9999" required="#{!contractuelBean.contractuel.isBornArround}" disabled="#{contractuelBean.contractuel.isBornArround}" />
-                                    <p:outputLabel value="Arrondissement d'origine :" for="arrondissementorigine" />  
-                                    <p:inputText id="arrondissementorigine" value="#{contractuelBean.contractuel.arrondissementOrigine}" title="arrondissementorigine" required="true"/>
+                                    <p:outputLabel value="Numéro de CNI :" for="numerocni" />  
+                                    <p:inputText id="numerocni" value="#{contractuelBean.contractuel.cni}" title="numero CNI" required="true"/>
 
                                     <h:outputLabel value="Né vers: " for="datenaiss2" id="labNaiss2" />
                                     <h:panelGrid columns="2">
@@ -57,28 +54,36 @@ and open the template in the editor.
                                         </p:selectBooleanCheckbox>
                                         <p:inputMask id="datenaiss2" value="#{contractuelBean.dateNaissanceContractVers}" mask="9999" required="#{contractuelBean.contractuel.isBornArround}" disabled="#{!contractuelBean.contractuel.isBornArround}" size="15" />
                                     </h:panelGrid>
-                                    <p:outputLabel value="Numéro de CNI :" for="numerocni" />  
-                                    <p:inputText id="numerocni" value="#{contractuelBean.contractuel.cni}" title="numerocni" required="true"/>
+                                    <p:outputLabel value="Date délivrance CNI :" for="datecni" />  
+                                    <p:inputMask id="datecni" value="#{contractuelBean.dateCni}" mask="99/99/9999" title="Date délivrance CNI" required="true"/>
 
                                     <p:outputLabel value="Lieu de naissance :" for="lieunaissance" />  
                                     <p:inputText id="lieunaissance" value="#{contractuelBean.contractuel.lieuNaissance}" title="lieunaissance" required="true"/>
-                                    <p:outputLabel value="Diplome d'entrée à la fonction publique:" for="diplomefoncpub" />  
-                                    <p:inputText id="diplomefoncpub" value="#{contractuelBean.contractuel.diplomeEntreeFoncPub}" title="diplomefoncpub"/>
-
+                                    <p:outputLabel value="Lieu délivrance CNI :" for="lieucni" />  
+                                    <p:inputText id="lieucni" value="#{contractuelBean.contractuel.lieuDelivranceCni}" title="Lieu de délivrance CNI" required="true"/>
 
                                     <p:outputLabel value="Région de naissance :" for="regionnaissance" />  
                                     <p:inputText id="regionnaissance" value="#{contractuelBean.contractuel.regionNaissance}" title="regionnaissance"/>
-                                    <p:outputLabel value="Date d'entrée fonction publique:" for="dateentreefoncpub" />
-                                    <p:inputMask id="dateentreefoncpub" value="#{contractuelBean.dateEntreFoncPub}" mask="99/99/9999" required="true" />
+                                    <p:outputLabel value="Diplome d'entrée à la contractuelBean publique:" for="diplomefoncpub" />  
+                                    <p:inputText id="diplomefoncpub" value="#{contractuelBean.contractuel.diplomeEntreeFoncPub}" title="diplomefoncpub"/>
 
                                     <p:outputLabel value="Département naissance :" for="departnaissance" />  
                                     <p:inputText id="departnaissance" value="#{contractuelBean.contractuel.departNaissance}" title="departnaissance"/>
+                                    <p:outputLabel value="Date d'entrée fonction publique:" for="dateentreefoncpub" />
+                                    <p:inputMask id="dateentreefoncpub" value="#{contractuelBean.dateEntreFoncPub}" mask="99/99/9999" required="true" />
+
+                                    <p:outputLabel value="Arrondissement naissance :" for="arrondnaissance" />  
+                                    <p:inputText id="arrondnaissance" value="#{contractuelBean.contractuel.arrondNaissance}" title="arrondnaissance"/>
                                     <p:outputLabel value="matricule :" for="matricule" />  
                                     <p:inputText id="matricule" value="#{contractuelBean.contractuel.matricule}" title="matricule"/>
 
-                                    <p:outputLabel value="Arrondissement naissance :" for="arrondnaissance" />  
-                                    <p:inputText id="arrondnaissance" value="#{contractuelBean.contractuel.arrondNaissance}" title="arrondnaissance"/>                      
-
+                                    <p:outputLabel value="Sexe :" for="sexe" /> 
+                                    <p:selectOneMenu  value="#{contractuelBean.contractuel.sexe}" label="sexe" id="sexe" filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                        <f:selectItem itemLabel="Selectionner le sexe" itemValue="" noSelectionOption="true"  />
+                                        <f:selectItems var="custe" value="#{contractuelBean.sexes()}"/>
+                                    </p:selectOneMenu>   
+                                    <p:outputLabel value="Numéro téléphone :" for="numtel" />  
+                                    <p:inputText id="numtel" value="#{contractuelBean.contractuel.numeroTel}" title="Numéro de téléphone"/>
                                 </h:panelGrid>
                             </p:panel>
                         </p:tab> 
@@ -147,62 +152,63 @@ and open the template in the editor.
 
                                     <h:outputText value="Prenom : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.prenom}" style="font-style: italic"/>
-
-
-                                    <h:outputText value="Nom jeune fille : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nomJeuneFille}" style="font-style: italic"/>
-
-
-                                    <h:outputText value="Date de naissance: " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateNaissanceContract}" style="font-style: italic"/>
                                     <h:outputText value="Grade : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.gradeContract.intituleGradeContract}" style="font-style: italic"/>
 
-                                    <h:outputText value="Lieu de naissance : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.lieuNaissance}" style="font-style: italic"/>
+                                    <h:outputText value="Nom jeune fille : " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nomJeuneFille}" style="font-style: italic"/>
                                     <h:outputText value="Date d'obtention du grade : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutGrade}" style="font-style: italic"/>        
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutGrade}" style="font-style: italic"/>      
 
-                                    <h:outputText value="Région de naissance : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.regionNaissance}" style="font-style: italic"/>
+                                    <h:outputText value="Date de naissance: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateNaissanceContract}" style="font-style: italic"/>
                                     <h:outputText value="Département de la Structure : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.departement.intituleDepartement}" style="font-style: italic"/>
 
+                                    <h:outputText value="Lieu de naissance : " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.lieuNaissance}" style="font-style: italic"/>
+                                    <h:outputText value="Arrondissement de la Structure : " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.arrondissement.intituleArrondissement}" style="font-style: italic"/>  
+
+                                    <h:outputText value="Région de naissance : " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.regionNaissance}" style="font-style: italic"/>
+                                    <h:outputText value="Numéro de CNI: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.cni}" style="font-style: italic"/>
+
                                     <h:outputText value="Département de naissance : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.departNaissance}" style="font-style: italic"/>   
-                                    <h:outputText value="Arrondissement de la Structure : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.arrondissement.intituleArrondissement}" style="font-style: italic"/>
+                                    <h:outputText value="Date délivrance CNI: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateCni}" style="font-style: italic"/>
 
                                     <h:outputText value="Arrondissement de naissance : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.arrondNaissance}" style="font-style: italic"/>   
-                                    <h:outputText value="type de Structure : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.categorieStructure.intituleCategorieStructure}" style="font-style: italic"/>
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.arrondNaissance}" style="font-style: italic"/> 
+                                    <h:outputText value="Lieu délivrance CNI: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.lieuDelivranceCni}" style="font-style: italic"/>
 
                                     <h:outputText value="Sexe: " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.sexe}" style="font-style: italic"/>
                                     <h:outputText value="Structure d'attache : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.structureAttache.intituleStructure}" style="font-style: italic"/>
 
-                                    <h:outputText value="Numéro de CNI: " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.cni}" style="font-style: italic"/>
+                                    <h:outputText value="Diplôme d'entrée fonction publique: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.diplomeEntreeFoncPub}" style="font-style: italic"/>
                                     <h:outputText value="Fonction/Poste : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.poste.intitulePoste}" style="font-style: italic"/> 
 
-                                    <h:outputText value="Diplôme d'entrée fonction publique: " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.diplomeEntreeFoncPub}" style="font-style: italic"/>
+                                    <h:outputText value="Date entrée fonc. pub. : " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateEntreFoncPub}" style="font-style: italic"/>
                                     <h:outputText value="Date d'entrée en poste : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutPoste}" style="font-style: italic"/>
 
-                                    <h:outputText value="Date entrée fonc. pub. : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateEntreFoncPub}" style="font-style: italic"/>
+                                    <h:outputText value="matricule: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.matricule}" style="font-style: italic"/>
                                     <h:outputText value="Région d'origine : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.regionOrigine}" style="font-style: italic"/>
 
-                                    <h:outputText value="matricule: " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.matricule}" style="font-style: italic"/>
+                                    <h:outputText value="Numéro de Téléphone : " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.numeroTel}" style="font-style: italic"/>
                                     <h:outputText value="Département d'origine : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.departementOrigine}" style="font-style: italic"/>
-
 
                                     <p:commandButton value="Enregistrer" action="#{contractuelBean.createContractuel()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
                                     <h:outputText styleClass="outputLabel" value="" />
@@ -229,26 +235,23 @@ and open the template in the editor.
                                 <h:panelGrid id="panelModifierInfoPersoGrid" columns="4" cellspacing="5" style="text-align: right">
                                     <p:outputLabel value="Nom :" for="nom" />  
                                     <p:inputText id="nom" value="#{contractuelBean.contractuel.nom}" title="nom" required="true"/>
-                                    <p:outputLabel value="Sexe :" for="sexe" /> 
-                                    <p:selectOneMenu  value="#{contractuelBean.contractuel.sexe}" label="sexe" id="sexe" filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
-                                        <f:selectItem itemLabel="Selectionner le sexe" itemValue="" noSelectionOption="true"  />
-                                        <f:selectItems var="custe" value="#{contractuelBean.sexes()}"/>
-                                    </p:selectOneMenu>  
-
-                                    <p:outputLabel value="Prénom :" for="prenom" />  
-                                    <p:inputText id="prenom" value="#{contractuelBean.contractuel.prenom}" title="prenom"/>
                                     <p:outputLabel value="Région d'origine :" for="regionorigine" />  
                                     <p:inputText id="regionorigine" value="#{contractuelBean.contractuel.regionOrigine}" title="regionorigine"/>
 
-                                    <p:outputLabel value="Nom de jeune fille :" for="nomjeunefille" />  
-                                    <p:inputText id="nomjeunefille" value="#{contractuelBean.contractuel.nomJeuneFille}" title="nomjeunefille"/>
+                                    <p:outputLabel value="Prénom :" for="prenom" />  
+                                    <p:inputText id="prenom" value="#{contractuelBean.contractuel.prenom}" title="prenom"/>
                                     <p:outputLabel value="Département d'origine :" for="departementorigine" />  
                                     <p:inputText id="departementorigine" value="#{contractuelBean.contractuel.departementOrigine}" title="departementorigine"/>
 
-                                    <p:outputLabel value="Né le :" for="datenaiss1" id="labNaiss1"/>
-                                    <p:inputMask id="datenaiss1" value="#{contractuelBean.dateNaissanceContract}" mask="99/99/9999" required="#{!contractuelBean.contractuel.isBornArround}" disabled="#{contractuelBean.contractuel.isBornArround}" />
+                                    <p:outputLabel value="Nom de jeune fille :" for="nomjeunefille" />  
+                                    <p:inputText id="nomjeunefille" value="#{contractuelBean.contractuel.nomJeuneFille}" title="nomjeunefille"/>
                                     <p:outputLabel value="Arrondissement d'origine :" for="arrondissementorigine" />  
                                     <p:inputText id="arrondissementorigine" value="#{contractuelBean.contractuel.arrondissementOrigine}" title="arrondissementorigine"/>
+
+                                    <p:outputLabel value="Né le :" for="datenaiss1" id="labNaiss1"/>
+                                    <p:inputMask id="datenaiss1" value="#{contractuelBean.dateNaissanceContract}" mask="99/99/9999" required="#{!contractuelBean.contractuel.isBornArround}" disabled="#{contractuelBean.contractuel.isBornArround}" />
+                                    <p:outputLabel value="Numéro de CNI :" for="numerocni" />  
+                                    <p:inputText id="numerocni" value="#{contractuelBean.contractuel.cni}" title="numero CNI" required="true"/>
 
                                     <h:outputLabel value="Né vers: " for="datenaiss2" id="labNaiss2" />
                                     <h:panelGrid columns="2">
@@ -257,28 +260,36 @@ and open the template in the editor.
                                         </p:selectBooleanCheckbox>
                                         <p:inputMask id="datenaiss2" value="#{contractuelBean.dateNaissanceContractVers}" mask="9999" required="#{contractuelBean.contractuel.isBornArround}" disabled="#{!contractuelBean.contractuel.isBornArround}" size="15" />
                                     </h:panelGrid>
-                                    <p:outputLabel value="Numéro de CNI :" for="numerocni" />  
-                                    <p:inputText id="numerocni" value="#{contractuelBean.contractuel.cni}" title="numerocni" required="true"/>
+                                    <p:outputLabel value="Date délivrance CNI :" for="datecni" />  
+                                    <p:inputMask id="datecni" value="#{contractuelBean.dateCni}" mask="99/99/9999" title="Date délivrance CNI" required="true"/>
 
                                     <p:outputLabel value="Lieu de naissance :" for="lieunaissance" />  
                                     <p:inputText id="lieunaissance" value="#{contractuelBean.contractuel.lieuNaissance}" title="lieunaissance" required="true"/>
-                                    <p:outputLabel value="Diplome d'entrée à la fonction publique:" for="diplomefoncpub" />  
-                                    <p:inputText id="diplomefoncpub" value="#{contractuelBean.contractuel.diplomeEntreeFoncPub}" title="diplomefoncpub"/>
-
+                                    <p:outputLabel value="Lieu délivrance CNI :" for="lieucni" />  
+                                    <p:inputText id="lieucni" value="#{contractuelBean.contractuel.lieuDelivranceCni}" title="Lieu de délivrance CNI" required="true"/>
 
                                     <p:outputLabel value="Région de naissance :" for="regionnaissance" />  
                                     <p:inputText id="regionnaissance" value="#{contractuelBean.contractuel.regionNaissance}" title="regionnaissance"/>
-                                    <p:outputLabel value="Date d'entrée fonction publique:" for="dateentreefoncpub" />
-                                    <p:inputMask id="dateentreefoncpub" value="#{contractuelBean.dateEntreFoncPub}" mask="99/99/9999" required="true" />
+                                    <p:outputLabel value="Diplome d'entrée à la contractuelBean publique:" for="diplomefoncpub" />  
+                                    <p:inputText id="diplomefoncpub" value="#{contractuelBean.contractuel.diplomeEntreeFoncPub}" title="diplomefoncpub"/>
 
                                     <p:outputLabel value="Département naissance :" for="departnaissance" />  
                                     <p:inputText id="departnaissance" value="#{contractuelBean.contractuel.departNaissance}" title="departnaissance"/>
+                                    <p:outputLabel value="Date d'entrée fonction publique:" for="dateentreefoncpub" />
+                                    <p:inputMask id="dateentreefoncpub" value="#{contractuelBean.dateEntreFoncPub}" mask="99/99/9999" required="true" />
+
+                                    <p:outputLabel value="Arrondissement naissance :" for="arrondnaissance" />  
+                                    <p:inputText id="arrondnaissance" value="#{contractuelBean.contractuel.arrondNaissance}" title="arrondnaissance"/>
                                     <p:outputLabel value="matricule :" for="matricule" />  
                                     <p:inputText id="matricule" value="#{contractuelBean.contractuel.matricule}" title="matricule"/>
 
-                                    <p:outputLabel value="Arrondissement naissance :" for="arrondnaissance" />  
-                                    <p:inputText id="arrondnaissance" value="#{contractuelBean.contractuel.arrondNaissance}" title="arrondnaissance"/>     
-
+                                    <p:outputLabel value="Sexe :" for="sexe" /> 
+                                    <p:selectOneMenu  value="#{contractuelBean.contractuel.sexe}" label="sexe" id="sexe" filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                        <f:selectItem itemLabel="Selectionner le sexe" itemValue="" noSelectionOption="true"  />
+                                        <f:selectItems var="custe" value="#{contractuelBean.sexes()}"/>
+                                    </p:selectOneMenu>   
+                                    <p:outputLabel value="Numéro téléphone :" for="numtel" />  
+                                    <p:inputText id="numtel" value="#{contractuelBean.contractuel.numeroTel}" title="Numéro de téléphone"/>
                                     <h:inputHidden id="number" value="#{contractuelBean.contractuel.id}" />
                                 </h:panelGrid>
                             </p:panel>
@@ -348,62 +359,63 @@ and open the template in the editor.
 
                                     <h:outputText value="Prenom : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.prenom}" style="font-style: italic"/>
-
-
-                                    <h:outputText value="Nom jeune fille : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nomJeuneFille}" style="font-style: italic"/>
-
-
-                                    <h:outputText value="Date de naissance: " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateNaissanceContract}" style="font-style: italic"/>
                                     <h:outputText value="Grade : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.gradeContract.intituleGradeContract}" style="font-style: italic"/>
 
-                                    <h:outputText value="Lieu de naissance : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.lieuNaissance}" style="font-style: italic"/>
+                                    <h:outputText value="Nom jeune fille : " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nomJeuneFille}" style="font-style: italic"/>
                                     <h:outputText value="Date d'obtention du grade : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutGrade}" style="font-style: italic"/>        
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutGrade}" style="font-style: italic"/>      
 
-                                    <h:outputText value="Région de naissance : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.regionNaissance}" style="font-style: italic"/>
+                                    <h:outputText value="Date de naissance: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateNaissanceContract}" style="font-style: italic"/>
                                     <h:outputText value="Département de la Structure : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.departement.intituleDepartement}" style="font-style: italic"/>
 
+                                    <h:outputText value="Lieu de naissance : " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.lieuNaissance}" style="font-style: italic"/>
+                                    <h:outputText value="Arrondissement de la Structure : " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.arrondissement.intituleArrondissement}" style="font-style: italic"/>  
+
+                                    <h:outputText value="Région de naissance : " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.regionNaissance}" style="font-style: italic"/>
+                                    <h:outputText value="Numéro de CNI: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.cni}" style="font-style: italic"/>
+
                                     <h:outputText value="Département de naissance : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.departNaissance}" style="font-style: italic"/>   
-                                    <h:outputText value="Arrondissement de la Structure : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.arrondissement.intituleArrondissement}" style="font-style: italic"/>
+                                    <h:outputText value="Date délivrance CNI: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateCni}" style="font-style: italic"/>
 
                                     <h:outputText value="Arrondissement de naissance : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.arrondNaissance}" style="font-style: italic"/>   
-                                    <h:outputText value="type de Structure : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.categorieStructure.intituleCategorieStructure}" style="font-style: italic"/>
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.arrondNaissance}" style="font-style: italic"/> 
+                                    <h:outputText value="Lieu délivrance CNI: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.lieuDelivranceCni}" style="font-style: italic"/>
 
                                     <h:outputText value="Sexe: " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.sexe}" style="font-style: italic"/>
                                     <h:outputText value="Structure d'attache : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.structureAttache.intituleStructure}" style="font-style: italic"/>
 
-                                    <h:outputText value="Numéro de CNI: " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.cni}" style="font-style: italic"/>
+                                    <h:outputText value="Diplôme d'entrée fonction publique: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.diplomeEntreeFoncPub}" style="font-style: italic"/>
                                     <h:outputText value="Fonction/Poste : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.poste.intitulePoste}" style="font-style: italic"/> 
 
-                                    <h:outputText value="Diplôme entrée fonc. pub. : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.diplomeEntreeFoncPub}" style="font-style: italic"/>
+                                    <h:outputText value="Date entrée fonc. pub. : " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateEntreFoncPub}" style="font-style: italic"/>
                                     <h:outputText value="Date d'entrée en poste : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutPoste}" style="font-style: italic"/>
 
-                                    <h:outputText value="Date entrée fonc. pub. : " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateEntreFoncPub}" style="font-style: italic"/>
+                                    <h:outputText value="matricule: " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.matricule}" style="font-style: italic"/>
                                     <h:outputText value="Région d'origine : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.regionOrigine}" style="font-style: italic"/>
 
-                                    <h:outputText value="matricule: " />  
-                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.matricule}" style="font-style: italic"/>
+                                    <h:outputText value="Numéro de Téléphone : " />  
+                                    <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.numeroTel}" style="font-style: italic"/>
                                     <h:outputText value="Département d'origine : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.departementOrigine}" style="font-style: italic"/>
-
 
                                     <p:commandButton value="Modifier" action="#{contractuelBean.updateContractuel()}"  oncomplete="PF('dl').hide()" update=":tableForm:table"/>
                                     <h:outputText styleClass="outputLabel" value="" />
@@ -438,10 +450,10 @@ and open the template in the editor.
                                 <f:selectItem itemLabel="Département d'origine" itemValue="departementorigine"/>
                                 <f:selectItem itemLabel="Arrondissement d'origine" itemValue="arrondissementorigine"/>
                                 <f:selectItem itemLabel="Age" itemValue="age"/>
+                                <f:selectItem itemLabel="Sexe" itemValue="sexe"/>
                             </p:selectManyCheckbox>
                             <p:selectManyCheckbox id="infoToDisplayS2" value="#{contractuelBean.listInformationToDisplay1}" layout="pageDirection"  style="font-style: italic">
                                 <p:ajax update="selectall" listener="#{contractuelBean.selectAllCancel}"/>
-                                <f:selectItem itemLabel="Sexe" itemValue="sexe"/>
                                 <f:selectItem itemLabel="Numéro de CNI" itemValue="numerocni"/>
                                 <f:selectItem itemLabel="Grade" itemValue="grade"/>
                                 <f:selectItem itemLabel="Spécialité" itemValue="specialite"/>
@@ -452,6 +464,9 @@ and open the template in the editor.
                                 <f:selectItem itemLabel="Ancienneté au Poste" itemValue="ancienneteposte"/> 
                                 <f:selectItem itemLabel="Département structure d'attache" itemValue="departstructureattache"/>
                                 <f:selectItem itemLabel="Arrondissement structure d'attache" itemValue="arrondstructureattache"/>
+                                <f:selectItem itemLabel="Numéro de téléphone" itemValue="numtel"/>
+                                <f:selectItem itemLabel="Date de délivrance de la CNI" itemValue="datecni"/>
+                                <f:selectItem itemLabel="Lieu de délivrance de la CNI" itemValue="lieucni"/>
 
                             </p:selectManyCheckbox>
                             <p:selectBooleanCheckbox id="selectall" value="#{contractuelBean.selectAll}" itemLabel="Tout cocher">  
@@ -814,12 +829,12 @@ and open the template in the editor.
 
                 </p:contextMenu> 
 
-                <p:dataTable value="#{contractuelBean.findContractuelsActifs()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " resizableColumns="true" liveResize="true" id="table" scrollable="true" rowsPerPageTemplate="10,15" selectionMode="single" selection="#{contractuelBean.contractuel}" rowKey="#{item.id}">
+                <p:dataTable value="#{contractuelBean.findContractuelsActifs()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " resizableColumns="true" liveResize="true" id="table" scrollable="true" draggableColumns="true" rowsPerPageTemplate="10,15" selectionMode="single" selection="#{contractuelBean.contractuel}" rowKey="#{item.id}">
                     <f:facet name="header">
                         La liste des contractuels
                     </f:facet>
 
-                    <p:column rendered="#{contractuelBean.boolMat}" filterBy="#{item.matricule}" width="120">
+                    <p:column rendered="#{contractuelBean.boolMat}" filterBy="#{item.matricule}" width="150">
                         <f:facet name="header">
                             <h:outputText value="Matricule"/>
                         </f:facet>
@@ -847,14 +862,14 @@ and open the template in the editor.
                         <h:outputText value="#{item.nomJeuneFille}"/>
                     </p:column>
 
-                    <p:column rendered="#{contractuelBean.boolDateNaiss}" width="140">
+                    <p:column rendered="#{contractuelBean.boolDateNaiss}" width="150">
                         <f:facet name="header">
                             <h:outputText value="Date naissance"/>
                         </f:facet>
                         <h:outputText value="#{contractuelBean.currentDateNaissance(item)}"/>
                     </p:column>
 
-                    <p:column rendered="#{contractuelBean.boolAge}" filterBy="#{contractuelBean.currentAgeContract(item)}" width="100">
+                    <p:column rendered="#{contractuelBean.boolAge}" filterBy="#{contractuelBean.currentAgeContract(item)}" width="150">
                         <f:facet name="header">
                             <h:outputText value="Age"/>
                         </f:facet>
@@ -889,18 +904,39 @@ and open the template in the editor.
                         <h:outputText value="#{item.arrondNaissance}"/>
                     </p:column>
 
-                    <p:column rendered="#{contractuelBean.boolSexe}" filterBy="#{item.sexe}" width="80">
+                    <p:column rendered="#{contractuelBean.boolSexe}" filterBy="#{item.sexe}" width="150">
                         <f:facet name="header">
                             <h:outputText value="Sexe"/>
                         </f:facet>
                         <h:outputText value="#{item.sexe}"/>
                     </p:column>
 
-                    <p:column rendered="#{contractuelBean.boolCni}" filterBy="#{item.cni}" width="100">
+                    <p:column rendered="#{contractuelBean.boolTel}" filterBy="#{item.numeroTel}" width="150">
+                        <f:facet name="header">
+                            <h:outputText value="Numéro tél."/>
+                        </f:facet>
+                        <h:outputText value="#{item.numeroTel}"/>
+                    </p:column>
+
+                    <p:column rendered="#{contractuelBean.boolCni}" filterBy="#{item.cni}" width="150">
                         <f:facet name="header">
                             <h:outputText value="Numéro CNI"/>
                         </f:facet>
                         <h:outputText value="#{item.cni}"/>
+                    </p:column>
+
+                    <p:column rendered="#{contractuelBean.boolLieuCni}" filterBy="#{item.lieuDelivranceCni}" width="150">
+                        <f:facet name="header">
+                            <h:outputText value="Lieu délivrance CNI"/>
+                        </f:facet>
+                        <h:outputText value="#{item.lieuDelivranceCni}"/>
+                    </p:column>
+
+                    <p:column rendered="#{contractuelBean.boolDateCni}" filterBy="#{contractuelBean.currentDateCni(item)}" width="150">
+                        <f:facet name="header">
+                            <h:outputText value="Date délivrance CNI"/>
+                        </f:facet>
+                        <h:outputText value="#{contractuelBean.currentDateCni(item)}"/>
                     </p:column>
 
                     <p:column rendered="#{contractuelBean.boolRegOri}" filterBy="#{item.regionOrigine}" width="150">
@@ -931,21 +967,21 @@ and open the template in the editor.
                         <h:outputText value="#{contractuelBean.currentGradeContract(item)}"/>
                     </p:column>
 
-                    <p:column rendered="#{contractuelBean.boolSpecial}" filterBy="#{item.specialite.intituleSpecialite}" width="100">
+                    <p:column rendered="#{contractuelBean.boolSpecial}" filterBy="#{item.specialite.intituleSpecialite}" width="150">
                         <f:facet name="header">
                             <h:outputText value="Spécialité"/>
                         </f:facet>
                         <h:outputText value="#{item.specialite.intituleSpecialite}"/>
                     </p:column>
 
-                    <p:column rendered="#{contractuelBean.boolDiplomeEntre}" filterBy="#{item.diplomeEntreeFoncPub}" width="140">
+                    <p:column rendered="#{contractuelBean.boolDiplomeEntre}" filterBy="#{item.diplomeEntreeFoncPub}" width="150">
                         <f:facet name="header">
                             <h:outputText value="Diplôme entrée fonct. pub."/>
                         </f:facet>
                         <h:outputText value="#{item.diplomeEntreeFoncPub}"/>
                     </p:column>
 
-                    <p:column rendered="#{contractuelBean.boolDateEntreeFoncPub}" width="140">
+                    <p:column rendered="#{contractuelBean.boolDateEntreeFoncPub}" width="150">
                         <f:facet name="header">
                             <h:outputText value="Date entrée fonc. pub."/>
                         </f:facet>
@@ -966,7 +1002,7 @@ and open the template in the editor.
                         <h:outputText value="#{contractuelBean.currentPoste(item)}"/>
                     </p:column>
 
-                    <p:column rendered="#{contractuelBean.boolDateAffec}" width="140">
+                    <p:column rendered="#{contractuelBean.boolDateAffec}" width="150">
                         <f:facet name="header">
                             <h:outputText value="Ancienneté au poste"/>
                         </f:facet>

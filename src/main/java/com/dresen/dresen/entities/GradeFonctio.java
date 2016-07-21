@@ -35,6 +35,9 @@ public class GradeFonctio implements Serializable {
     @Column (nullable = false, unique = true)
     private String intituleGradeFonctio;
     
+    @Column 
+    private String codeGradeFonctio;
+    
     @Column
     private Categorie categororie;
     
@@ -99,6 +102,14 @@ public class GradeFonctio implements Serializable {
     public void setRetraite(int retraite) {
         this.retraite = retraite;
     }
+
+    public String getCodeGradeFonctio() {
+        return codeGradeFonctio;
+    }
+
+    public void setCodeGradeFonctio(String codeGradeFonctio) {
+        this.codeGradeFonctio = codeGradeFonctio;
+    }
     
     
 
@@ -121,7 +132,7 @@ public class GradeFonctio implements Serializable {
 
     @Override
     public String toString() {
-        return intituleGradeFonctio;
+        return codeGradeFonctio;
     }
     
 }

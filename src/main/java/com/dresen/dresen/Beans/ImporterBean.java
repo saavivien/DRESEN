@@ -22,15 +22,22 @@ import com.dresen.dresen.ServiceInterface.IRangerContractService;
 import com.dresen.dresen.ServiceInterface.IRangerFonctioService;
 import com.dresen.dresen.ServiceInterface.ISpecialiteService;
 import com.dresen.dresen.ServiceInterface.IStructureService;
+import com.dresen.dresen.entities.Affectation;
 import com.dresen.dresen.entities.Arrondissement;
 import com.dresen.dresen.entities.Cadre;
 import com.dresen.dresen.entities.CategorieStructure;
+import com.dresen.dresen.entities.Contractuel;
 import com.dresen.dresen.entities.Corps;
 import com.dresen.dresen.entities.Departement;
+import com.dresen.dresen.entities.Fonctionnaire;
 import com.dresen.dresen.entities.GradeContract;
 import com.dresen.dresen.entities.GradeFonctio;
 import com.dresen.dresen.entities.Poste;
 import com.dresen.dresen.entities.PosteStructure;
+import com.dresen.dresen.entities.Promotion;
+import com.dresen.dresen.entities.RangerContract;
+import com.dresen.dresen.entities.RangerFonctio;
+import com.dresen.dresen.entities.Sexe;
 import com.dresen.dresen.entities.Specialite;
 import com.dresen.dresen.entities.StructureAttache;
 import java.io.BufferedInputStream;
@@ -39,6 +46,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -96,6 +105,10 @@ public class ImporterBean {
     private IPosteService iPosteService;
     @ManagedProperty(value = "#{IPosteStructureService}")
     private IPosteStructureService iPosteStructureService;
+    private SimpleDateFormat simpleDateFormat;
+    Contractuel contractuelImport;
+    Fonctionnaire fonctionnaireImport;
+    private ZipFile zipFile;
 
     public IDepartementService getiDepartementService() {
         return iDepartementService;
@@ -233,6 +246,38 @@ public class ImporterBean {
         this.iPosteStructureService = iPosteStructureService;
     }
 
+    public SimpleDateFormat getSimpleDateFormat() {
+        return simpleDateFormat;
+    }
+
+    public void setSimpleDateFormat(SimpleDateFormat simpleDateFormat) {
+        this.simpleDateFormat = simpleDateFormat;
+    }
+
+    public Contractuel getContractuelImport() {
+        return contractuelImport;
+    }
+
+    public void setContractuelImport(Contractuel contractuelImport) {
+        this.contractuelImport = contractuelImport;
+    }
+
+    public Fonctionnaire getFonctionnaireImport() {
+        return fonctionnaireImport;
+    }
+
+    public void setFonctionnaireImport(Fonctionnaire fonctionnaireImport) {
+        this.fonctionnaireImport = fonctionnaireImport;
+    }
+
+    public ZipFile getZipFile() {
+        return zipFile;
+    }
+
+    public void setZipFile(ZipFile zipFile) {
+        this.zipFile = zipFile;
+    }
+
     public String removeAccent(String chaine) {
 
         chaine = chaine.replace('â', 'a');
@@ -262,7 +307,7 @@ public class ImporterBean {
         try {
             File export = new File("Export");
             export.mkdir();
-            ZipFile zipFile = new ZipFile(nomArchive);
+            zipFile = new ZipFile(nomArchive);
             Enumeration entries = zipFile.entries();
             ZipEntry entry;
             File fichier;
@@ -316,10 +361,8 @@ public class ImporterBean {
                 }
             }
 
-        } catch (IOException ioe) {
+        } catch (IOException | BiffException ioe) {
             throw ioe;
-        } catch (BiffException be) {
-            throw be;
         }
     }
 
@@ -332,9 +375,9 @@ public class ImporterBean {
             Workbook workbook = Workbook.getWorkbook(new File("Export/arrondissement.vvs"));
             Sheet sheet = workbook.getSheet(0);
             List<Arrondissement> listArronds = iArrondissementService.findAllArrondissement();
+            List<Departement> listDeparts = iDepartementService.findAllDepartement();
             List<String> listIntituleArronds = new ArrayList<>();
             for (Arrondissement arrondissement : listArronds) {
-                System.out.println(removeAccent(arrondissement.getIntituleArrondissement().toLowerCase()));
                 listIntituleArronds.add(removeAccent(arrondissement.getIntituleArrondissement().toLowerCase()));
             }
             for (int i = 0; i < sheet.getRows(); i++) {
@@ -342,16 +385,19 @@ public class ImporterBean {
                 if (!listIntituleArronds.contains(removeAccent(intituleArrond.toLowerCase()))) {
                     Arrondissement arrondissementImport = new Arrondissement();
                     arrondissementImport.setIntituleArrondissement(intituleArrond);
-                    Departement departOfArrond = iDepartementService.findDepartementByIntitule(sheet.getCell(1, i).getContents());
-                    arrondissementImport.setDepartement(departOfArrond);
-                    iArrondissementService.createArrondissement(arrondissementImport);
+                    for (Departement departement : listDeparts) {
+                        if ((removeAccent(departement.getIntituleDepartement().toLowerCase())).equals(removeAccent(sheet.getCell(1, i).getContents().toLowerCase()))) {
+                            Departement departImport = departement;
+                            arrondissementImport.setDepartement(departImport);
+                            iArrondissementService.createArrondissement(arrondissementImport);
+                            break;
+                        }
+                    }
                 }
             }
 
-        } catch (IOException ioe) {
+        } catch (IOException | BiffException ioe) {
             throw ioe;
-        } catch (BiffException be) {
-            throw be;
         }
     }
 
@@ -376,10 +422,8 @@ public class ImporterBean {
                 }
             }
 
-        } catch (IOException ioe) {
+        } catch (IOException | BiffException ioe) {
             throw ioe;
-        } catch (BiffException be) {
-            throw be;
         }
     }
 
@@ -401,7 +445,7 @@ public class ImporterBean {
             for (Poste poste : listPostes) {
                 listIntitulePostes.add(removeAccent(poste.getIntitulePoste().toLowerCase()));
             }
-            
+
             for (int i = 0; i < sheet.getRows(); i++) {
                 //On cré les postes inexistants
                 String intitulePoste = sheet.getCell(0, i).getContents();
@@ -427,16 +471,15 @@ public class ImporterBean {
                             ps.setPoste(poste);
                             ps.setCategorieStructure(cs);
                             iPosteStructureService.createPosteStructure(ps);
+                            break;
                         }
                     }
                 }
 
             }
 
-        } catch (IOException ioe) {
+        } catch (IOException | BiffException ioe) {
             throw ioe;
-        } catch (BiffException be) {
-            throw be;
         }
     }
 
@@ -451,6 +494,8 @@ public class ImporterBean {
             Workbook workbook = Workbook.getWorkbook(new File("Export/structure.vvs"));
             Sheet sheet = workbook.getSheet(0);
             List<StructureAttache> listStructureAttaches = iStructureService.findAllStructureAttache();
+            List<Arrondissement> listArrondissements = iArrondissementService.findAllArrondissement();
+            List<CategorieStructure> listCategorieStructures = iCategorieStructureService.findAllCategorieStructure();
             List<String> listIntituleStructureAttaches = new ArrayList<>();
             for (StructureAttache structureAttache : listStructureAttaches) {
                 listIntituleStructureAttaches.add(removeAccent(structureAttache.getIntituleStructure().toLowerCase()));
@@ -462,18 +507,26 @@ public class ImporterBean {
                     StructureAttache structureAttacheImport = new StructureAttache();
                     structureAttacheImport.setIntituleStructure(intitulestructureAttache);
                     structureAttacheImport.setCodeStructure(codeStructureImport);
-                    Arrondissement arrondissementImport = iArrondissementService.findArrondissementByIntitule(sheet.getCell(2, i).getContents());
-                    structureAttacheImport.setArrondissement(arrondissementImport);
-                    CategorieStructure categorieStructure = iCategorieStructureService.findCategorieStructureByName(sheet.getCell(3, i).getContents());
-                    structureAttacheImport.setCategorieStructure(categorieStructure);
+                    for (Arrondissement arrondissement : listArrondissements) {
+                        if ((removeAccent(arrondissement.getIntituleArrondissement().toLowerCase())).equals(removeAccent(sheet.getCell(2, i).getContents().toLowerCase()))) {
+                            Arrondissement arrondissementImport = arrondissement;
+                            structureAttacheImport.setArrondissement(arrondissementImport);
+                            break;
+                        }
+                    }
+                    for (CategorieStructure categorieStructure : listCategorieStructures) {
+                        if ((removeAccent(categorieStructure.getIntituleCategorieStructure().toLowerCase())).equals(removeAccent(sheet.getCell(3, i).getContents().toLowerCase()))) {
+                            CategorieStructure categorieStructureImport = categorieStructure;
+                            structureAttacheImport.setCategorieStructure(categorieStructureImport);
+                            break;
+                        }
+                    }
                     iStructureService.createStructureAttache(structureAttacheImport);
                 }
             }
 
-        } catch (IOException ioe) {
+        } catch (IOException | BiffException ioe) {
             throw ioe;
-        } catch (BiffException be) {
-            throw be;
         }
     }
 
@@ -498,10 +551,8 @@ public class ImporterBean {
                 }
             }
 
-        } catch (IOException ioe) {
+        } catch (IOException | BiffException ioe) {
             throw ioe;
-        } catch (BiffException be) {
-            throw be;
         }
     }
 
@@ -526,10 +577,8 @@ public class ImporterBean {
                 }
             }
 
-        } catch (IOException ioe) {
+        } catch (IOException | BiffException ioe) {
             throw ioe;
-        } catch (BiffException be) {
-            throw be;
         }
     }
 
@@ -537,10 +586,12 @@ public class ImporterBean {
     public void importCadre() throws IOException, BiffException {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
         iCadreService = ctx.getBean("ICadreService", ICadreService.class);
+        iCorpsService = ctx.getBean("ICorpsService", ICorpsService.class);
         try {
             Workbook workbook = Workbook.getWorkbook(new File("Export/cadre.vvs"));
             Sheet sheet = workbook.getSheet(0);
             List<Cadre> listCadres = iCadreService.findAllCadre();
+            List<Corps> listCorps = iCorpsService.findAllCorps();
             List<String> listIntituleCadres = new ArrayList<>();
             for (Cadre cadre : listCadres) {
                 listIntituleCadres.add(removeAccent(cadre.getIntituleCadre().toLowerCase()));
@@ -550,16 +601,19 @@ public class ImporterBean {
                 if (!listIntituleCadres.contains(removeAccent(intituleCadre.toLowerCase()))) {
                     Cadre cadreImport = new Cadre();
                     cadreImport.setIntituleCadre(intituleCadre);
-                    Corps corpsImport = iCorpsService.findCorpsByIntitule(sheet.getCell(1, i).getContents());
-                    cadreImport.setCorps(corpsImport);
+                    for (Corps corps : listCorps) {
+                        if ((removeAccent(corps.getIntituleCorps().toLowerCase())).equals(removeAccent(sheet.getCell(1, i).getContents().toLowerCase()))) {
+                            Corps corpsImport = corps;
+                            cadreImport.setCorps(corpsImport);
+                            break;
+                        }
+                    }
                     iCadreService.createCadre(cadreImport);
                 }
             }
 
-        } catch (IOException ioe) {
+        } catch (IOException | BiffException ioe) {
             throw ioe;
-        } catch (BiffException be) {
-            throw be;
         }
     }
 
@@ -567,29 +621,35 @@ public class ImporterBean {
     public void importGradeFonctio() throws IOException, BiffException {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
         iGradeFonctioService = ctx.getBean("IGradeFonctioService", IGradeFonctioService.class);
+        iCadreService = ctx.getBean("ICadreService", ICadreService.class);
         try {
             Workbook workbook = Workbook.getWorkbook(new File("Export/gradeFonctio.vvs"));
             Sheet sheet = workbook.getSheet(0);
             List<GradeFonctio> listGradeFonctios = iGradeFonctioService.findAllGradeFonctio();
+            List<Cadre> listCadres = iCadreService.findAllCadre();
             List<String> listIntituleGradeFonctios = new ArrayList<>();
             for (GradeFonctio gradeFonctio : listGradeFonctios) {
-                listIntituleGradeFonctios.add(removeAccent(gradeFonctio.getIntituleGradeFonctio().toLowerCase()));
+                listIntituleGradeFonctios.add(removeAccent(gradeFonctio.getCodeGradeFonctio().toLowerCase()));
             }
             for (int i = 0; i < sheet.getRows(); i++) {
-                String intituleGradeFonctio = sheet.getCell(0, i).getContents();
+                String intituleGradeFonctio = sheet.getCell(1, i).getContents();
                 if (!listIntituleGradeFonctios.contains(removeAccent(intituleGradeFonctio.toLowerCase()))) {
                     GradeFonctio gradeFonctioImport = new GradeFonctio();
-                    gradeFonctioImport.setIntituleGradeFonctio(intituleGradeFonctio);
-                    Cadre cadreImport = iCadreService.findCadreByIntitule(sheet.getCell(1, i).getContents());
-                    gradeFonctioImport.setCadre(cadreImport);
+                    gradeFonctioImport.setCodeGradeFonctio(intituleGradeFonctio);
+                    gradeFonctioImport.setIntituleGradeFonctio(sheet.getCell(0, i).getContents());
+                    for (Cadre cadre : listCadres) {
+                        if ((removeAccent(cadre.getIntituleCadre().toLowerCase())).equals(removeAccent(sheet.getCell(2, i).getContents().toLowerCase()))) {
+                            Cadre cadreImport = cadre;
+                            gradeFonctioImport.setCadre(cadreImport);
+                            break;
+                        }
+                    }
                     iGradeFonctioService.createGradeFonctio(gradeFonctioImport);
                 }
             }
 
-        } catch (IOException ioe) {
+        } catch (IOException | BiffException ioe) {
             throw ioe;
-        } catch (BiffException be) {
-            throw be;
         }
     }
 
@@ -614,46 +674,410 @@ public class ImporterBean {
                 }
             }
 
-        } catch (IOException ioe) {
+        } catch (IOException | BiffException ioe) {
             throw ioe;
-        } catch (BiffException be) {
-            throw be;
         }
     }
-    
+
     //importation des fonctionnaires pour des fonctionnaires
-    public void importFonctionnaire() throws IOException, BiffException {
+    public void importFonctionnaire() throws IOException, BiffException, ParseException {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
         iFonctionnaireService = ctx.getBean("IFonctionnaireService", IFonctionnaireService.class);
+        iSpecialiteService = ctx.getBean("ISpecialiteService", ISpecialiteService.class);
+        iRangerFonctioService = ctx.getBean("IRangerFonctioService", IRangerFonctioService.class);
+        iPromotionService = ctx.getBean("IPromotionService", IPromotionService.class);
+        iAffectationService = ctx.getBean("IAffectationService", IAffectationService.class);
         try {
             Workbook workbook = Workbook.getWorkbook(new File("Export/fonctionnaire.vvs"));
             Sheet sheet = workbook.getSheet(0);
-            List<CategorieStructure> listCategorieStructures = iCategorieStructureService.findAllCategorieStructure();
-            List<String> listIntituleCategorieStructures = new ArrayList<>();
-            for (CategorieStructure categorieStructure : listCategorieStructures) {
-                listIntituleCategorieStructures.add(removeAccent(categorieStructure.getIntituleCategorieStructure().toLowerCase()));
+            List<Fonctionnaire> listAllFonctionnaires = iFonctionnaireService.findAllFonctionnaire();
+            listAllFonctionnaires.removeAll(iFonctionnaireService.findFonctionnaireActif());
+            listAllFonctionnaires.removeAll(iFonctionnaireService.findFonctionnaireRetraites());
+            List<Specialite> listSpecialites = iSpecialiteService.findAllSpecialite();
+            List<GradeFonctio> listGradeFonctios = iGradeFonctioService.findAllGradeFonctio();
+            List<StructureAttache> listStructureAttaches = iStructureService.findAllStructureAttache();
+            List<Poste> listPostes = iPosteService.findAllPoste();
+
+            RangerFonctio rangerFonctio = new RangerFonctio();
+            Affectation affectation = new Affectation();
+            Promotion promotion = new Promotion();
+            RangerFonctio rangerFonctioImport;
+            Affectation affectationImport;
+            Promotion promotionImport;
+
+            simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            List<String> listMatricules = new ArrayList<>();
+            List<Integer> listNumCnis = new ArrayList<>();
+            for (Fonctionnaire fonctionnaire : listAllFonctionnaires) {
+                listMatricules.add(fonctionnaire.getMatricule().trim().toUpperCase());
+                listNumCnis.add(fonctionnaire.getCni());
             }
+
             for (int i = 0; i < sheet.getRows(); i++) {
-                String intituleCategorieStructure = sheet.getCell(0, i).getContents();
-                if (!listIntituleCategorieStructures.contains(removeAccent(intituleCategorieStructure.toLowerCase()))) {
-                    CategorieStructure categorieStructureImport = new CategorieStructure();
-                    categorieStructureImport.setIntituleCategorieStructure(intituleCategorieStructure);
-                    iCategorieStructureService.createCategorieStructure(categorieStructureImport);
+                String matricule = sheet.getCell(0, i).getContents();
+                int numCni = Integer.parseInt(sheet.getCell(4, i).getContents());
+                /**
+                 * si le fonctionnaire n'avait jamais été importé ou crée (si
+                 * son matricule n'est pas enregistré) ou s'il existe et est
+                 * court(ECI ou autre sigle pour les agents en cours
+                 * d'intégration) et que son numéro de cni est inesistant
+                 *
+                 */
+                if ((!listMatricules.contains(matricule.trim().toUpperCase())) || ((matricule.trim().length() < 4) && (!listNumCnis.contains(numCni)))) {
+                    fonctionnaireImport = new Fonctionnaire();
+                    fonctionnaireImport.setMatricule(matricule);
+                    fonctionnaireImport.setNom(sheet.getCell(1, i).getContents());
+                    fonctionnaireImport.setPrenom(sheet.getCell(2, i).getContents());
+                    fonctionnaireImport.setNomJeuneFille(sheet.getCell(3, i).getContents());
+                    fonctionnaireImport.setCni(numCni);
+                    fonctionnaireImport.setDateNaissance(simpleDateFormat.parse(sheet.getCell(5, i).getContents()));
+                    fonctionnaireImport.setLieuNaissance(sheet.getCell(6, i).getContents());
+                    fonctionnaireImport.setArrondNaissance(sheet.getCell(7, i).getContents());
+                    fonctionnaireImport.setDepartNaissance(sheet.getCell(8, i).getContents());
+                    fonctionnaireImport.setRegionNaissance(sheet.getCell(9, i).getContents());
+                    fonctionnaireImport.setArrondissementOrigine(sheet.getCell(10, i).getContents());
+                    fonctionnaireImport.setDepartementOrigine(sheet.getCell(11, i).getContents());
+                    fonctionnaireImport.setRegionOrigine(sheet.getCell(12, i).getContents());
+                    fonctionnaireImport.setDiplomeEntreeFoncPub(sheet.getCell(13, i).getContents());
+                    fonctionnaireImport.setDateEntreFonctionPub(simpleDateFormat.parse(sheet.getCell(14, i).getContents()));
+                    fonctionnaireImport.setSexe(Sexe.valueOf(sheet.getCell(15, i).getContents()));
+                    fonctionnaireImport.setIsBornArround(Boolean.valueOf(sheet.getCell(16, i).getContents()));
+                    fonctionnaireImport.setDateDelivranceCni(simpleDateFormat.parse(sheet.getCell(23, i).getContents()));
+                    fonctionnaireImport.setLieuDelivranceCni(sheet.getCell(24, i).getContents());
+                    fonctionnaireImport.setNumeroTel(sheet.getCell(25, i).getContents());
+                    iFonctionnaireService.createFonctionnaire(fonctionnaireImport);
+
+                    for (Specialite specialite : listSpecialites) {
+                        if (removeAccent(specialite.getIntituleSpecialite().toLowerCase()).equals(removeAccent(sheet.getCell(17, i).getContents().toLowerCase()))) {
+                            fonctionnaireImport.setSpecialite(specialite);
+                            iFonctionnaireService.updateFonctionnaire(fonctionnaireImport);
+                        }
+                    }
+                    for (GradeFonctio gradeFonctio : listGradeFonctios) {
+                        if (removeAccent(gradeFonctio.getCodeGradeFonctio().toLowerCase()).equals(removeAccent(sheet.getCell(18, i).getContents().toLowerCase()))) {
+                            rangerFonctioImport = new RangerFonctio();
+                            rangerFonctioImport.setFonctionnaire(fonctionnaireImport);
+                            rangerFonctioImport.setGradeFonctio(gradeFonctio);
+                            rangerFonctioImport.setDateDebutRangerFonctio(simpleDateFormat.parse(sheet.getCell(19, i).getContents()));
+                            iRangerFonctioService.createRangerFonctio(rangerFonctioImport);
+                            break;
+                        }
+                    }
+                    for (Poste poste : listPostes) {
+                        if (removeAccent(poste.getIntitulePoste().toLowerCase()).equals(removeAccent(sheet.getCell(20, i).getContents().toLowerCase()))) {
+                            promotionImport = new Promotion();
+                            promotionImport.setAgent(fonctionnaireImport);
+                            promotionImport.setPoste(poste);
+                            promotionImport.setDateDebutPromo(simpleDateFormat.parse(sheet.getCell(22, i).getContents()));
+                            iPromotionService.createPromotion(promotionImport);
+                            break;
+                        }
+                    }
+                    for (StructureAttache structureAttache : listStructureAttaches) {
+                        if (removeAccent(structureAttache.getIntituleStructure().toLowerCase()).equals(removeAccent(sheet.getCell(21, i).getContents().toLowerCase()))) {
+                            affectationImport = new Affectation();
+                            affectationImport.setAgent(fonctionnaireImport);
+                            affectationImport.setStructureAttache(structureAttache);
+                            affectationImport.setDateDebutAffect(simpleDateFormat.parse(sheet.getCell(22, i).getContents()));
+                            iAffectationService.createAffectation(affectationImport);
+                            break;
+                        }
+                    }
+
+                } // si le fonctionnaire exite, ses données sont mise à jours
+                else {
+                    fonctionnaireImport = null;
+                    if ((matricule.trim().length() > 4)) {
+
+                        for (Fonctionnaire fonctionnaire : listAllFonctionnaires) {
+                            if ((fonctionnaire.getMatricule().trim().replace('-', ' ').toUpperCase()).equals(matricule.trim().replace('-', ' ').toUpperCase())) {
+                                promotion = iPromotionService.findLastPromotionByIdAgent(fonctionnaire.getId());
+                                affectation = iAffectationService.findLastAffectationByIdAgent(fonctionnaire.getId());
+                                rangerFonctio = iRangerFonctioService.findLastRangerFonctioByIdAgent(fonctionnaire.getId());
+                                break;
+                            }
+                        }
+                    } else {
+                        for (Fonctionnaire fonctionnaire : listAllFonctionnaires) {
+                            if (fonctionnaire.getCni() == numCni) {
+                                promotion = iPromotionService.findLastPromotionByIdAgent(fonctionnaire.getId());
+                                affectation = iAffectationService.findLastAffectationByIdAgent(fonctionnaire.getId());
+                                rangerFonctio = iRangerFonctioService.findLastRangerFonctioByIdAgent(fonctionnaire.getId());
+                                break;
+                            }
+                        }
+                    }
+                    //mise à jour du poste/fonction et de la structure d'attache                    
+                    if ((removeAccent(promotion.getPoste().getIntitulePoste().toLowerCase())).equals(removeAccent(sheet.getCell(20, i).getContents().toLowerCase()))
+                            && (removeAccent(affectation.getStructureAttache().getIntituleStructure().toLowerCase())).equals(removeAccent(sheet.getCell(21, i).getContents().toLowerCase()))) {
+                        promotion.setDateFinPromo(null);
+                        affectation.setDateFinAffect(null);
+                        iPromotionService.updatePromotion(promotion);
+                        iAffectationService.updateAffectation(affectation);
+                    } else {
+                        for (Poste poste : listPostes) {
+                            if (removeAccent(poste.getIntitulePoste().toLowerCase()).equals(removeAccent(sheet.getCell(20, i).getContents().toLowerCase()))) {
+                                promotionImport = new Promotion();
+                                promotionImport.setAgent(fonctionnaireImport);
+                                promotionImport.setPoste(poste);
+                                promotionImport.setDateDebutPromo(simpleDateFormat.parse(sheet.getCell(22, i).getContents()));
+                                promotion.setDateFinPromo(promotionImport.getDateDebutPromo());
+                                iPromotionService.createPromotion(promotionImport);
+                                iPromotionService.updatePromotion(promotion);
+                                break;
+                            }
+                        }
+                        for (StructureAttache structureAttache : listStructureAttaches) {
+                            if (removeAccent(structureAttache.getIntituleStructure().toLowerCase()).equals(removeAccent(sheet.getCell(21, i).getContents().toLowerCase()))) {
+                                affectationImport = new Affectation();
+                                affectationImport.setAgent(fonctionnaireImport);
+                                affectationImport.setStructureAttache(structureAttache);
+                                affectationImport.setDateDebutAffect(simpleDateFormat.parse(sheet.getCell(22, i).getContents()));
+                                affectation.setDateFinAffect(affectationImport.getDateDebutAffect());
+                                iAffectationService.createAffectation(affectationImport);
+                                iAffectationService.updateAffectation(affectation);
+                                break;
+                            }
+                        }
+ 
+                    }
+
+                    //mise à jour du grade et de la structure d'attache
+                    if (!(removeAccent(rangerFonctio.getGradeFonctio().getCodeGradeFonctio().toLowerCase())).equals(removeAccent(sheet.getCell(18, i).getContents().toLowerCase()))) {
+                        for (GradeFonctio gradeFonctio : listGradeFonctios) {
+                            if (removeAccent(gradeFonctio.getCodeGradeFonctio().toLowerCase()).equals(removeAccent(sheet.getCell(18, i).getContents().toLowerCase()))) {
+                                rangerFonctioImport = new RangerFonctio();
+                                rangerFonctioImport.setFonctionnaire(fonctionnaireImport);
+                                rangerFonctioImport.setGradeFonctio(gradeFonctio);
+                                rangerFonctioImport.setDateDebutRangerFonctio(simpleDateFormat.parse(sheet.getCell(19, i).getContents()));
+                                rangerFonctio.setDateFinRangerFonctio(rangerFonctioImport.getDateDebutRangerFonctio());
+                                iRangerFonctioService.createRangerFonctio(rangerFonctioImport);
+                                iRangerFonctioService.updateRangerFonctio(rangerFonctio);
+                                break;
+                            }
+                        }
+
+                    }
+
                 }
             }
 
-        } catch (IOException ioe) {
+        } catch (IOException | BiffException | ParseException ioe) {
             throw ioe;
-        } catch (BiffException be) {
-            throw be;
         }
     }
 
-    public static void main(String[] args) throws IOException, BiffException {
+    //importation des contractuels pour des contractuels
+    public void importContractuel() throws IOException, BiffException, ParseException {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
+        iContractuelService = ctx.getBean("IContractuelService", IContractuelService.class);
+        iSpecialiteService = ctx.getBean("ISpecialiteService", ISpecialiteService.class);
+        iRangerContractService = ctx.getBean("IRangerContractService", IRangerContractService.class);
+        iPromotionService = ctx.getBean("IPromotionService", IPromotionService.class);
+        iAffectationService = ctx.getBean("IAffectationService", IAffectationService.class);
+        try {
+            Workbook workbook = Workbook.getWorkbook(new File("Export/contractuel.vvs"));
+            Sheet sheet = workbook.getSheet(0);
+            List<Contractuel> listAllContractuels = iContractuelService.findAllContractuel();
+            listAllContractuels.removeAll(iContractuelService.findContractuelActif());
+            listAllContractuels.removeAll(iContractuelService.findContractuelRetraites());
+            List<Specialite> listSpecialites = iSpecialiteService.findAllSpecialite();
+            List<GradeContract> listGradeContracts = iGradeContractService.findAllGradeContract();
+            List<StructureAttache> listStructureAttaches = iStructureService.findAllStructureAttache();
+            List<Poste> listPostes = iPosteService.findAllPoste();
+
+            RangerContract rangerContract = new RangerContract();
+            Affectation affectation = new Affectation();
+            Promotion promotion = new Promotion();
+            RangerContract rangerContractImport;
+            Affectation affectationImport;
+            Promotion promotionImport;
+
+            simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            List<String> listMatricules = new ArrayList<>();
+            List<Integer> listNumCnis = new ArrayList<>();
+            for (Contractuel contractuel : listAllContractuels) {
+                listMatricules.add(contractuel.getMatricule().trim().toUpperCase());
+                listNumCnis.add(contractuel.getCni());
+            }
+
+            for (int i = 0; i < sheet.getRows(); i++) {
+                String matricule = sheet.getCell(0, i).getContents();
+                int numCni = Integer.parseInt(sheet.getCell(4, i).getContents());
+                /**
+                 * si le contractuel n'avait jamais été importé ou crée (si son
+                 * matricule n'est pas enregistré) ou s'il existe et est
+                 * court(ECI ou autre sigle pour les agents en cours
+                 * d'intégration) et que son numéro de cni est inesistant
+                 *
+                 */
+                if (!listMatricules.contains(matricule.trim().toUpperCase()) || ((matricule.trim().length() < 4) && (!listNumCnis.contains(numCni)))) {
+                    contractuelImport = new Contractuel();
+                    contractuelImport.setMatricule(matricule);
+                    contractuelImport.setNom(sheet.getCell(1, i).getContents());
+                    contractuelImport.setPrenom(sheet.getCell(2, i).getContents());
+                    contractuelImport.setNomJeuneFille(sheet.getCell(3, i).getContents());
+                    contractuelImport.setCni(numCni);
+                    contractuelImport.setDateNaissance(simpleDateFormat.parse(sheet.getCell(5, i).getContents()));
+                    contractuelImport.setLieuNaissance(sheet.getCell(6, i).getContents());
+                    contractuelImport.setArrondNaissance(sheet.getCell(7, i).getContents());
+                    contractuelImport.setDepartNaissance(sheet.getCell(8, i).getContents());
+                    contractuelImport.setRegionNaissance(sheet.getCell(9, i).getContents());
+                    contractuelImport.setArrondissementOrigine(sheet.getCell(10, i).getContents());
+                    contractuelImport.setDepartementOrigine(sheet.getCell(11, i).getContents());
+                    contractuelImport.setRegionOrigine(sheet.getCell(12, i).getContents());
+                    contractuelImport.setDiplomeEntreeFoncPub(sheet.getCell(13, i).getContents());
+                    contractuelImport.setDateEntreFonctionPub(simpleDateFormat.parse(sheet.getCell(14, i).getContents()));
+                    contractuelImport.setSexe(Sexe.valueOf(sheet.getCell(15, i).getContents()));
+                    contractuelImport.setIsBornArround(Boolean.valueOf(sheet.getCell(16, i).getContents()));
+                    contractuelImport.setDateDelivranceCni(simpleDateFormat.parse(sheet.getCell(23, i).getContents()));
+                    contractuelImport.setLieuDelivranceCni(sheet.getCell(24, i).getContents());
+                    contractuelImport.setNumeroTel(sheet.getCell(25, i).getContents());
+                    iContractuelService.createContractuel(contractuelImport);
+
+                    for (Specialite specialite : listSpecialites) {
+                        if (removeAccent(specialite.getIntituleSpecialite().toLowerCase()).equals(removeAccent(sheet.getCell(17, i).getContents().toLowerCase()))) {
+                            contractuelImport.setSpecialite(specialite);
+                            iContractuelService.updateContractuel(contractuelImport);
+                        }
+                    }
+                    for (GradeContract gradeContract : listGradeContracts) {
+                        if (removeAccent(gradeContract.getIntituleGradeContract().toLowerCase()).equals(removeAccent(sheet.getCell(18, i).getContents().toLowerCase()))) {
+                            rangerContractImport = new RangerContract();
+                            rangerContractImport.setContractuel(contractuelImport);
+                            rangerContractImport.setGradeContract(gradeContract);
+                            rangerContractImport.setDateDebutRangerContract(simpleDateFormat.parse(sheet.getCell(19, i).getContents()));
+                            iRangerContractService.createRangerContract(rangerContractImport);
+                            break;
+                        }
+                    }
+                    for (Poste poste : listPostes) {
+                        if (removeAccent(poste.getIntitulePoste().toLowerCase()).equals(removeAccent(sheet.getCell(20, i).getContents().toLowerCase()))) {
+                            promotionImport = new Promotion();
+                            promotionImport.setAgent(contractuelImport);
+                            promotionImport.setPoste(poste);
+                            promotionImport.setDateDebutPromo(simpleDateFormat.parse(sheet.getCell(22, i).getContents()));
+                            iPromotionService.createPromotion(promotionImport);
+                            break;
+                        }
+                    }
+                    for (StructureAttache structureAttache : listStructureAttaches) {
+                        if (removeAccent(structureAttache.getIntituleStructure().toLowerCase()).equals(removeAccent(sheet.getCell(21, i).getContents().toLowerCase()))) {
+                            affectationImport = new Affectation();
+                            affectationImport.setAgent(contractuelImport);
+                            affectationImport.setStructureAttache(structureAttache);
+                            affectationImport.setDateDebutAffect(simpleDateFormat.parse(sheet.getCell(22, i).getContents()));
+                            iAffectationService.createAffectation(affectationImport);
+                            break;
+                        }
+                    }
+
+                } // si le contractuel exite, ses données sont mise à jours
+                else {
+                    contractuelImport = null;
+                    if ((matricule.trim().length() > 4)) {
+
+                        for (Contractuel contractuel : listAllContractuels) {
+                            if ((contractuel.getMatricule().trim().replace('-', ' ').toUpperCase()).equals(matricule.trim().replace('-', ' ').toUpperCase())) {
+                                promotion = iPromotionService.findLastPromotionByIdAgent(contractuel.getId());
+                                affectation = iAffectationService.findLastAffectationByIdAgent(contractuel.getId());
+                                rangerContract = iRangerContractService.findLastRangerContractByIdAgent(contractuel.getId());
+                                break;
+                            }
+                        }
+                    } else {
+                        for (Contractuel contractuel : listAllContractuels) {
+                            if (contractuel.getCni() == numCni) {
+                                promotion = iPromotionService.findLastPromotionByIdAgent(contractuel.getId());
+                                affectation = iAffectationService.findLastAffectationByIdAgent(contractuel.getId());
+                                rangerContract = iRangerContractService.findLastRangerContractByIdAgent(contractuel.getId());
+                                break;
+                            }
+                        }
+                    }
+                    //mise à jour du poste/fonction et de la structure d'attache
+                    
+                    
+                    if ((removeAccent(promotion.getPoste().getIntitulePoste().toLowerCase())).equals(removeAccent(sheet.getCell(20, i).getContents().toLowerCase()))
+                            && (removeAccent(affectation.getStructureAttache().getIntituleStructure().toLowerCase())).equals(removeAccent(sheet.getCell(21, i).getContents().toLowerCase()))) {
+                        promotion.setDateFinPromo(null);
+                        affectation.setDateFinAffect(null);
+                        iPromotionService.updatePromotion(promotion);
+                        iAffectationService.updateAffectation(affectation);
+                    } else {
+                        for (Poste poste : listPostes) {
+                            if (removeAccent(poste.getIntitulePoste().toLowerCase()).equals(removeAccent(sheet.getCell(20, i).getContents().toLowerCase()))) {
+                                promotionImport = new Promotion();
+                                promotionImport.setAgent(contractuelImport);
+                                promotionImport.setPoste(poste);
+                                promotionImport.setDateDebutPromo(simpleDateFormat.parse(sheet.getCell(22, i).getContents()));
+                                promotion.setDateFinPromo(promotionImport.getDateDebutPromo());
+                                iPromotionService.createPromotion(promotionImport);
+                                iPromotionService.updatePromotion(promotion);
+                                break;
+                            }
+                        }
+                        for (StructureAttache structureAttache : listStructureAttaches) {
+                            if (removeAccent(structureAttache.getIntituleStructure().toLowerCase()).equals(removeAccent(sheet.getCell(21, i).getContents().toLowerCase()))) {
+                                affectationImport = new Affectation();
+                                affectationImport.setAgent(contractuelImport);
+                                affectationImport.setStructureAttache(structureAttache);
+                                affectationImport.setDateDebutAffect(simpleDateFormat.parse(sheet.getCell(22, i).getContents()));
+                                affectation.setDateFinAffect(affectationImport.getDateDebutAffect());
+                                iAffectationService.createAffectation(affectationImport);
+                                iAffectationService.updateAffectation(affectation);
+                                break;
+                            }
+                        }
+                    }
+
+                    //mise à jour du grade et de la structure d'attache
+                    if (!(removeAccent(rangerContract.getGradeContract().getIntituleGradeContract().toLowerCase())).equals(removeAccent(sheet.getCell(18, i).getContents().toLowerCase()))) {
+                        for (GradeContract gradeContract : listGradeContracts) {
+                            if (removeAccent(gradeContract.getIntituleGradeContract().toLowerCase()).equals(removeAccent(sheet.getCell(18, i).getContents().toLowerCase()))) {
+                                rangerContractImport = new RangerContract();
+                                rangerContractImport.setContractuel(contractuelImport);
+                                rangerContractImport.setGradeContract(gradeContract);
+                                rangerContractImport.setDateDebutRangerContract(simpleDateFormat.parse(sheet.getCell(19, i).getContents()));
+                                rangerContract.setDateFinRangerContract(rangerContractImport.getDateDebutRangerContract());
+                                iRangerContractService.createRangerContract(rangerContractImport);
+                                iRangerContractService.updateRangerContract(rangerContract);
+                                break;
+                            }
+                        }
+
+                    }
+
+                }
+            }
+
+        } catch (IOException | BiffException | ParseException ioe) {
+            throw ioe;
+        }
+    }
+
+    public void importation(String nomAchive) throws IOException, BiffException, ParseException {
+        try {
+            decompresser(nomAchive);
+            importDepart();
+            importArrond();
+            importCategorieStructure();
+            importCorps();
+            importCadre();
+            importGradeFonctio();
+            importGradeContract();
+            importSpecialite();
+            importStructureAttache();
+            importPoste();
+            importFonctionnaire();
+            importContractuel();
+        } catch (IOException | BiffException | ParseException ioe) {
+            throw ioe;
+        }
+    }
+
+    public static void main(String[] args) throws IOException, BiffException, ParseException {
         ImporterBean importerBean = new ImporterBean();
-        importerBean.decompresser("H:/Dark blue/s2/FichierExporté.zip");
-        importerBean.importArrond();
-        importerBean.importDepart();
-        importerBean.importPoste();
+        importerBean.importation("H:/Dark blue/s2/FichierExporté.zip");
     }
 }

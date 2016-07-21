@@ -23,5 +23,5 @@ public interface IRangerContractService {
     public List<RangerContract> findRangerContractByIdAgent(long idAgent) throws ServiceException;
     public List<RangerContract> findAllRangerContractOpen() throws ServiceException;
     public RangerContract findRangerContractOpenByIdAgent(long idAgent) throws ServiceException;
-    
+    public RangerContract findLastRangerContractByIdAgent(long idAgent) throws ServiceException;
 }
