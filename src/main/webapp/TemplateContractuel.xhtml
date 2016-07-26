@@ -210,7 +210,7 @@ and open the template in the editor.
                                     <h:outputText value="Département d'origine : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.departementOrigine}" style="font-style: italic"/>
 
-                                    <p:commandButton value="Enregistrer" action="#{contractuelBean.createContractuel()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
+                                    <p:commandButton value="Enregistrer" action="#{contractuelBean.createContractuel()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table messages"/>
                                     <h:outputText styleClass="outputLabel" value="" />
                                     <h:outputText value="Arrondissement d'origine : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.arrondissementOrigine}" style="font-style: italic"/>
@@ -220,7 +220,7 @@ and open the template in the editor.
                         </p:tab>  
 
                     </p:wizard>  
-
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog>
 
@@ -417,7 +417,7 @@ and open the template in the editor.
                                     <h:outputText value="Département d'origine : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.departementOrigine}" style="font-style: italic"/>
 
-                                    <p:commandButton value="Modifier" action="#{contractuelBean.updateContractuel()}"  oncomplete="PF('dl').hide()" update=":tableForm:table"/>
+                                    <p:commandButton value="Modifier" action="#{contractuelBean.updateContractuel()}"  oncomplete="PF('dl').hide()" update=":tableForm:table, messages"/>
                                     <h:outputText styleClass="outputLabel" value="" />
                                     <h:outputText value="Arrondissement d'origine : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.arrondissementOrigine}" style="font-style: italic"/>
@@ -425,8 +425,8 @@ and open the template in the editor.
                                 </h:panelGrid> 
                             </p:panel>  
                         </p:tab>  
-
                     </p:wizard>  
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog> 
             <!--Choix des information à afficher-->
@@ -563,12 +563,13 @@ and open the template in the editor.
                                     <h:outputText value="     Date d'entrée au poste d'affectation :" />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutPosteAffec}" style="font-style: italic"/>
 
-                                    <p:commandButton value="Confirmer Affectation" action="#{contractuelBean.affecterContractuel()}"  oncomplete="PF('dlga').hide()" update=":tableForm:table"/>
+                                    <p:commandButton value="Confirmer Affectation" action="#{contractuelBean.affecterContractuel()}"  oncomplete="PF('dlga').hide()" update=":tableForm:table, messages"/>
                                 </h:panelGrid> 
                             </p:panel>  
                         </p:tab>  
 
-                    </p:wizard>  
+                    </p:wizard> 
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog> 
             <!--Chager le grade du contractuel-->
@@ -612,12 +613,12 @@ and open the template in the editor.
                                     <h:outputText value="     Date d'obtention du nouveau grade :" />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutGradeChangerGrade}" />
 
-                                    <p:commandButton value="Valider nouveau grade" action="#{contractuelBean.ChagerGradecontractuel()}"  oncomplete="PF('dlgcg').hide()" update=":tableForm:table"/>
+                                    <p:commandButton value="Valider nouveau grade" action="#{contractuelBean.ChagerGradecontractuel()}"  oncomplete="PF('dlgcg').hide()" update=":tableForm:table, messages"/>
                                 </h:panelGrid> 
                             </p:panel>  
                         </p:tab>  
-
                     </p:wizard>  
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog> 
             <!--Profil  du contractuel-->
@@ -747,10 +748,11 @@ and open the template in the editor.
                                     <h:outputText value="Poste occupé depuis le : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutPoste}" style="font-style: italic"/>    
                                 </h:panelGrid>
-                                <p:commandButton value="Valider la mise en retraite" action="#{contractuelBean.retraite()}"  oncomplete="PF('dlgr').hide()" update=":tableForm:table"/>
+                                <p:commandButton value="Valider la mise en retraite" action="#{contractuelBean.retraite()}"  oncomplete="PF('dlgr').hide()" update=":tableForm:table, messages"/>
                             </p:panel>
                         </p:tab>
                     </p:wizard> 
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog>
             <!--Sortie du contractuel  de la région-->
@@ -806,10 +808,11 @@ and open the template in the editor.
                                     <h:outputText value="     Poste occupé depuis le : " />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutPoste}" style="font-style: italic"/>    
                                 </h:panelGrid>
-                                <p:commandButton value="Valider la sortie de la région" action="#{contractuelBean.sortieRegion()}"  oncomplete="PF('dlgs').hide()" update=":tableForm:table"/>
+                                <p:commandButton value="Valider la sortie de la région" action="#{contractuelBean.sortieRegion()}"  oncomplete="PF('dlgs').hide()" update=":tableForm:table, messages"/>
                             </p:panel>
                         </p:tab>
                     </p:wizard> 
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog>
         </f:view>
@@ -988,14 +991,14 @@ and open the template in the editor.
                         <h:outputText value="#{contractuelBean.currentDateEntreeFonctionPub(item)}"/>
                     </p:column>
 
-                    <p:column rendered="#{contractuelBean.boolStrucAttach}" filterBy="#{contractuelBean.currentStructureAttache(item)}" width="150">
+                    <p:column rendered="#{contractuelBean.boolStrucAttach}" filterBy="#{contractuelBean.currentStructureAttache(item)}" width="200">
                         <f:facet name="header">
                             <h:outputText value="Structure Attache"/>
                         </f:facet>
                         <h:outputText value="#{contractuelBean.currentStructureAttache(item)}"/>
                     </p:column>
 
-                    <p:column rendered="#{contractuelBean.boolPoste}" filterBy="#{contractuelBean.currentPoste(item)}" width="150">
+                    <p:column rendered="#{contractuelBean.boolPoste}" filterBy="#{contractuelBean.currentPoste(item)}" width="200">
                         <f:facet name="header">
                             <h:outputText value="Poste"/>
                         </f:facet>

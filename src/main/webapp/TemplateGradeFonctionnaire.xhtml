@@ -41,15 +41,14 @@ and open the template in the editor.
                             <f:selectItem itemLabel="Selectioner la catégorie" itemValue="" noSelectionOption="true"  />
                             <f:selectItems var="custe1" value="#{gradeFonctioBean.categories()}" />
                         </p:selectOneMenu>                            
-                        <h:outputText value="Age de départ à la retraite: " />  
-                        <p:selectOneMenu value="#{gradeFonctioBean.gradeFonctio.retraite}" effect="fold" editable="true" required="true">  
+                        <p:outputLabel value="Age de départ à la retraite: " for="age"/>  
+                        <p:selectOneMenu id="age" value="#{gradeFonctioBean.gradeFonctio.retraite}" effect="fold" editable="true" required="true">  
                             <f:selectItem itemLabel="Selectionner un age" itemValue="" />  
                             <f:selectItems var="age" value="#{gradeFonctioBean.ages()}" itemLabelEscaped="true"/> 
                         </p:selectOneMenu>  
-                        <p:commandButton value="Enregistrer" action="#{gradeFonctioBean.createGradeFonction()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table" id="bout1" ajax="false" />
+                        <p:commandButton value="Enregistrer" action="#{gradeFonctioBean.createGradeFonction()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table, messages" id="bout1" ajax="false" />
                     </h:panelGrid>
-
-
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog>
             <p:dialog widgetVar="dl" header=" Modifier une structure d'attache" hideEffect="fold" showEffect="explode" resizable="true" modal="true">
@@ -74,14 +73,15 @@ and open the template in the editor.
                             <f:selectItem itemLabel="Selectioner la catégorie" itemValue="" noSelectionOption="true"  />
                             <f:selectItems var="custe1" value="#{gradeFonctioBean.categories()}" />
                         </p:selectOneMenu>  
-                        <h:outputText value="Age de départ à la retraite: " />  
-                        <p:selectOneMenu value="#{gradeFonctioBean.gradeFonctio.retraite}" effect="fold" editable="true" required="true">  
+                        <p:outputLabel value="Age de départ à la retraite: " for="age"/>  
+                        <p:selectOneMenu id="age" value="#{gradeFonctioBean.gradeFonctio.retraite}" effect="fold" editable="true" required="true">  
                             <f:selectItem itemLabel="Selectionner un age" itemValue="" />  
-                            <f:selectItems var="age" value="#{gradeFonctioBean.ages()}" itemLabelEscaped="true"/>
+                            <f:selectItems var="age" value="#{gradeFonctioBean.ages()}" itemLabelEscaped="true"/> 
                         </p:selectOneMenu>  
                         <h:inputHidden id="number" value="#{gradeFonctioBean.gradeFonctio.id}" />
-                        <p:commandButton value="Modifier" action="#{gradeFonctioBean.updateGradeFonction()}"  oncomplete="PF('dl').hide()" update=":tableForm:table" id="bout1" ajax="false" />
+                        <p:commandButton value="Modifier" action="#{gradeFonctioBean.updateGradeFonction()}"  oncomplete="PF('dl').hide()" update=":tableForm:table, messages" id="bout1" ajax="false" />
                     </h:panelGrid>
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog> 
         </f:view>

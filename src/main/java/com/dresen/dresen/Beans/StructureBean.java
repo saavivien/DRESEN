@@ -17,7 +17,9 @@ import com.dresen.dresen.ServiceInterface.ICategorieStructureService;
 import com.dresen.dresen.ServiceInterface.IDepartementService;
 import com.dresen.dresen.entities.Departement;
 import java.io.Serializable;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -205,9 +207,13 @@ public class StructureBean implements Serializable{
             categorieStructure = iCategorieStructureService.findCategorieStructureById(idCategorieStructure);
             structureAttache.setCategorieStructure(categorieStructure);
             structureAttache.setArrondissement(arrondissement);
-            return iStructureService.createStructureAttache(structureAttache);
+            iStructureService.createStructureAttache(structureAttache);
+            FacesMessage msg = new FacesMessage("Structure enregistré avec succès!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return structureAttache;
         } catch (Exception e) {
-            System.out.println("impossible d'ajouter cette structure" + e);
+            FacesMessage msg = new FacesMessage("Echec de l'enregistrement de la structure, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
             throw e;
         }
     }
@@ -220,9 +226,13 @@ public class StructureBean implements Serializable{
             categorieStructure = iCategorieStructureService.findCategorieStructureById(idCategorieStructure);
             structureAttache.setCategorieStructure(categorieStructure);
             structureAttache.setArrondissement(arrondissement);
-            return iStructureService.updateStructureAttache(structureAttache);
+            iStructureService.updateStructureAttache(structureAttache);
+            FacesMessage msg = new FacesMessage("Structure modifiée avec succès!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return structureAttache;
         } catch (Exception e) {
-            System.out.println("impossible de mettre à jour cette structure" + e);
+            FacesMessage msg = new FacesMessage("Echec de la modification de la structure, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
             throw e;
         }
     }

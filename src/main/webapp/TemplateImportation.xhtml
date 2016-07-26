@@ -15,24 +15,60 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body>   
+        <style tyle="text/css">
+            .animated .ui-progressbar-value { 
+                background-image: url("/showcase/javax.faces.resource/demo/images/pbar-ani.gif.xhtml"); 
+            }
+        </style>
         <div id="menu">
             <ui:include src="menu.xhtml"/>
         </div>
         <f:view>
 
             <p:accordionPanel multiple="true">  
-                <p:tab title="Importation Partielle">  
-                    <h:panelGrid columns="2" cellpadding="10">  
-                        <h:outputText  
-                            value="Cette manière d'importer les informations est utilisés lorsque l'on souhaite compléter le fichier du personnel sans sans affecter les données déja enregistrées.
-                            Elle est très utile dans le cas où l'édition du fichier du personnel se fait de manière repartie, c'est à dire sur plusiers poste différent pour ensuite être mis en commun." />  
+                <p:tab title="Importation Globale">  
+                    <h:panelGrid columns="0" cellpadding="10">  
+                        <h:outputText value="Cette manière d'importer les informations, est utilisée lorsque l'on souhaite mettre à jour les informations sur le personnel.
+                                      Dans ce cas nous devons nous rassurer que le fichier importé pour chaque structure comporte la totalité du personnel  
+                                      Dans le cas contraire, bien vouloir utiliser la seconde option. Le non respect de ces consignes peut conduire à une perte d'informations " />   
+                        <h:form enctype="multipart/form-data">  
+
+                            <p:fileUpload fileUploadListener="#{importerBean.importation1}"  
+                                          auto="true"
+                                          mode="advanced"   
+                                          update="messages"  
+                                          sizeLimit="100000"   
+                                          allowTypes="/(zip)$/" label="Fichier à importer" uploadLabel="Importer" dragDropSupport="true" onstart="PF('pbAjax1').start();"/> 
+                            <br /><br />
+                            <p:progressBar widgetVar="pbAjax1" ajax="true" value="#{importerBean.progress}" labelTemplate="{value}%" styleClass="animated" global="false">
+                                <p:ajax event="complete" listener="#{importerBean.onComplete}" update="messages"/>
+                            </p:progressBar>
+                            <p:growl id="messages" showDetail="true"/>  
+
+                        </h:form>  
+
                     </h:panelGrid>  
                 </p:tab>  
-                <p:tab title="Godfather Part II">  
-                    <h:panelGrid columns="2" cellpadding="10">  
-                        <h:outputText value="Cette autre manière d'importer les informations est utilisés lorsque l'on souhaite mettre à jour les informations sur le personnel.
-                                      <Blink> Dans ce cas nous devons nous rassurer que le fichier importé pour chaque structure comporte les informations sur tout le personnel </Blink>
-                                      Dans pour cas contraire, bien vouloir utiliser la première option. le non respect de ces consigne peut conduire à une perte d'information " />   
+
+                <p:tab title="Importation Partielle">  
+                    <h:panelGrid columns="1" cellpadding="10">  
+                        <h:outputText  
+                            value="Cette autre manière d'importer les informations est utilisée lorsque l'on souhaite compléter le fichier du personnel sans affecter les données déja enregistrées.
+                            Elle est très utile dans le cas où l'édition du fichier du personnel se fait de manière repartie, c'est à dire sur des postes différents pour ensuite être mis en commun." />  
+
+                        <h:form enctype="multipart/form-data">  
+                            <p:fileUpload fileUploadListener="#{importerBean.importation2}"
+                                          auto="true"
+                                          mode="advanced"   
+                                          update="messages"  
+                                          sizeLimit="100000"   
+                                          allowTypes="/(zip)$/" label="Fichier à importer" uploadLabel="Importer"  dragDropSupport="true" onstart="PF('pbAjax2').start();"/>  
+                            <br /><br />
+                            <p:progressBar widgetVar="pbAjax2" ajax="true" value="#{importerBean.progress}" labelTemplate="{value}%" styleClass="animated" global="false">
+                                <p:ajax event="complete" listener="#{importerBean.onComplete}" update="messages"/>
+                            </p:progressBar>
+                            <p:growl id="messages" showDetail="true"/>    
+                        </h:form>  
                     </h:panelGrid>  
                 </p:tab>  
             </p:accordionPanel>  

@@ -10,11 +10,11 @@ import com.dresen.dresen.ServiceInterface.IDepartementService;
 import com.dresen.dresen.entities.Arrondissement;
 import com.dresen.dresen.entities.Departement;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-
-
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -22,21 +22,22 @@ import javax.faces.bean.RequestScoped;
  */
 @ManagedBean
 @RequestScoped
-public class ArrondissementBean{
-    @ManagedProperty(value="#{IArrondissementService}")
+public class ArrondissementBean {
+
+    @ManagedProperty(value = "#{IArrondissementService}")
     private IArrondissementService iArrondissementService;
-    
-    @ManagedProperty(value="#{IDepartementService}")
+
+    @ManagedProperty(value = "#{IDepartementService}")
     private IDepartementService iDepartementService;
-   
+
     private Arrondissement arrondissement = new Arrondissement();
     private Departement departement = new Departement();
-    
+
     private List<Departement> listDepartement;
     private Long idDepartement;
-    
-    public ArrondissementBean(){
-        idDepartement=0L;
+
+    public ArrondissementBean() {
+        idDepartement = 0L;
     }
 
     public IArrondissementService getiArrondissementService() {
@@ -79,7 +80,6 @@ public class ArrondissementBean{
         this.departement = departement;
     }
 
-    
     public List<Departement> getListDepartement() {
         return iDepartementService.findAllDepartement();
     }
@@ -87,24 +87,43 @@ public class ArrondissementBean{
     public void setListDepartement(List<Departement> listDepartement) {
         this.listDepartement = listDepartement;
     }
-    
-    
-    public Arrondissement createArrondissement(){
-        departement = iDepartementService.findDepartementById(idDepartement);
-        arrondissement.setDepartement(departement);
-        return iArrondissementService.createArrondissement(arrondissement);
+
+    public Arrondissement createArrondissement() {
+        try {
+            departement = iDepartementService.findDepartementById(idDepartement);
+            arrondissement.setDepartement(departement);
+            iArrondissementService.createArrondissement(arrondissement);
+            FacesMessage msg = new FacesMessage("Arrondissement enregistré avec succès!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return arrondissement;
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Echec de l'enregistrement de l'arrondissement, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
     }
-    public Arrondissement findArrondissementById(){
+
+    public Arrondissement findArrondissementById() {
         return iArrondissementService.findArrondissementById(arrondissement.getId());
     }
-    public Arrondissement updateArrondissement(){
-        departement = iDepartementService.findDepartementById(idDepartement);
-        arrondissement.setDepartement(departement);
-        return iArrondissementService.updateArrondissement(arrondissement);
+
+    public Arrondissement updateArrondissement() {
+        try {
+            departement = iDepartementService.findDepartementById(idDepartement);
+            arrondissement.setDepartement(departement);
+            iArrondissementService.updateArrondissement(arrondissement);
+            FacesMessage msg = new FacesMessage("Arrondissement modifié avec succès!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return arrondissement;
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Echec de la modification de l'arrondissement, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
     }
-    public List<Arrondissement> findAllArrondissement(){
+
+    public List<Arrondissement> findAllArrondissement() {
         return iArrondissementService.findAllArrondissement();
     }
-    
 
 }

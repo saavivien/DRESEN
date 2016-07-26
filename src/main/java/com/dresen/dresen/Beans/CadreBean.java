@@ -10,9 +10,11 @@ import com.dresen.dresen.ServiceInterface.ICorpsService;
 import com.dresen.dresen.entities.Cadre;
 import com.dresen.dresen.entities.Corps;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -20,20 +22,19 @@ import javax.faces.bean.RequestScoped;
  */
 @ManagedBean
 @RequestScoped
-public class CadreBean{
-    
+public class CadreBean {
+
     @ManagedProperty(value = "#{ICadreService}")
     private ICadreService iCadreService;
-    
+
     @ManagedProperty(value = "#{ICorpsService}")
     private ICorpsService iCorpsService;
-    
+
     private long idCorps;
     private List<Corps> listCorps;
     private Corps corps = new Corps();
     private Cadre cadre = new Cadre();
-    
-    
+
     public CadreBean() {
         idCorps = 0L;
     }
@@ -54,7 +55,6 @@ public class CadreBean{
         this.corps = corps;
     }
 
-
     public long getIdCorps() {
         return idCorps;
     }
@@ -70,8 +70,7 @@ public class CadreBean{
     public void setiCorpsService(ICorpsService iCorpsService) {
         this.iCorpsService = iCorpsService;
     }
-    
-    
+
     public List<Corps> getListCorps() {
         return iCorpsService.findAllCorps();
     }
@@ -87,23 +86,43 @@ public class CadreBean{
     public void setCadre(Cadre cadre) {
         this.cadre = cadre;
     }
-    
-    public Cadre createCadre(){
-        corps = iCorpsService.findCorpsById(idCorps);
-        cadre.setCorps(corps);
-        return iCadreService.createCadre(cadre);
+
+    public Cadre createCadre() {
+        try {
+            corps = iCorpsService.findCorpsById(idCorps);
+            cadre.setCorps(corps);
+            iCadreService.createCadre(cadre);
+            FacesMessage msg = new FacesMessage("Cadre enregistré avec succès!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return cadre;
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Echec de l'enregistrement du cadre, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
     }
-    public Cadre findCadrebyId(){
+
+    public Cadre findCadrebyId() {
         return iCadreService.findCadreById(cadre.getId());
     }
-    public Cadre updateCadre(){
-        corps = iCorpsService.findCorpsById(idCorps);
-        cadre.setCorps(corps);
-        return iCadreService.updateCadre(cadre);
+
+    public Cadre updateCadre() {
+        try {
+            corps = iCorpsService.findCorpsById(idCorps);
+            cadre.setCorps(corps);
+            iCadreService.updateCadre(cadre);
+            FacesMessage msg = new FacesMessage("Cadre modifié avec succès!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return cadre;
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Echec de la modification du cadre, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
     }
-     public List<Cadre> findAllCadre(){
+
+    public List<Cadre> findAllCadre() {
         return iCadreService.findAllCadre();
     }
-    
-    
+
 }

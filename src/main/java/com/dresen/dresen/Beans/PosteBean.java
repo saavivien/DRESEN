@@ -13,9 +13,11 @@ import com.dresen.dresen.entities.Poste;
 import com.dresen.dresen.entities.PosteStructure;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -24,6 +26,7 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean
 @RequestScoped
 public class PosteBean {
+
     @ManagedProperty(value = "#{IPosteService}")
     private IPosteService iPosteService;
     @ManagedProperty(value = "#{ICategorieStructureService}")
@@ -31,17 +34,17 @@ public class PosteBean {
 
     @ManagedProperty(value = "#{IPosteStructureService}")
     private IPosteStructureService iPosteStructureService;
-    
+
     private Poste poste = new Poste();
-    private PosteStructure posteStructure;  
+    private PosteStructure posteStructure;
     private CategorieStructure categorieStructure = new CategorieStructure();
     private List<PosteStructure> listPosteStructures;
     private List<CategorieStructure> listCategorieStructure;
     private List<String> listCategorieStructureSelectedString = new ArrayList<String>();
-    
+
     private long idCategorieStructure;
-    
-    public PosteBean(){
+
+    public PosteBean() {
         idCategorieStructure = 0L;
     }
 
@@ -68,7 +71,7 @@ public class PosteBean {
     public void setListPosteStructures(List<PosteStructure> listPosteStructures) {
         this.listPosteStructures = listPosteStructures;
     }
-    
+
     public Poste getPoste() {
         return poste;
     }
@@ -100,7 +103,7 @@ public class PosteBean {
     public void setIdCategorieStructure(long idCategorieStructure) {
         this.idCategorieStructure = idCategorieStructure;
     }
-    
+
     public IPosteService getiPosteService() {
         return iPosteService;
     }
@@ -124,7 +127,7 @@ public class PosteBean {
     public void setListCategorieStructureSelectedString(List<String> listCategorieStructureSelectedString) {
         this.listCategorieStructureSelectedString = listCategorieStructureSelectedString;
     }
-    
+
     /*
     this is aim to initialize the oneMenu to nothing before updating
 //    */
@@ -139,40 +142,59 @@ public class PosteBean {
 //            idCategorieStructure = structureAttache.getCategorieStructure().getId();
 //        }
 //    }
-    
-    public void initPost(){
+    public void initPost() {
         poste = new Poste();
     }
-    public Poste createPoste(){
-        iPosteService.createPoste(poste);
-        for (String nameCatStruct : listCategorieStructureSelectedString) {
-            //récupération des structures séléctionnées dans les checkbox sous forme de chaine de caractères et conversion en objets catégorieStructure
-            posteStructure = new PosteStructure();
-            categorieStructure = iCategorieStructureService.findCategorieStructureByName(nameCatStruct);
-            posteStructure.setCategorieStructure(categorieStructure);
-            posteStructure.setPoste(poste);
-            iPosteStructureService.createPosteStructure(posteStructure);
+
+    public Poste createPoste() {
+        try {
+            iPosteService.createPoste(poste);
+            for (String nameCatStruct : listCategorieStructureSelectedString) {
+                //récupération des structures séléctionnées dans les checkbox sous forme de chaine de caractères et conversion en objets catégorieStructure
+                posteStructure = new PosteStructure();
+                categorieStructure = iCategorieStructureService.findCategorieStructureByName(nameCatStruct);
+                posteStructure.setCategorieStructure(categorieStructure);
+                posteStructure.setPoste(poste);
+                iPosteStructureService.createPosteStructure(posteStructure);
+            }
+            FacesMessage msg = new FacesMessage("Poste enregistré avec succès!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return poste;
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Echec de l'enregistrement du poste, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
         }
-        return poste;     
     }
-    public Poste findPosteById(){
-        return iPosteService.findPosteById(poste.getId());     
+
+    public Poste findPosteById() {
+        return iPosteService.findPosteById(poste.getId());
     }
-    public Poste updatePoste(){
-        iPosteStructureService.deletePosteStructureByPoste(poste.getId());
-        iPosteService.updatePoste(poste);
-        for (String nameCatStruct : listCategorieStructureSelectedString) {
-            //récupération des structures séléctionnées dans les checkbox sous forme de chaine de caractères et conversion en objets catégorieStructure
-            posteStructure = new PosteStructure();
-            categorieStructure = iCategorieStructureService.findCategorieStructureByName(nameCatStruct);
-            posteStructure.setCategorieStructure(categorieStructure);
-            posteStructure.setPoste(poste);
-            iPosteStructureService.createPosteStructure(posteStructure);
+
+    public Poste updatePoste() {
+        try {
+            iPosteStructureService.deletePosteStructureByPoste(poste.getId());
+            iPosteService.updatePoste(poste);
+            for (String nameCatStruct : listCategorieStructureSelectedString) {
+                //récupération des structures séléctionnées dans les checkbox sous forme de chaine de caractères et conversion en objets catégorieStructure
+                posteStructure = new PosteStructure();
+                categorieStructure = iCategorieStructureService.findCategorieStructureByName(nameCatStruct);
+                posteStructure.setCategorieStructure(categorieStructure);
+                posteStructure.setPoste(poste);
+                iPosteStructureService.createPosteStructure(posteStructure);
+            }
+            FacesMessage msg = new FacesMessage("Poste modifié avec succès!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return poste;
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Echec de la modification du poste, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
         }
-        return poste;        
     }
-    public List<Poste> findAllPoste(){
-        return iPosteService.findAllPoste();     
+
+    public List<Poste> findAllPoste() {
+        return iPosteService.findAllPoste();
     }
-    
+
 }

@@ -30,7 +30,8 @@ and open the template in the editor.
                                 <p:outputLabel value="Intitule :" for="intitule" />
                                 <p:inputText id="intitule" value="#{arrondissementBean.arrondissement.intituleArrondissement}" title="intitulé" />
                     </h:panelGrid>
-                    <p:commandButton value="Enregistrer" action="#{arrondissementBean.createArrondissement()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
+                    <p:commandButton value="Enregistrer" action="#{arrondissementBean.createArrondissement()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table, messages"/>
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog>
             <p:dialog widgetVar="dl" header=" Modifier un Arrondissement" hideEffect="fold" showEffect="explode" resizable="true" modal="true">
@@ -46,7 +47,8 @@ and open the template in the editor.
                                <p:inputText id="intitule" value="#{arrondissementBean.arrondissement.intituleArrondissement}" title="intitulé" />
                                <h:inputHidden id="number" value="#{arrondissementBean.arrondissement.id}" />
                     </h:panelGrid>
-                    <p:commandButton value="Modifier" action="#{arrondissementBean.updateArrondissement()}"  oncomplete="PF('dl').hide()" update=":tableForm:table" />
+                    <p:commandButton value="Modifier" action="#{arrondissementBean.updateArrondissement()}"  oncomplete="PF('dl').hide()" update=":tableForm:table, messages" />
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog> 
         </f:view>

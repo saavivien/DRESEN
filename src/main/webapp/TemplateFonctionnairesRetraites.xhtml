@@ -103,8 +103,9 @@ and open the template in the editor.
                             <h:outputText value="     Poste occupé depuis le : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateDebutPoste}" style="font-style: italic"/>    
                         </h:panelGrid>
-                        <p:commandButton value="Confirmer restauration" action="#{fonctionnaireBean.restaureRetraite()}"  oncomplete="PF('dlgr').hide()" update=":tableForm:table"/> 
-                    </p:panel>  
+                        <p:commandButton value="Confirmer restauration" action="#{fonctionnaireBean.restaureRetraite()}"  oncomplete="PF('dlgr').hide()" update=":tableForm:table, messages"/> 
+                    </p:panel>
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog> 
 

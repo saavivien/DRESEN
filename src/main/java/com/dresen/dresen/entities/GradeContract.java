@@ -35,7 +35,7 @@ public class GradeContract implements Serializable {
     @Column (nullable = false, unique = true)
     private String intituleGradeContract;
     
-    @Column
+    @Column (nullable = false)
     private int retraite;
 
     public GradeContract() {
@@ -107,7 +107,7 @@ public class GradeContract implements Serializable {
 
     @Override
     public String toString() {
-        return "com.dresen.dresen.data.GradeContract[ id=" + id + " ]";
+        return intituleGradeContract;
     }
     
 }

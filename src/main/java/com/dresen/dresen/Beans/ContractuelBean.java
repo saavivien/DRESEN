@@ -44,6 +44,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.hibernate.service.spi.ServiceException;
 import org.primefaces.event.FlowEvent;
 
 /**
@@ -52,7 +53,7 @@ import org.primefaces.event.FlowEvent;
  */
 @ManagedBean
 @ViewScoped
-public class ContractuelBean implements Serializable{
+public class ContractuelBean implements Serializable {
 
     @ManagedProperty(value = "#{IContractuelService}")
     private IContractuelService iContractuelService;
@@ -115,6 +116,7 @@ public class ContractuelBean implements Serializable{
     // ces variable permettent de contrôler les colonnes à afficher dans le dataTable
     private boolean boolMat, boolNom = true, boolPrenom = true, boolNomJeunFille, boolDateSortie, boolDateNaiss, boolRegionNaiss, boolAge, boolDepartNaiss, boolArrondNaiss, boolLieuNaiss, boolDiplomeEntre, boolSexe, boolCni, boolRegOri, boolDepOri, boolArrOro, boolGrade, boolSpecial, boolDateRetraite, boolDateEntreeFoncPub, boolStrucAttach, boolPoste, boolDateAffec, boolArronStruct, boolDepartStruct, boolLieuCni, boolDateCni, boolTel;
     private boolean selectAll;
+    private boolean boolNotif;
 
     public ContractuelBean() {
         idGradeContract = 0L;
@@ -378,7 +380,7 @@ public class ContractuelBean implements Serializable{
     public void setDateRetraite(String dateRetraite) {
         this.dateRetraite = dateRetraite;
     }
-    
+
     public long getIdDepartement() {
         return idDepartement;
     }
@@ -595,7 +597,6 @@ public class ContractuelBean implements Serializable{
         this.boolTel = boolTel;
     }
 
-    
     public boolean isBoolMat() {
         return boolMat;
     }
@@ -768,6 +769,14 @@ public class ContractuelBean implements Serializable{
         this.selectAll = selectAll;
     }
 
+    public boolean isBoolNotif() {
+        return boolNotif;
+    }
+
+    public void setBoolNotif(boolean boolNotif) {
+        this.boolNotif = boolNotif;
+    }
+
     public void setBoolDateRetraite(boolean boolDateRetraite) {
         this.boolDateRetraite = boolDateRetraite;
     }
@@ -896,8 +905,8 @@ public class ContractuelBean implements Serializable{
         return (iAffectationService.findAffectationOpenByIdAgent(agent.getId())).getStructureAttache();
     }
 
-    public String currentGradeContract(Agentp agent) {
-        return (iRangerContractService.findRangerContractOpenByIdAgent(agent.getId())).getGradeContract().getIntituleGradeContract();
+    public GradeContract currentGradeContract(Agentp agent) {
+        return (iRangerContractService.findRangerContractOpenByIdAgent(agent.getId())).getGradeContract();
     }
 
     public String currentDateNaissance(Agentp agent) {
@@ -920,6 +929,15 @@ public class ContractuelBean implements Serializable{
         return age;
     }
 
+    public int currentAgeContractForRetraite(Agentp agent) {
+        Date currentDate = new Date();
+        int age = currentDate.getYear() - agent.getDateNaissance().getYear();
+        if (currentDate.getMonth() < agent.getDateNaissance().getMonth()) {
+            return age - 1;
+        }
+        return age;
+    }
+
     public String currentDateEntreeFonctionPub(Agentp agent) {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String dateEntreeFonctionPub = simpleDateFormat.format(agent.getDateEntreFonctionPub());
@@ -937,6 +955,7 @@ public class ContractuelBean implements Serializable{
         int anciennetePoste = (new Date()).getYear() - (affect).getDateDebutAffect().getYear();
         return dateEntreePoste + "(" + anciennetePoste + ")";
     }
+
     public String currentDateCni(Agentp agent) {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return simpleDateFormat.format(agent.getDateDelivranceCni());
@@ -1013,7 +1032,7 @@ public class ContractuelBean implements Serializable{
             listInformationToDisplay.add("arrondissementorigine");
             listInformationToDisplay.add("age");
             listInformationToDisplay.add("sexe");
-            
+
             listInformationToDisplay1.add("sexe");
             listInformationToDisplay1.add("numerocni");
             listInformationToDisplay1.add("grade");
@@ -1132,7 +1151,6 @@ public class ContractuelBean implements Serializable{
                     boolLieuCni = true;
                 default:
                     break;
-
             }
         }
     }
@@ -1286,7 +1304,6 @@ public class ContractuelBean implements Serializable{
             listAffectationsPromotions.add(ap);
         }
     }
-    
 
     public void beforeRestauration() throws ParseException {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -1377,7 +1394,8 @@ public class ContractuelBean implements Serializable{
         listSexe.addAll(Arrays.asList(Sexe.values()));
         return listSexe;
     }
- public List ages(){
+
+    public List ages() {
         List listAges = new ArrayList();
         listAges.add(45);
         listAges.add(50);
@@ -1386,6 +1404,7 @@ public class ContractuelBean implements Serializable{
         listAges.add(65);
         return listAges;
     }
+
     /*
     fin du bloc de construction des agents dans leur situation courante. début des méthode permettant d'avoir un tableau dynamique
      */
@@ -1421,23 +1440,26 @@ public class ContractuelBean implements Serializable{
     public Contractuel createContractuel() {
         try {
             contractuel.setSpecialite(specialite);
-            iContractuelService.createContractuel(contractuel);
 
             affectation.setAgent(contractuel);
             affectation.setStructureAttache(structureAttache);
-            iAffectationService.createAffectation(affectation);
 
             promotion.setAgent(contractuel);
             promotion.setPoste(poste);
-            iPromotionService.createPromotion(promotion);
 
             rangerContract.setContratuel(contractuel);
             rangerContract.setGradeContract(gradeContract);
-            iRangerContractService.createRangerContract(rangerContract);
 
+            iContractuelService.createContractuel(contractuel);
+            iAffectationService.createAffectation(affectation);
+            iPromotionService.createPromotion(promotion);
+
+            iRangerContractService.createRangerContract(rangerContract);
+            FacesMessage msg = new FacesMessage("Enrégistrement du contractuel effectué avec succès");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
             return contractuel;
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("echec d'enregitrement vérifier les informations");
+            FacesMessage msg = new FacesMessage("Echec de l'enrégistrement du contractuel, vérifier les informations!");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             throw e;
         }
@@ -1454,17 +1476,20 @@ public class ContractuelBean implements Serializable{
 
             affectation.setStructureAttache(structureAttache);
             affectation.setDateDebutAffect(simpleDateFormat.parse(dateDebutPoste));
-            iAffectationService.updateAffectation(affectation);
 
             rangerContract.setGradeContract(gradeContract);
             rangerContract.setDateDebutRangerContract(simpleDateFormat.parse(dateDebutGrade));
-            iRangerContractService.updateRangerContract(rangerContract);
 
             promotion.setPoste(poste);
             promotion.setDateDebutPromo(simpleDateFormat.parse(dateDebutPoste));
-            iPromotionService.updatePromotion(promotion);
 
-            return iContractuelService.updateContractuel(contractuel);
+            iAffectationService.updateAffectation(affectation);
+            iRangerContractService.updateRangerContract(rangerContract);
+            iPromotionService.updatePromotion(promotion);
+            iContractuelService.updateContractuel(contractuel);
+            FacesMessage msg = new FacesMessage("Modification du contractuel effectuée avec succès vérifier les informations");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return contractuel;
         } catch (Exception e) {
             FacesMessage msg = new FacesMessage("echec de modification vérifier les informations");
             FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -1492,10 +1517,19 @@ public class ContractuelBean implements Serializable{
     }
 
     public Contractuel retraite() {
-        contractuel.setIsRetraite(true);
-        iAffectationService.updateAffectation(affectation);
-        iPromotionService.updatePromotion(promotion);
-        return iContractuelService.updateContractuel(contractuel);
+        try {
+            contractuel.setIsRetraite(true);
+            iAffectationService.updateAffectation(affectation);
+            iPromotionService.updatePromotion(promotion);
+            iContractuelService.updateContractuel(contractuel);
+            FacesMessage msg = new FacesMessage("Mise en retraite du contractuel effectuée avec succès");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return contractuel;
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Echec de mise en retraite du contractuel!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
     }
 
     public Contractuel sortieRegion() {
@@ -1505,10 +1539,19 @@ public class ContractuelBean implements Serializable{
     }
 
     public Contractuel restaureRetraite() {
-        contractuel.setIsRetraite(false);
-        iAffectationService.updateAffectation(affectation);
-        iPromotionService.updatePromotion(promotion);
-        return iContractuelService.updateContractuel(contractuel);
+        try {
+            contractuel.setIsRetraite(false);
+            iAffectationService.updateAffectation(affectation);
+            iPromotionService.updatePromotion(promotion);
+            iContractuelService.updateContractuel(contractuel);
+            FacesMessage msg = new FacesMessage("Restauration du contractuel effectuée avec succès");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return contractuel;
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Echec de la restauration du contractuel!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
     }
 
     public void affecterContractuel() {
@@ -1523,12 +1566,15 @@ public class ContractuelBean implements Serializable{
             promotion.setDateFinPromo(promotionAffec.getDateDebutPromo());
             iAffectationService.updateAffectation(affectation);
             iPromotionService.updatePromotion(promotion);
+            FacesMessage msg = new FacesMessage("Affectation du contractuel effectuée avec succès");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("echec d'affectation, vérifier les informations");
+            FacesMessage msg = new FacesMessage("Echec de l'affectation du contractuel, vérifier les informations");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             throw e;
         }
     }
+
     public void retourContractuel() {
         try {
             affectationAffec.setAgent(contractuel);
@@ -1537,10 +1583,53 @@ public class ContractuelBean implements Serializable{
             promotionAffec.setPoste(posteAffec);
             iAffectationService.createAffectation(affectationAffec);
             iPromotionService.createPromotion(promotionAffec);
+            FacesMessage msg = new FacesMessage("Affectation du contractuel effectuée avec succès");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("echec d'affectation vérifier les informations");
+            FacesMessage msg = new FacesMessage("echec de l'affectation  vérifier les informations");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             throw e;
         }
+    }
+
+    public List<Contractuel> retraiteMensuelContract() {
+        List<Contractuel> listContractRetraiteMensuel = new ArrayList<>();
+        for (Contractuel contract : iContractuelService.findContractuelActif()) {
+            if (currentAgeContractForRetraite(contract) >= currentGradeContract(contract).getRetraite()) {
+                listContractRetraiteMensuel.add(contract);
+            }
+        }
+        if (!listContractRetraiteMensuel.isEmpty()) {
+            boolNotif = true;
+        }
+        return listContractRetraiteMensuel;
+    }
+
+    public void validerRaitraiteMensuel() throws ParseException {
+        try {
+            simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            List<Contractuel> listFonctioRetraite = retraiteMensuelContract();
+            for (Contractuel contract : listFonctioRetraite) {
+                promotion = iPromotionService.findLastPromotionByIdAgent(contract.getId());
+                affectation = iAffectationService.findLastAffectationByIdAgent(contract.getId());
+                int year = contract.getDateNaissance().getYear() + currentGradeContract(contract).getRetraite();
+                String dateRet = simpleDateFormat.format(contract.getDateNaissance());
+                Date date = simpleDateFormat.parse(dateRet);
+                date.setYear(year);
+                promotion.setDateFinPromo(date);
+                affectation.setDateFinAffect(date);
+                contract.setIsRetraite(true);
+                iPromotionService.updatePromotion(promotion);
+                iAffectationService.updateAffectation(affectation);
+                iContractuelService.updateContractuel(contract);
+                FacesMessage msg = new FacesMessage("Mise en retraite générale effectuée avec succès!");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+        } catch (ServiceException | ParseException e) {
+            FacesMessage msg = new FacesMessage("Echec de la mise en retraite générale!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
+
     }
 }

@@ -72,6 +72,10 @@ public class OrientationBean {
         return "Fonctionnaire";
     }
 
+    public String retraiteMensuelFonctio() {
+        return "FonctinnaireRetraiteMensuel";
+    }
+
     public String retraiteFonctionnaire() {
         return "FonctionnairesRetraites";
     }
@@ -83,6 +87,9 @@ public class OrientationBean {
     public String contractuel() {
         return "Contractuel";
     }
+     public String retraiteMensuelContract() {
+        return "ContractuelRetraiteMensuel";
+    }
 
     public String retraiteContractuel() {
         return "ContractuelsRetraites";
@@ -91,12 +98,13 @@ public class OrientationBean {
     public String horsRegionContractuel() {
         return "ContractuelsHorsRegion";
     }
-     //// MENU IMPORT EXPORT
+    //// MENU IMPORT EXPORT
+
     public String importation() {
         return "Importation";
     }
 
-    public String Exportation() {
+    public String exportation() {
         return "Exportation";
     }
 

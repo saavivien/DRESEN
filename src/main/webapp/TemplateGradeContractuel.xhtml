@@ -23,36 +23,38 @@ and open the template in the editor.
             <p:dialog widgetVar="dlg" header=" Enregistrer un nouveau Grade pour les contractuels" hideEffect="explode" showEffect="explode" modal="true">
                 <h:form id="formAjouter" enctype="multipart/form-data" >
                     <h:panelGrid id="panelAjouter" columns="2" cellspacing="5">
-                                <p:outputLabel value="Intitulé du Grade:" for="intitule" />
-                                <p:inputText id="intitule" value="#{gradeContractBean.gradeContract.intituleGradeContract}" title="Intitule" required="true"/>
-                                <h:outputText value="Age de départ à la retraite: " />  
-                                <p:selectOneMenu value="#{gradeContractBean.gradeContract.retraite}" effect="fold" editable="true" required="true">  
-                                    <f:selectItem itemLabel="Selectionner un age" itemValue="" />  
-                                    <f:selectItems var="age" value="#{gradeContractBean.ages()}" itemLabelEscaped="true"/> 
-                                </p:selectOneMenu>  
-                               
+                        <p:outputLabel value="Intitulé du Grade:" for="intitule" />
+                        <p:inputText id="intitule" value="#{gradeContractBean.gradeContract.intituleGradeContract}" title="Intitule" required="true"/>
+                        <h:outputLabel value="Age de départ à la retraite: " for="age"/>  
+                        <p:selectOneMenu id="age" value="#{gradeContractBean.gradeContract.retraite}" effect="fold" editable="true" required="true">  
+                            <f:selectItem itemLabel="Selectionner un age" itemValue="" />  
+                            <f:selectItems var="age" value="#{gradeContractBean.ages()}" itemLabelEscaped="true"/> 
+                        </p:selectOneMenu>  
+
                     </h:panelGrid>
-                    <p:commandButton value="Enregistrer" action="#{gradeContractBean.createGradeContract()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
+                    <p:commandButton value="Enregistrer" action="#{gradeContractBean.createGradeContract()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table, messages"/>
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog>
             <p:dialog widgetVar="dl" header=" Modifier un Grade pour les contractuels" hideEffect="fold" showEffect="explode" resizable="true" modal="true">
                 <h:form id="formModifier" enctype="multipart/form-data">                
                     <h:panelGrid columns="2" id="panelGModifier" cellspacing="5">
-                                <p:outputLabel value="Intitulé du Grade:" for="intitule" />
-                                <p:inputText id="intitule" value="#{gradeContractBean.gradeContract.intituleGradeContract}" title="Intitule" required="true" />
-                                <h:outputText value="Age de départ à la retraite: " />  
-                                <p:selectOneMenu value="#{gradeContractBean.gradeContract.retraite}" effect="fold" editable="true" required="true">  
-                                    <f:selectItem itemLabel="Selectionner un age" itemValue="" />  
-                                    <f:selectItems var="age" value="#{gradeContractBean.ages()}" itemLabelEscaped="true"/> 
-                                </p:selectOneMenu>  
-                                <h:inputHidden id="number" value="#{gradeContractBean.gradeContract.id}" />
+                        <p:outputLabel value="Intitulé du Grade:" for="intitule" />
+                        <p:inputText id="intitule" value="#{gradeContractBean.gradeContract.intituleGradeContract}" title="Intitule" required="true" />
+                        <h:outputLabel value="Age de départ à la retraite: " for="age"/>  
+                        <p:selectOneMenu id="age" value="#{gradeContractBean.gradeContract.retraite}" effect="fold" editable="true" required="true">  
+                            <f:selectItem itemLabel="Selectionner un age" itemValue="" />  
+                            <f:selectItems var="age" value="#{gradeContractBean.ages()}" itemLabelEscaped="true"/> 
+                        </p:selectOneMenu>  
+                        <h:inputHidden id="number" value="#{gradeContractBean.gradeContract.id}" />
                     </h:panelGrid>
-                    <p:commandButton value="Modifier" action="#{gradeContractBean.updateGradeContract()}"  oncomplete="PF('dl').hide()" update=":tableForm:table" />
+                    <p:commandButton value="Modifier" action="#{gradeContractBean.updateGradeContract()}"  oncomplete="PF('dl').hide()" update=":tableForm:table, messages" />
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog> 
         </f:view>
-        
-        
+
+
         <f:view>
             <h:form id='tableForm'>
                 <p:contextMenu for="table">  
@@ -82,7 +84,7 @@ and open the template in the editor.
                         <p:commandButton type="push" onclick="PF('dlg').show();" value="Nouveau Grade Contractuel" icon="ui-icon-disk">
                             <p:ajax update=":formAjouter:panelAjouter" resetValues="true" />
                         </p:commandButton>
-                      
+
                         <span class="ui-separator">
                             <span class="ui-icon ui-icon-grip-dotted-vertical" />
                         </span>

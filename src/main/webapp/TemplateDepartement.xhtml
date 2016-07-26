@@ -22,27 +22,28 @@ and open the template in the editor.
 
             <p:dialog widgetVar="dlg" header=" Enregistrer un nouveau Departement" hideEffect="explode" showEffect="explode" modal="true">
                 <h:form id="formAjouter" enctype="multipart/form-data" >
-                     <h:panelGrid id="panelAjouter" columns="2">
-                                <p:outputLabel value="Nom du département:" for="intitule" />
-                                <p:inputText id="intitule" value="#{departementBean.departement.intituleDepartement}" title="Intitule" required="true"/>
-                               
+                    <h:panelGrid id="panelAjouter" columns="2">
+                        <p:outputLabel value="Nom du département:" for="intitule" />
+                        <p:inputText id="intitule" value="#{departementBean.departement.intituleDepartement}" title="Intitule" required="true"/>
                     </h:panelGrid>
-                    <p:commandButton value="Enregistrer" action="#{departementBean.createDepartement()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
+                    <p:commandButton value="Enregistrer" action="#{departementBean.createDepartement()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table, messages"/>
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog>
             <p:dialog widgetVar="dl" header=" Modifier un Departement" hideEffect="fold" showEffect="explode" resizable="true" modal="true">
                 <h:form id="formModifier" enctype="multipart/form-data">                
                     <h:panelGrid columns="2" id="panelGModifier">
-                                <p:outputLabel value="Nom du département:" for="intitule" />
-                                <p:inputText id="intitule" value="#{departementBean.departement.intituleDepartement}" title="Intitule" required="true" />
-                                <h:inputHidden id="number" value="#{departementBean.departement.id}" />
+                        <p:outputLabel value="Nom du département:" for="intitule" />
+                        <p:inputText id="intitule" value="#{departementBean.departement.intituleDepartement}" title="Intitule" required="true" />
+                        <h:inputHidden id="number" value="#{departementBean.departement.id}" />
                     </h:panelGrid>
-                    <p:commandButton value="Modifier" action="#{departementBean.updateDepartement()}"  oncomplete="PF('dl').hide()" update=":tableForm:table" />
+                    <p:commandButton value="Modifier" action="#{departementBean.updateDepartement()}"  oncomplete="PF('dl').hide()" update=":tableForm:table, messages"/>
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog> 
         </f:view>
-        
-        
+
+
         <f:view>
             <h:form id='tableForm'>
                 <p:contextMenu for="table">  
@@ -50,24 +51,24 @@ and open the template in the editor.
                     <p:menuitem value="Update" update=":formModifier:panelGModifier" oncomplete="PF('dl').show()"/>  
                 </p:contextMenu> 
                 <p:dataTable value="#{departementBean.findAllDepartement()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{departementBean.departement}" rowKey="#{item.id}">
-                             <f:facet name="header">
-                                La liste des Départements
-                             </f:facet>
-              
-                            <p:column>
-                                <f:facet name="header">
-                                    <h:outputText value="Nom du département"/>
-                                </f:facet>
-                                <h:outputText value="#{item.intituleDepartement}"/>
-                            </p:column>
-                      
-                        </p:dataTable>
+                    <f:facet name="header">
+                        La liste des Départements
+                    </f:facet>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nom du département"/>
+                        </f:facet>
+                        <h:outputText value="#{item.intituleDepartement}"/>
+                    </p:column>
+
+                </p:dataTable>
                 <p:toolbar>
                     <f:facet name="left">
                         <p:commandButton type="push" onclick="PF('dlg').show();" value="Nouveau Departement" icon="ui-icon-disk">
                             <p:ajax update=":formAjouter:panelAjouter" resetValues="true" />
                         </p:commandButton>
-                      
+
                         <span class="ui-separator">
                             <span class="ui-icon ui-icon-grip-dotted-vertical" />
                         </span>

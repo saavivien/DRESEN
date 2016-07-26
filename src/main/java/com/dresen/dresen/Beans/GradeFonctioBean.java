@@ -15,9 +15,11 @@ import com.dresen.dresen.entities.GradeFonctio;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 /**
  *
  * @author Vivien Saa
@@ -161,9 +163,13 @@ public class GradeFonctioBean {
         try {
             cadre = iCadreService.findCadreById(idCadre);
             gradeFonctio.setCadre(cadre);
-            return IGradeFonctioService.createGradeFonctio(gradeFonctio);
+            IGradeFonctioService.createGradeFonctio(gradeFonctio);
+            FacesMessage msg = new FacesMessage("Grade enregistré avec succès!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return gradeFonctio;
         } catch (Exception e) {
-            System.out.println("implossible d'enregistrer ce grade");
+            FacesMessage msg = new FacesMessage("Echec de l'enregistrement du grade, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
             throw e;
         }
     }
@@ -174,9 +180,13 @@ public class GradeFonctioBean {
         try {
             cadre = iCadreService.findCadreById(idCadre);
             gradeFonctio.setCadre(cadre);
-            return IGradeFonctioService.updateGradeFonctio(gradeFonctio);
+            IGradeFonctioService.updateGradeFonctio(gradeFonctio);
+            FacesMessage msg = new FacesMessage("Grade modifié avec succès!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return gradeFonctio;
         } catch (Exception e) {
-            System.out.println("implossible d'enregistrer ce grade");
+            FacesMessage msg = new FacesMessage("Echec de la modification du grade, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
             throw e;
         }
     }

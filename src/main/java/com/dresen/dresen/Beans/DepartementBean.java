@@ -8,9 +8,11 @@ package com.dresen.dresen.Beans;
 import com.dresen.dresen.ServiceInterface.IDepartementService;
 import com.dresen.dresen.entities.Departement;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -19,9 +21,10 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean
 @RequestScoped
 public class DepartementBean {
+
     @ManagedProperty(value = "#{IDepartementService}")
     private IDepartementService iDepartementService;
-    
+
     private Departement departement = new Departement();
 
     public IDepartementService getiDepartementService() {
@@ -42,20 +45,42 @@ public class DepartementBean {
 
     public DepartementBean() {
     }
-    public Departement createDepartement(){
-        return iDepartementService.createDepartement(departement);
+
+    public Departement createDepartement() {
+        try {
+            iDepartementService.createDepartement(departement);
+            FacesMessage msg = new FacesMessage("Département enregistré avec succès!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return departement;
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Echec de l'enregistrement du département, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
     }
-    public Departement findDepartementById(){
+
+    public Departement findDepartementById() {
         return iDepartementService.findDepartementById(departement.getId());
     }
-    public Departement updateDepartement(){
-        return iDepartementService.updateDepartement(departement);
+
+    public Departement updateDepartement() {
+        try {
+            iDepartementService.updateDepartement(departement);
+            FacesMessage msg = new FacesMessage("Département modifié avec succès!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return departement;
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Echec de la modification du département, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
     }
-     public List<Departement> findAllDepartement(){
+
+    public List<Departement> findAllDepartement() {
         return iDepartementService.findAllDepartement();
     }
 
-    public void reset(){
+    public void reset() {
         this.departement.setIntituleDepartement("");
         this.setDepartement(null);
     }

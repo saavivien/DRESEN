@@ -26,7 +26,8 @@ and open the template in the editor.
                                 <p:outputLabel value="intitulé du type de Structure:" for="intitule" />
                                 <p:inputText id="intitule" value="#{categorieStructureBean.categorieSturcture.intituleCategorieStructure}" title="Intitule" />
                     </h:panelGrid>
-                    <p:commandButton value="Enregistrer" action="#{categorieStructureBean.createCategorieStructure()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
+                    <p:commandButton value="Enregistrer" action="#{categorieStructureBean.createCategorieStructure()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table, messages"/>
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog>
             <p:dialog widgetVar="dl" header=" Modifier un type de structure" hideEffect="fold" showEffect="explode" resizable="true" modal="true">
@@ -36,7 +37,8 @@ and open the template in the editor.
                                 <p:inputText id="intitule" value="#{categorieStructureBean.categorieSturcture.intituleCategorieStructure}" title="Intitule" />
                                 <h:inputHidden id="number" value="#{categorieStructureBean.categorieSturcture.id}" />
                     </h:panelGrid>
-                    <p:commandButton value="Modifier" action="#{categorieStructureBean.updateCategorieStructure()}"  oncomplete="PF('dl').hide()" update=":tableForm:table" />
+                    <p:commandButton value="Modifier" action="#{categorieStructureBean.updateCategorieStructure()}"  oncomplete="PF('dl').hide()" update=":tableForm:table, messages" />
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog> 
         </f:view>

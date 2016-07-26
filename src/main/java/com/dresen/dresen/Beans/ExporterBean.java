@@ -35,25 +35,35 @@ import com.dresen.dresen.entities.Poste;
 import com.dresen.dresen.entities.PosteStructure;
 import com.dresen.dresen.entities.Specialite;
 import com.dresen.dresen.entities.StructureAttache;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import jxl.*;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -83,13 +93,13 @@ public class ExporterBean {
     private IGradeContractService iGradeContractService;
     @ManagedProperty(value = "#{ISpecialiteService}")
     private ISpecialiteService iSpecialiteService;
-    @ManagedProperty(value = "IFonctionnaireService")
+    @ManagedProperty(value = "#{IFonctionnaireService}")
     private IFonctionnaireService iFonctionnaireService;
     @ManagedProperty(value = "#{IContractuelService}")
     private IContractuelService iContractuelService;
-    @ManagedProperty(value = "IAffectationService")
+    @ManagedProperty(value = "#{IAffectationService}")
     private IAffectationService iAffectationService;
-    @ManagedProperty(value = "IPromotionService")
+    @ManagedProperty(value = "#{IPromotionService}")
     private IPromotionService iPromotionService;
     @ManagedProperty(value = "#{IRangerFonctioService}")
     private IRangerFonctioService iRangerFonctioService;
@@ -100,9 +110,12 @@ public class ExporterBean {
     @ManagedProperty(value = "#{IPosteStructureService}")
     private IPosteStructureService iPosteStructureService;
 
+    private StreamedContent prepDownload;
     private ZipOutputStream zip;
-
     private SimpleDateFormat simpleDateFormat;
+    private String exportParentDirectoryPath;
+    private String exportDirectoryPath;
+    private Object event;
 
     public IDepartementService getiDepartementService() {
         return iDepartementService;
@@ -256,14 +269,41 @@ public class ExporterBean {
         this.zip = zip;
     }
 
+    public String getExportParentDirectoryPath() {
+        return exportParentDirectoryPath;
+    }
+
+    public void setExportParentDirectoryPath(String exportParentDirectoryPath) {
+        this.exportParentDirectoryPath = exportParentDirectoryPath;
+    }
+
+    public String getExportDirectoryPath() {
+        return exportDirectoryPath;
+    }
+
+    public void setExportDirectoryPath(String exportDirectoryPath) {
+        this.exportDirectoryPath = exportDirectoryPath;
+    }
+
+    public Object getEvent() {
+        return event;
+    }
+
+    public void setEvent(Object event) {
+        this.event = event;
+    }
+
+    public void setPrepDownload(StreamedContent prepDownload) {
+        this.prepDownload = prepDownload;
+    }
+    
+
 //        IStructureService iStructureService = ctx.getBean("IStructureService", IStructureService.class);
 //        List<StructureAttache> listStructureAttache = iStructureService.findStructureAttacheByCategorieAndArrondissement(1, 5);
     /*
     exportation of table département
      */
     public void buildDepartFile(String path) throws IOException, WriteException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iDepartementService = ctx.getBean("IDepartementService", IDepartementService.class);
         // Créer un fichier excel
         File inputWorkBook = new File(path + "/departement.vvs");
         WritableWorkbook workbook = Workbook.createWorkbook(inputWorkBook);
@@ -284,8 +324,6 @@ public class ExporterBean {
     exportation of table arrondissement
      */
     public void buildArrondFile(String path) throws IOException, WriteException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iArrondissementService = ctx.getBean("IArrondissementService", IArrondissementService.class);
         // Créer un fichier excel
         File inputWorkBook = new File(path + "/arrondissement.vvs");
         WritableWorkbook workbook = Workbook.createWorkbook(inputWorkBook);
@@ -308,8 +346,6 @@ public class ExporterBean {
     exportation of table structureAttache
      */
     public void buildStructFile(String path) throws IOException, WriteException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iStructureService = ctx.getBean("IStructureService", IStructureService.class);
         // Créer un fichier excel
         File inputWorkBook = new File(path + "/structure.vvs");
         WritableWorkbook workbook = Workbook.createWorkbook(inputWorkBook);
@@ -336,8 +372,6 @@ public class ExporterBean {
     exportation of table CatégorieStructure
      */
     public void buildCategorieStructureFile(String path) throws IOException, WriteException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iCategorieStructureService = ctx.getBean("ICategorieStructureService", ICategorieStructureService.class);
         // Créer un fichier excel
         File inputWorkBook = new File(path + "/categorieStructure.vvs");
         WritableWorkbook workbook = Workbook.createWorkbook(inputWorkBook);
@@ -358,8 +392,6 @@ public class ExporterBean {
     exportation of table Corps
      */
     public void buildCorpsFile(String path) throws IOException, WriteException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iCorpsService = ctx.getBean("ICorpsService", ICorpsService.class);
         // Créer un fichier excel
         File inputWorkBook = new File(path + "/corps.vvs");
         WritableWorkbook workbook = Workbook.createWorkbook(inputWorkBook);
@@ -380,8 +412,6 @@ public class ExporterBean {
     exportation of table Cadre
      */
     public void buildCadreFile(String path) throws IOException, WriteException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iCadreService = ctx.getBean("ICadreService", ICadreService.class);
         // Créer un fichier excel
         File inputWorkBook = new File(path + "/cadre.vvs");
         WritableWorkbook workbook = Workbook.createWorkbook(inputWorkBook);
@@ -404,8 +434,6 @@ public class ExporterBean {
     exportation of table gradeFonctio
      */
     public void buildGradeFonctioFile(String path) throws IOException, WriteException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iGradeFonctioService = ctx.getBean("IGradeFonctioService", IGradeFonctioService.class);
         // Créer un fichier excel
         File inputWorkBook = new File(path + "/gradeFonctio.vvs");
         WritableWorkbook workbook = Workbook.createWorkbook(inputWorkBook);
@@ -417,6 +445,7 @@ public class ExporterBean {
             Label label0 = new Label(0, i, gradeFonctio.getIntituleGradeFonctio());
             Label label1 = new Label(1, i, gradeFonctio.getCodeGradeFonctio());
             Label label2 = new Label(2, i, gradeFonctio.getCadre().getIntituleCadre());
+            sheet.addCell(label0);
             sheet.addCell(label1);
             sheet.addCell(label2);
             i++;
@@ -429,8 +458,6 @@ public class ExporterBean {
     exportation of table gradeContract
      */
     public void buildGradeContractFile(String path) throws IOException, WriteException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iGradeContractService = ctx.getBean("IGradeContractService", IGradeContractService.class);
         // Créer un fichier excel
         File inputWorkBook = new File(path + "/gradeContract.vvs");
         WritableWorkbook workbook = Workbook.createWorkbook(inputWorkBook);
@@ -451,8 +478,6 @@ public class ExporterBean {
     exportation of table Specialite
      */
     public void buildSpecialiteFile(String path) throws IOException, WriteException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iSpecialiteService = ctx.getBean("ISpecialiteService", ISpecialiteService.class);
         // Créer un fichier excel
         File inputWorkBook = new File(path + "/specialite.vvs");
         WritableWorkbook workbook = Workbook.createWorkbook(inputWorkBook);
@@ -473,9 +498,6 @@ public class ExporterBean {
     exportation of table poste
      */
     public void buildPosteFile(String path) throws IOException, WriteException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iPosteService = ctx.getBean("IPosteService", IPosteService.class);
-        iPosteStructureService = ctx.getBean("IPosteStructureService", IPosteStructureService.class);
         // Créer un fichier excel
         File inputWorkBook = new File(path + "/poste.vvs");
         WritableWorkbook workbook = Workbook.createWorkbook(inputWorkBook);
@@ -503,12 +525,6 @@ public class ExporterBean {
     exportation of table fonctionnaire
      */
     public void buildFonctionnaireFile(String path) throws IOException, WriteException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iFonctionnaireService = ctx.getBean("IFonctionnaireService", IFonctionnaireService.class);
-        iRangerFonctioService = ctx.getBean("IRangerFonctioService", IRangerFonctioService.class);
-        iPromotionService = ctx.getBean("IPromotionService", IPromotionService.class);
-        iAffectationService = ctx.getBean("IAffectationService", IAffectationService.class);
-        //iPosteStructureService = ctx.getBean("IPosteStructureService", IPosteStructureService.class);
         // Créer un fichier excel
         File inputWorkBook = new File(path + "/fonctionnaire.vvs");
         WritableWorkbook workbook = Workbook.createWorkbook(inputWorkBook);
@@ -585,12 +601,6 @@ public class ExporterBean {
     exportation of table contractuel
      */
     public void buildContractuelFile(String path) throws IOException, WriteException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iContractuelService = ctx.getBean("IContractuelService", IContractuelService.class);
-        iRangerContractService = ctx.getBean("IRangerContractService", IRangerContractService.class);
-        iPromotionService = ctx.getBean("IPromotionService", IPromotionService.class);
-        iAffectationService = ctx.getBean("IAffectationService", IAffectationService.class);
-        //iPosteStructureService = ctx.getBean("IPosteStructureService", IPosteStructureService.class);
         // Créer un fichier excel
         File inputWorkBook = new File(path + "/contractuel.vvs");
         WritableWorkbook workbook = Workbook.createWorkbook(inputWorkBook);
@@ -666,11 +676,12 @@ public class ExporterBean {
     /**
      *
      * @param nomFichier nom du fichier à compresser
+     * @throws java.io.FileNotFoundException
      */
-    public void compresser(String nomFichier) {
+    public void compresser(String nomFichier) throws FileNotFoundException, IOException {
         try {
             // lecture du fichier
-            File fichier = new File(nomFichier);
+            File fichier = new File(exportDirectoryPath + nomFichier);
             FileInputStream fis = new FileInputStream(fichier);
             byte[] bytes = new byte[fis.available()];
             fis.read(bytes);
@@ -684,58 +695,66 @@ public class ExporterBean {
             fis.close();
 
         } catch (FileNotFoundException fnfe) {
-            fnfe.printStackTrace();
+            throw fnfe;
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            throw ioe;
         }
     }
 
-    public void exportation(String nomArchive, String path) throws WriteException, IOException {
+    public StreamedContent getPrepDownload() throws Exception {
+        exportation();
+        StreamedContent download = new DefaultStreamedContent();
+        File file = new File(exportParentDirectoryPath + "Fichier personnel.zip");
+        InputStream input = new FileInputStream(file);
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        download = new DefaultStreamedContent(input, externalContext.getMimeType(file.getName()), file.getName());
+        System.out.println("PREP = " + download.getName());
+        return download;
+    }
+
+    public void exportation() throws WriteException, IOException {
         try {
+            ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            File file1 = (new File(servletContext.getRealPath(""))).getParentFile();
+            File file2 = new File(file1.getAbsolutePath() + "/Export/");
+            file2.mkdir();
+            exportParentDirectoryPath = file1.getAbsolutePath() + "/";
+            exportDirectoryPath = file2.getAbsolutePath() + "/";
+
             //Construction des fichiers
-            File export = new File("Export");
-            export.mkdir();
-            buildDepartFile("Export");
-            buildArrondFile("Export");
-            buildStructFile("Export");
-            buildSpecialiteFile("Export");
-            buildCadreFile("Export");
-            buildCategorieStructureFile("Export");
-            buildPosteFile("Export");
-            buildGradeContractFile("Export");
-            buildGradeFonctioFile("Export");
-            buildCorpsFile("Export");
-            buildFonctionnaireFile("Export");
-            buildContractuelFile("Export");
-        } catch (IOException ioe) {
+            buildDepartFile(exportDirectoryPath);
+            buildArrondFile(exportDirectoryPath);
+            buildStructFile(exportDirectoryPath);
+            buildSpecialiteFile(exportDirectoryPath);
+            buildCadreFile(exportDirectoryPath);
+            buildCategorieStructureFile(exportDirectoryPath);
+            buildPosteFile(exportDirectoryPath);
+            buildGradeContractFile(exportDirectoryPath);
+            buildGradeFonctioFile(exportDirectoryPath);
+            buildCorpsFile(exportDirectoryPath);
+            buildFonctionnaireFile(exportDirectoryPath);
+            buildContractuelFile(exportDirectoryPath);
+        } catch (IOException | WriteException ioe) {
             throw ioe;
-        } catch (WriteException we) {
-            throw we;
         }
 
         //création de l'archive
-        zip = new ZipOutputStream(new FileOutputStream(path + nomArchive));
+        zip = new ZipOutputStream(new FileOutputStream(exportParentDirectoryPath + "Fichier personnel.zip"));
         zip.setMethod(ZipOutputStream.DEFLATED);
         zip.setLevel(Deflater.BEST_COMPRESSION);
 
         //compression des fichier  
-        File fichier = new File("Export");
+        File fichier = new File(exportDirectoryPath);
         for (File file : fichier.listFiles()) {
-            compresser("" + file);
+            compresser(file.getName());
         }
         //fermeture de l'archive
         zip.close();
         //suppression des fichiers déja archivés
-        for (File file : fichier.listFiles()) {
-            file.delete();
+        for (File fil : fichier.listFiles()) {
+            fil.delete();
         }
-
+        FacesMessage msg = new FacesMessage("Exportation effectuée avec succès!");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-
-    public static void main(String arg[]) throws WriteException, IOException {
-        ExporterBean expoterBean = new ExporterBean();
-
-        expoterBean.exportation("FichierExporté.zip", "H:/Dark blue/s2/");
-    }
-
 }

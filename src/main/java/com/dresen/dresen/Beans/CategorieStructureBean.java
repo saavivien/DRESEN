@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import com.dresen.dresen.ServiceInterface.ICategorieStructureService;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -19,9 +21,10 @@ import com.dresen.dresen.ServiceInterface.ICategorieStructureService;
 @ManagedBean
 @RequestScoped
 public class CategorieStructureBean {
+
     @ManagedProperty(value = "#{ICategorieStructureService}")
     private ICategorieStructureService iCategorieStructureService;
-    
+
     private CategorieStructure categorieSturcture = new CategorieStructure();
 
     public ICategorieStructureService getiCategorieStructureService() {
@@ -42,20 +45,39 @@ public class CategorieStructureBean {
 
     public CategorieStructureBean() {
     }
-    
-    public CategorieStructure createCategorieStructure(){
-        return iCategorieStructureService.createCategorieStructure(categorieSturcture);
+
+    public CategorieStructure createCategorieStructure() {
+        try {
+            iCategorieStructureService.createCategorieStructure(categorieSturcture);
+            FacesMessage msg = new FacesMessage("Catégorie structure enregistré avec succès!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return categorieSturcture;
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Echec de l'enregistrement de la catégorie structure, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
     }
-    public CategorieStructure updateCategorieStructure(){
-        return iCategorieStructureService.updateCategorieStructure(categorieSturcture);
+
+    public CategorieStructure updateCategorieStructure() {
+        try {
+            iCategorieStructureService.updateCategorieStructure(categorieSturcture);
+            FacesMessage msg = new FacesMessage("Catégorie structure modifiée avec succès!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return categorieSturcture;
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Echec de la modification de la catégorie structure, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
     }
-    public CategorieStructure findCategorieStructurebyId(){
+
+    public CategorieStructure findCategorieStructurebyId() {
         return iCategorieStructureService.findCategorieStructureById(categorieSturcture.getId());
     }
-    public List<CategorieStructure> findAllCategorieStructure(){
+
+    public List<CategorieStructure> findAllCategorieStructure() {
         return iCategorieStructureService.findAllCategorieStructure();
     }
-    
-    
-    
+
 }

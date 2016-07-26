@@ -48,6 +48,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.hibernate.service.spi.ServiceException;
 import org.primefaces.event.FlowEvent;
 
 /**
@@ -1069,6 +1070,15 @@ public class FonctionnaireBean implements Serializable {
         return age;
     }
 
+    public int currentAgeFonctioForRetraite(Agentp agent) {
+        Date currentDate = new Date();
+        int age = currentDate.getYear() - agent.getDateNaissance().getYear();
+        if (currentDate.getMonth() < agent.getDateNaissance().getMonth()) {
+            return age - 1;
+        }
+        return age;
+    }
+
     public String currentDateAffect(Agentp agent) {
         simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Affectation affect = iAffectationService.findAffectationOpenByIdAgent(agent.getId());
@@ -1585,23 +1595,26 @@ public class FonctionnaireBean implements Serializable {
     public Fonctionnaire createFonctionnaire() {
         try {
             fonctionnaire.setSpecialite(specialite);
-            iFonctionnaireService.createFonctionnaire(fonctionnaire);
 
             affectation.setAgent(fonctionnaire);
             affectation.setStructureAttache(structureAttache);
-            iAffectationService.createAffectation(affectation);
 
             rangerFonctio.setFonctionnaire(fonctionnaire);
             rangerFonctio.setGradeFonctio(gradeFonctio);
-            iRangerFonctioService.createRangerFonctio(rangerFonctio);
 
             promotion.setAgent(fonctionnaire);
             promotion.setPoste(poste);
+
+            iFonctionnaireService.createFonctionnaire(fonctionnaire);
+            iAffectationService.createAffectation(affectation);
+            iRangerFonctioService.createRangerFonctio(rangerFonctio);
             iPromotionService.createPromotion(promotion);
 
+            FacesMessage msg = new FacesMessage("Fonctionnaire créé avec succès");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
             return fonctionnaire;
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("echec d'enregitrement vérifier les informations");
+            FacesMessage msg = new FacesMessage("Echec d'enrégistrement vérifier les informations");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             throw e;
         }
@@ -1618,19 +1631,24 @@ public class FonctionnaireBean implements Serializable {
 
             affectation.setStructureAttache(structureAttache);
             affectation.setDateDebutAffect(simpleDateFormat.parse(dateDebutPoste));
-            iAffectationService.updateAffectation(affectation);
-
-            rangerFonctio.setGradeFonctio(gradeFonctio);
-            rangerFonctio.setDateDebutRangerFonctio(simpleDateFormat.parse(dateDebutGrade));
-            iRangerFonctioService.updateRangerFonctio(rangerFonctio);
 
             promotion.setPoste(poste);
             promotion.setDateDebutPromo(simpleDateFormat.parse(dateDebutPoste));
-            iPromotionService.updatePromotion(promotion);
 
-            return iFonctionnaireService.updateFonctionnaire(fonctionnaire);
+            rangerFonctio.setGradeFonctio(gradeFonctio);
+            rangerFonctio.setDateDebutRangerFonctio(simpleDateFormat.parse(dateDebutGrade));
+
+            iAffectationService.updateAffectation(affectation);
+            iRangerFonctioService.updateRangerFonctio(rangerFonctio);
+            iPromotionService.updatePromotion(promotion);
+            iFonctionnaireService.updateFonctionnaire(fonctionnaire);
+
+            FacesMessage msg = new FacesMessage("Fonctionnaire modifié avec succès avec succes");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return fonctionnaire;
+
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("echec de modification vérifier les informations");
+            FacesMessage msg = new FacesMessage("Echec de modification vérifier les informations");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             throw e;
         }
@@ -1656,39 +1674,74 @@ public class FonctionnaireBean implements Serializable {
     }
 
     public Fonctionnaire retraite() {
-        fonctionnaire.setIsRetraite(true);
-        iAffectationService.updateAffectation(affectation);
-        iPromotionService.updatePromotion(promotion);
-        return iFonctionnaireService.updateFonctionnaire(fonctionnaire);
+        try {
+            fonctionnaire.setIsRetraite(true);
+            iAffectationService.updateAffectation(affectation);
+            iPromotionService.updatePromotion(promotion);
+            iFonctionnaireService.updateFonctionnaire(fonctionnaire);
+            FacesMessage msg = new FacesMessage("Succès de la mise du fonctionnaire en retraite");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return fonctionnaire;
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Echec de la mise en retraite, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
     }
 
     public Fonctionnaire sortieRegion() {
-        iAffectationService.updateAffectation(affectation);
-        iPromotionService.updatePromotion(promotion);
-        return iFonctionnaireService.updateFonctionnaire(fonctionnaire);
+        try {
+            iAffectationService.updateAffectation(affectation);
+            iPromotionService.updatePromotion(promotion);
+            iFonctionnaireService.updateFonctionnaire(fonctionnaire);
+            FacesMessage msg = new FacesMessage("Succès de la sortie du fonctionnaire de la région");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return fonctionnaire;
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Echec de la sortie du fonctionnaire de la région, vérifier les informations!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
     }
 
     public Fonctionnaire restaureRetraite() {
-        fonctionnaire.setIsRetraite(false);
-        iAffectationService.updateAffectation(affectation);
-        iPromotionService.updatePromotion(promotion);
-        return iFonctionnaireService.updateFonctionnaire(fonctionnaire);
+        try {
+            fonctionnaire.setIsRetraite(false);
+            iAffectationService.updateAffectation(affectation);
+            iPromotionService.updatePromotion(promotion);
+            iFonctionnaireService.updateFonctionnaire(fonctionnaire);
+            FacesMessage msg = new FacesMessage("Succès de la restauration du fonctionnaire");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            return fonctionnaire;
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Echec de la restauration du fonctionnaire");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
     }
 
     public void affecterFonctionnaire() {
         try {
             affectationAffec.setAgent(fonctionnaire);
             affectationAffec.setStructureAttache(structureAttacheAffec);
+
             promotionAffec.setAgent(fonctionnaire);
             promotionAffec.setPoste(posteAffec);
-            iAffectationService.createAffectation(affectationAffec);
-            iPromotionService.createPromotion(promotionAffec);
+
             affectation.setDateFinAffect(affectationAffec.getDateDebutAffect());
             promotion.setDateFinPromo(promotionAffec.getDateDebutPromo());
+
+            iAffectationService.createAffectation(affectationAffec);
+            iPromotionService.createPromotion(promotionAffec);
+
             iAffectationService.updateAffectation(affectation);
             iPromotionService.updatePromotion(promotion);
+
+            FacesMessage msg = new FacesMessage("Succès de l'affectation du fonctionnaire");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("echec d'affectation vérifier les informations");
+            FacesMessage msg = new FacesMessage("Echec de l'affectation vérifier les informations");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             throw e;
         }
@@ -1701,9 +1754,10 @@ public class FonctionnaireBean implements Serializable {
             iRangerFonctioService.createRangerFonctio(rangerFonctioChangerGrade);
             rangerFonctio.setDateFinRangerFonctio(rangerFonctioChangerGrade.getDateDebutRangerFonctio());
             iRangerFonctioService.updateRangerFonctio(rangerFonctio);
-
+            FacesMessage msg = new FacesMessage("Grade du fonctionnaire changé avec succès");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("echec du changement de grade vérifier les informations");
+            FacesMessage msg = new FacesMessage("Echec du changement de grade, vérifier les informations");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
@@ -1716,19 +1770,53 @@ public class FonctionnaireBean implements Serializable {
             promotionAffec.setPoste(posteAffec);
             iAffectationService.createAffectation(affectationAffec);
             iPromotionService.createPromotion(promotionAffec);
+            FacesMessage msg = new FacesMessage("Affectation effectuée avec succès");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
         } catch (Exception e) {
-            FacesMessage msg = new FacesMessage("echec d'affectation vérifier les informations");
+            FacesMessage msg = new FacesMessage("Echec de l'affectation, vérifier les informations!");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             throw e;
         }
     }
-//    public void retraiteMensuelFonctio(){
-//        listFonctioRetraiteMensuel = iFonctionnaireService.findFonctionnaireActif();
-//        for (Fonctionnaire fonctio : listFonctioRetraiteMensuel) {
-//            if(currentAgeFonctio(fonctio) < currentGradeFonctio(fonctio).getRetraite())
-//                listFonctioRetraiteMensuel.remove(fonctio);
-//        }
-//        if(!listFonctioRetraiteMensuel.isEmpty())
-//            boolNotif = true;
-//    }
+
+    public List<Fonctionnaire> retraiteMensuelFonctio() {
+        listFonctioRetraiteMensuel = new ArrayList<>();
+        for (Fonctionnaire fonctio : iFonctionnaireService.findFonctionnaireActif()) {
+            if (currentAgeFonctioForRetraite(fonctio) >= currentGradeFonctio(fonctio).getRetraite()) {
+                listFonctioRetraiteMensuel.add(fonctio);
+            }
+        }
+        if (!listFonctioRetraiteMensuel.isEmpty()) {
+            boolNotif = true;
+        }
+        boolNotif = true;
+        return listFonctioRetraiteMensuel;
+    }
+
+    public void validerRaitraiteMensuel() throws ParseException {
+        try {
+            simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            List<Fonctionnaire> listFonctioRetraite = retraiteMensuelFonctio();
+            for (Fonctionnaire fonctio : listFonctioRetraite) {
+                promotion = iPromotionService.findLastPromotionByIdAgent(fonctio.getId());
+                affectation = iAffectationService.findLastAffectationByIdAgent(fonctio.getId());
+                int year = fonctio.getDateNaissance().getYear() + currentGradeFonctio(fonctio).getRetraite();
+                String dateRet = simpleDateFormat.format(fonctio.getDateNaissance());
+                Date date = simpleDateFormat.parse(dateRet);
+                date.setYear(year);
+                promotion.setDateFinPromo(date);
+                affectation.setDateFinAffect(date);
+                fonctio.setIsRetraite(true);
+                iPromotionService.updatePromotion(promotion);
+                iAffectationService.updateAffectation(affectation);
+                iFonctionnaireService.updateFonctionnaire(fonctio);
+                FacesMessage msg = new FacesMessage("Mise en retraite générale effectuée avec succès!");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+        } catch (ServiceException | ParseException e) {
+            FacesMessage msg = new FacesMessage("Echec de la mise en retraite générale!");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw e;
+        }
+    }
 }

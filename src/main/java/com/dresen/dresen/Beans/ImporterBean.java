@@ -46,22 +46,28 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.NativeUploadedFile;
 
 /**
  *
@@ -69,7 +75,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 @ManagedBean
 @ViewScoped
-public class ImporterBean {
+public class ImporterBean implements Serializable {
 
     @ManagedProperty(value = "#{IDepartementService}")
     private IDepartementService iDepartementService;
@@ -89,13 +95,13 @@ public class ImporterBean {
     private IGradeContractService iGradeContractService;
     @ManagedProperty(value = "#{ISpecialiteService}")
     private ISpecialiteService iSpecialiteService;
-    @ManagedProperty(value = "IFonctionnaireService")
+    @ManagedProperty(value = "#{IFonctionnaireService}")
     private IFonctionnaireService iFonctionnaireService;
     @ManagedProperty(value = "#{IContractuelService}")
     private IContractuelService iContractuelService;
-    @ManagedProperty(value = "IAffectationService")
+    @ManagedProperty(value = "#{IAffectationService}")
     private IAffectationService iAffectationService;
-    @ManagedProperty(value = "IPromotionService")
+    @ManagedProperty(value = "#{IPromotionService}")
     private IPromotionService iPromotionService;
     @ManagedProperty(value = "#{IRangerFonctioService}")
     private IRangerFonctioService iRangerFonctioService;
@@ -108,7 +114,10 @@ public class ImporterBean {
     private SimpleDateFormat simpleDateFormat;
     Contractuel contractuelImport;
     Fonctionnaire fonctionnaireImport;
-    private ZipFile zipFile;
+    NativeUploadedFile file;
+    private String importDirectoryPath;
+    private String importFilePath;
+    private Integer progress; 
 
     public IDepartementService getiDepartementService() {
         return iDepartementService;
@@ -270,12 +279,44 @@ public class ImporterBean {
         this.fonctionnaireImport = fonctionnaireImport;
     }
 
-    public ZipFile getZipFile() {
-        return zipFile;
+    public NativeUploadedFile getFile() {
+        return file;
     }
 
-    public void setZipFile(ZipFile zipFile) {
-        this.zipFile = zipFile;
+    public void setFile(NativeUploadedFile file) {
+        this.file = file;
+    }
+
+    public String getImportDirectoryPath() {
+        return importDirectoryPath;
+    }
+
+    public void setImportDirectoryPath(String exportDirectoryPath) {
+        this.importDirectoryPath = exportDirectoryPath;
+    }
+
+    public String getImportFilePath() {
+        return importFilePath;
+    }
+
+    public void setImportFilePath(String exportFilePath) {
+        this.importFilePath = exportFilePath;
+    }
+
+     public Integer getProgress() {
+        if(progress == null) {
+            progress = 0;
+        }
+        else {
+            if(progress > 100)
+                progress = 100;
+        }
+         
+        return progress;
+    }
+
+    public void setProgress(Integer progress) {
+        this.progress = progress;
     }
 
     public String removeAccent(String chaine) {
@@ -302,12 +343,49 @@ public class ImporterBean {
         return chaine;
     }
 
-    //décompression de l'archive importée
-    public void decompresser(String nomArchive) {
+    public void upload(FileUploadEvent event) {
+        progress = 0;
+        // Do what you want with the file        
         try {
-            File export = new File("Export");
-            export.mkdir();
-            zipFile = new ZipFile(nomArchive);
+            //looking for target directory and create Export directory the copy the file imported 
+            ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+            File file1 = (new File(servletContext.getRealPath(""))).getParentFile();
+            File file2 = new File(file1.getAbsolutePath() + "/Import/");
+            file2.mkdir();
+            importDirectoryPath = file2.getAbsolutePath() + "/";
+            importFilePath = importDirectoryPath + event.getFile().getFileName();
+            copyFile(event.getFile().getInputstream());
+            progress = progress + 3;  
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void copyFile(InputStream in) {
+        try {
+
+            try ( // write the inputStream to a FileOutputStream
+                    OutputStream out = new FileOutputStream(new File(importFilePath))) {
+                int read = 0;
+                byte[] bytes = new byte[1024];
+
+                while ((read = in.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
+                }
+
+                in.close();
+                out.flush();
+            }
+            System.out.println("New file created!");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    //décompression de l'archive importée
+    public void decompresser(String nomArchive) throws FileNotFoundException, IOException {
+        try {
+            ZipFile zipFile = new ZipFile(nomArchive);
             Enumeration entries = zipFile.entries();
             ZipEntry entry;
             File fichier;
@@ -315,12 +393,11 @@ public class ImporterBean {
                 entry = (ZipEntry) entries.nextElement();
                 if (!entry.isDirectory()) {
                     System.out.println("Extraction du fichier " + entry.getName());
-                    fichier = new File(entry.getName());
+                    fichier = new File(importDirectoryPath + entry.getName());
                     int i = 0;
-                    byte[] bytes = new byte[1024];
+                    byte[] bytes = new byte[1024*2];
                     BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(fichier));
-                    BufferedInputStream in = new BufferedInputStream(zipFile
-                            .getInputStream(entry));
+                    BufferedInputStream in = new BufferedInputStream(zipFile.getInputStream(entry));
                     while ((i = in.read(bytes)) != -1) {
                         out.write(
                                 bytes,
@@ -333,19 +410,19 @@ public class ImporterBean {
                 }
             }
             zipFile.close();
+            progress = progress + 12;  
         } catch (FileNotFoundException fnfe) {
-            fnfe.printStackTrace();
+            throw fnfe;
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            throw ioe;
         }
     }
 //importation des départements pour les départements inexistants
 
     public void importDepart() throws IOException, BiffException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iDepartementService = ctx.getBean("IDepartementService", IDepartementService.class);
+
         try {
-            Workbook workbook = Workbook.getWorkbook(new File("Export/departement.vvs"));
+            Workbook workbook = Workbook.getWorkbook(new File(importDirectoryPath + "departement.vvs"));
             Sheet sheet = workbook.getSheet(0);
             List<Departement> listDeparts = iDepartementService.findAllDepartement();
             List<String> listIntituleDeparts = new ArrayList<>();
@@ -360,7 +437,7 @@ public class ImporterBean {
                     iDepartementService.createDepartement(departementImport);
                 }
             }
-
+            progress = progress + 5;  
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -368,11 +445,9 @@ public class ImporterBean {
 
     //importation des arrondissements pour les arrondissements inexistants
     public void importArrond() throws IOException, BiffException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iArrondissementService = ctx.getBean("IArrondissementService", IArrondissementService.class);
-        iDepartementService = ctx.getBean("IDepartementService", IDepartementService.class);
+
         try {
-            Workbook workbook = Workbook.getWorkbook(new File("Export/arrondissement.vvs"));
+            Workbook workbook = Workbook.getWorkbook(new File(importDirectoryPath + "arrondissement.vvs"));
             Sheet sheet = workbook.getSheet(0);
             List<Arrondissement> listArronds = iArrondissementService.findAllArrondissement();
             List<Departement> listDeparts = iDepartementService.findAllDepartement();
@@ -395,7 +470,7 @@ public class ImporterBean {
                     }
                 }
             }
-
+            progress = progress + 5;  
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -403,10 +478,9 @@ public class ImporterBean {
 
     //importation des types de structures pour les types de structures inexistants inexistants
     public void importCategorieStructure() throws IOException, BiffException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iCategorieStructureService = ctx.getBean("ICategorieStructureService", ICategorieStructureService.class);
+
         try {
-            Workbook workbook = Workbook.getWorkbook(new File("Export/categorieStructure.vvs"));
+            Workbook workbook = Workbook.getWorkbook(new File(importDirectoryPath + "categorieStructure.vvs"));
             Sheet sheet = workbook.getSheet(0);
             List<CategorieStructure> listCategorieStructures = iCategorieStructureService.findAllCategorieStructure();
             List<String> listIntituleCategorieStructures = new ArrayList<>();
@@ -421,7 +495,7 @@ public class ImporterBean {
                     iCategorieStructureService.createCategorieStructure(categorieStructureImport);
                 }
             }
-
+            progress = progress + 5;  
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -429,11 +503,9 @@ public class ImporterBean {
 
     //importation des cadres pour les cadres inexistants
     public void importPoste() throws IOException, BiffException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iPosteService = ctx.getBean("IPosteService", IPosteService.class);
-        iPosteStructureService = ctx.getBean("IPosteStructureService", IPosteStructureService.class);
+
         try {
-            Workbook workbook = Workbook.getWorkbook(new File("Export/poste.vvs"));
+            Workbook workbook = Workbook.getWorkbook(new File(importDirectoryPath + "poste.vvs"));
             Sheet sheet = workbook.getSheet(0);
             List<Poste> listPostes = iPosteService.findAllPoste();
             List<String> listIntitulePostes = new ArrayList<>();
@@ -477,7 +549,7 @@ public class ImporterBean {
                 }
 
             }
-
+            progress = progress + 5;  
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -485,13 +557,9 @@ public class ImporterBean {
 
     //importation des structures pour les structures inexistantes inexistants
     public void importStructureAttache() throws IOException, BiffException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iCategorieStructureService = ctx.getBean("ICategorieStructureService", ICategorieStructureService.class);
-        iArrondissementService = ctx.getBean("IArrondissementService", IArrondissementService.class);
-        iStructureService = ctx.getBean("IStructureService", IStructureService.class);
 
         try {
-            Workbook workbook = Workbook.getWorkbook(new File("Export/structure.vvs"));
+            Workbook workbook = Workbook.getWorkbook(new File(importDirectoryPath + "structure.vvs"));
             Sheet sheet = workbook.getSheet(0);
             List<StructureAttache> listStructureAttaches = iStructureService.findAllStructureAttache();
             List<Arrondissement> listArrondissements = iArrondissementService.findAllArrondissement();
@@ -524,7 +592,7 @@ public class ImporterBean {
                     iStructureService.createStructureAttache(structureAttacheImport);
                 }
             }
-
+            progress = progress + 5;  
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -532,10 +600,9 @@ public class ImporterBean {
 
     //importation des spécialités pour les Spécialités inexistantes
     public void importSpecialite() throws IOException, BiffException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iSpecialiteService = ctx.getBean("ISpecialiteService", ISpecialiteService.class);
+
         try {
-            Workbook workbook = Workbook.getWorkbook(new File("Export/specialite.vvs"));
+            Workbook workbook = Workbook.getWorkbook(new File(importDirectoryPath + "specialite.vvs"));
             Sheet sheet = workbook.getSheet(0);
             List<Specialite> listSpecialites = iSpecialiteService.findAllSpecialite();
             List<String> listIntituleSpecialites = new ArrayList<>();
@@ -550,7 +617,7 @@ public class ImporterBean {
                     iSpecialiteService.createSpecialite(specialiteImport);
                 }
             }
-
+            progress = progress + 5;  
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -558,10 +625,9 @@ public class ImporterBean {
 
     //importation des corps pour les corps inexistants
     public void importCorps() throws IOException, BiffException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iCorpsService = ctx.getBean("ICorpsService", ICorpsService.class);
+
         try {
-            Workbook workbook = Workbook.getWorkbook(new File("Export/gradeContract.vvs"));
+            Workbook workbook = Workbook.getWorkbook(new File(importDirectoryPath + "gradeContract.vvs"));
             Sheet sheet = workbook.getSheet(0);
             List<Corps> listCorpss = iCorpsService.findAllCorps();
             List<String> listIntituleCorpss = new ArrayList<>();
@@ -576,7 +642,7 @@ public class ImporterBean {
                     iCorpsService.createCorps(corpsImport);
                 }
             }
-
+            progress = progress + 5;  
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -584,11 +650,9 @@ public class ImporterBean {
 
     //importation des cadres pour les cadres inexistants
     public void importCadre() throws IOException, BiffException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iCadreService = ctx.getBean("ICadreService", ICadreService.class);
-        iCorpsService = ctx.getBean("ICorpsService", ICorpsService.class);
+
         try {
-            Workbook workbook = Workbook.getWorkbook(new File("Export/cadre.vvs"));
+            Workbook workbook = Workbook.getWorkbook(new File(importDirectoryPath + "cadre.vvs"));
             Sheet sheet = workbook.getSheet(0);
             List<Cadre> listCadres = iCadreService.findAllCadre();
             List<Corps> listCorps = iCorpsService.findAllCorps();
@@ -611,7 +675,7 @@ public class ImporterBean {
                     iCadreService.createCadre(cadreImport);
                 }
             }
-
+            progress = progress + 5;  
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -619,11 +683,9 @@ public class ImporterBean {
 
     //importation des gradeFonctios pour les gradeFonctios inexistants
     public void importGradeFonctio() throws IOException, BiffException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iGradeFonctioService = ctx.getBean("IGradeFonctioService", IGradeFonctioService.class);
-        iCadreService = ctx.getBean("ICadreService", ICadreService.class);
+
         try {
-            Workbook workbook = Workbook.getWorkbook(new File("Export/gradeFonctio.vvs"));
+            Workbook workbook = Workbook.getWorkbook(new File(importDirectoryPath + "gradeFonctio.vvs"));
             Sheet sheet = workbook.getSheet(0);
             List<GradeFonctio> listGradeFonctios = iGradeFonctioService.findAllGradeFonctio();
             List<Cadre> listCadres = iCadreService.findAllCadre();
@@ -647,7 +709,7 @@ public class ImporterBean {
                     iGradeFonctioService.createGradeFonctio(gradeFonctioImport);
                 }
             }
-
+            progress = progress + 5;  
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -655,10 +717,9 @@ public class ImporterBean {
 
     //importation des gradeContracts pour les gradeContracts inexistantes
     public void importGradeContract() throws IOException, BiffException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iGradeContractService = ctx.getBean("IGradeContractService", IGradeContractService.class);
+
         try {
-            Workbook workbook = Workbook.getWorkbook(new File("Export/gradeContract.vvs"));
+            Workbook workbook = Workbook.getWorkbook(new File(importDirectoryPath + "gradeContract.vvs"));
             Sheet sheet = workbook.getSheet(0);
             List<GradeContract> listGradeContracts = iGradeContractService.findAllGradeContract();
             List<String> listIntituleGradeContracts = new ArrayList<>();
@@ -673,26 +734,35 @@ public class ImporterBean {
                     iGradeContractService.createGradeContract(gradeContractImport);
                 }
             }
-
+            progress = progress + 5;  
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
     }
 
     //importation des fonctionnaires pour des fonctionnaires
-    public void importFonctionnaire() throws IOException, BiffException, ParseException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iFonctionnaireService = ctx.getBean("IFonctionnaireService", IFonctionnaireService.class);
-        iSpecialiteService = ctx.getBean("ISpecialiteService", ISpecialiteService.class);
-        iRangerFonctioService = ctx.getBean("IRangerFonctioService", IRangerFonctioService.class);
-        iPromotionService = ctx.getBean("IPromotionService", IPromotionService.class);
-        iAffectationService = ctx.getBean("IAffectationService", IAffectationService.class);
+    public void importFonctionnaire(int typeImport) throws IOException, BiffException, ParseException {
+
         try {
-            Workbook workbook = Workbook.getWorkbook(new File("Export/fonctionnaire.vvs"));
+            Workbook workbook = Workbook.getWorkbook(new File(importDirectoryPath + "fonctionnaire.vvs"));
             Sheet sheet = workbook.getSheet(0);
-            List<Fonctionnaire> listAllFonctionnaires = iFonctionnaireService.findAllFonctionnaire();
-            listAllFonctionnaires.removeAll(iFonctionnaireService.findFonctionnaireActif());
-            listAllFonctionnaires.removeAll(iFonctionnaireService.findFonctionnaireRetraites());
+            List<Fonctionnaire> listAllFonctionnaires;
+            if (typeImport == 1) {
+                for(Fonctionnaire fonc: iFonctionnaireService.findFonctionnaireActif()){
+                    Promotion prom = iPromotionService.findPromotionOpenByIdAgent(fonc.getId());
+                    Affectation affec = iAffectationService.findAffectationOpenByIdAgent(fonc.getId());
+                    Date date = new Date();
+                    prom.setDateFinPromo(date);
+                    affec.setDateFinAffect(date);
+                    iPromotionService.updatePromotion(prom);
+                    iAffectationService.updateAffectation(affec);
+                }
+                listAllFonctionnaires = iFonctionnaireService.findAllFonctionnaire();
+                listAllFonctionnaires.removeAll(iFonctionnaireService.findFonctionnaireRetraites());
+            } else {
+                listAllFonctionnaires = iFonctionnaireService.findFonctionnaireActif();
+            }
+
             List<Specialite> listSpecialites = iSpecialiteService.findAllSpecialite();
             List<GradeFonctio> listGradeFonctios = iGradeFonctioService.findAllGradeFonctio();
             List<StructureAttache> listStructureAttaches = iStructureService.findAllStructureAttache();
@@ -839,7 +909,7 @@ public class ImporterBean {
                                 break;
                             }
                         }
- 
+
                     }
 
                     //mise à jour du grade et de la structure d'attache
@@ -861,26 +931,34 @@ public class ImporterBean {
 
                 }
             }
-
+            progress = progress + 25;  
         } catch (IOException | BiffException | ParseException ioe) {
             throw ioe;
         }
     }
 
     //importation des contractuels pour des contractuels
-    public void importContractuel() throws IOException, BiffException, ParseException {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:Spring-Config.xml");
-        iContractuelService = ctx.getBean("IContractuelService", IContractuelService.class);
-        iSpecialiteService = ctx.getBean("ISpecialiteService", ISpecialiteService.class);
-        iRangerContractService = ctx.getBean("IRangerContractService", IRangerContractService.class);
-        iPromotionService = ctx.getBean("IPromotionService", IPromotionService.class);
-        iAffectationService = ctx.getBean("IAffectationService", IAffectationService.class);
+    public void importContractuel(int typeImport) throws IOException, BiffException, ParseException {
+
         try {
-            Workbook workbook = Workbook.getWorkbook(new File("Export/contractuel.vvs"));
+            Workbook workbook = Workbook.getWorkbook(new File(importDirectoryPath + "contractuel.vvs"));
             Sheet sheet = workbook.getSheet(0);
-            List<Contractuel> listAllContractuels = iContractuelService.findAllContractuel();
-            listAllContractuels.removeAll(iContractuelService.findContractuelActif());
-            listAllContractuels.removeAll(iContractuelService.findContractuelRetraites());
+            List<Contractuel> listAllContractuels;
+            if (typeImport == 1) {
+                for(Contractuel contract : iContractuelService.findContractuelActif()){
+                    Promotion prom = iPromotionService.findPromotionOpenByIdAgent(contract.getId());
+                    Affectation affect = iAffectationService.findAffectationOpenByIdAgent(contract.getId());
+                    Date date = new Date();
+                    prom.setDateFinPromo(date);
+                    affect.setDateFinAffect(date);
+                    iPromotionService.updatePromotion(prom);
+                    iAffectationService.updateAffectation(affect);
+                }
+                listAllContractuels = iContractuelService.findAllContractuel();
+                listAllContractuels.removeAll(iContractuelService.findContractuelRetraites());
+            } else {
+                listAllContractuels = iContractuelService.findContractuelActif();
+            }
             List<Specialite> listSpecialites = iSpecialiteService.findAllSpecialite();
             List<GradeContract> listGradeContracts = iGradeContractService.findAllGradeContract();
             List<StructureAttache> listStructureAttaches = iStructureService.findAllStructureAttache();
@@ -996,8 +1074,7 @@ public class ImporterBean {
                         }
                     }
                     //mise à jour du poste/fonction et de la structure d'attache
-                    
-                    
+
                     if ((removeAccent(promotion.getPoste().getIntitulePoste().toLowerCase())).equals(removeAccent(sheet.getCell(20, i).getContents().toLowerCase()))
                             && (removeAccent(affectation.getStructureAttache().getIntituleStructure().toLowerCase())).equals(removeAccent(sheet.getCell(21, i).getContents().toLowerCase()))) {
                         promotion.setDateFinPromo(null);
@@ -1050,15 +1127,16 @@ public class ImporterBean {
 
                 }
             }
-
+            progress = progress + 10;  
         } catch (IOException | BiffException | ParseException ioe) {
             throw ioe;
         }
     }
 
-    public void importation(String nomAchive) throws IOException, BiffException, ParseException {
+    public void importation1(FileUploadEvent event) throws IOException, BiffException, ParseException {
         try {
-            decompresser(nomAchive);
+            upload(event);
+            decompresser(importFilePath);
             importDepart();
             importArrond();
             importCategorieStructure();
@@ -1069,15 +1147,43 @@ public class ImporterBean {
             importSpecialite();
             importStructureAttache();
             importPoste();
-            importFonctionnaire();
-            importContractuel();
-        } catch (IOException | BiffException | ParseException ioe) {
+            importFonctionnaire(1);
+            importContractuel(1);
+        } catch (IOException | BiffException ioe) {
             throw ioe;
         }
     }
 
-    public static void main(String[] args) throws IOException, BiffException, ParseException {
-        ImporterBean importerBean = new ImporterBean();
-        importerBean.importation("H:/Dark blue/s2/FichierExporté.zip");
+    public void importation2(FileUploadEvent event) throws IOException, BiffException, ParseException {
+        try {
+            upload(event);
+            decompresser(importFilePath);
+            importDepart();
+            importArrond();
+            importCategorieStructure();
+            importCorps();
+            importCadre();
+            importGradeFonctio();
+            importGradeContract();
+            importSpecialite();
+            importStructureAttache();
+            importPoste();
+            importFonctionnaire(2);
+            importContractuel(2);
+        } catch (IOException | BiffException ioe) {
+            throw ioe;
+        }
     }
+    public void onComplete() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Importation terminé"));
+    }
+     
+    public void cancel() {
+        progress = null;
+    }
+
+//    public static void main(String[] args) throws IOException, BiffException, ParseException {
+//        ImporterBean importerBean = new ImporterBean();
+//        importerBean.importation("H:/Dark blue/s2/FichierExporté.zip");
+//    }
 }

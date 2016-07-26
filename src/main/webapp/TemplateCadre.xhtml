@@ -30,7 +30,8 @@ and open the template in the editor.
                                 <p:outputLabel value="Intitule :" for="intitule" />
                                 <p:inputText id="intitule" value="#{cadreBean.cadre.intituleCadre}" title="intitulé" required="true"/>
                     </h:panelGrid>
-                    <p:commandButton value="Enregistrer" action="#{cadreBean.createCadre()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table"/>
+                    <p:commandButton value="Enregistrer" action="#{cadreBean.createCadre()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table, messages"/>
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog>
             <p:dialog widgetVar="dl" header=" Modifier un Cadre" hideEffect="fold" showEffect="explode" resizable="true" modal="true">
@@ -44,7 +45,8 @@ and open the template in the editor.
                                 <p:inputText id="intitule" value="#{cadreBean.cadre.intituleCadre}" title="intitulé" required="true"/>
                                 <h:inputHidden id="number" value="#{cadreBean.cadre.id}" />
                     </h:panelGrid>
-                    <p:commandButton value="Modifier" action="#{cadreBean.updateCadre()}"  oncomplete="PF('dl').hide()" update=":tableForm:table" />
+                    <p:commandButton value="Modifier" action="#{cadreBean.updateCadre()}"  oncomplete="PF('dl').hide()" update=":tableForm:table, messages" />
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog> 
         </f:view>

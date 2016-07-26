@@ -90,12 +90,12 @@ and open the template in the editor.
                                     <h:outputText value="Date d'entrée au poste d'affectation :" />  
                                     <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutPosteAffec}" style="font-style: italic"/>
 
-                                    <p:commandButton value="Confirmer Affectation" action="#{contractuelBean.retourContractuel()}"  oncomplete="PF('dlga').hide()" update=":tableForm:table"/>
+                                    <p:commandButton value="Confirmer Affectation" action="#{contractuelBean.retourContractuel()}"  oncomplete="PF('dlga').hide()" update=":tableForm:table, messages"/>
                                 </h:panelGrid> 
                             </p:panel>  
                         </p:tab>  
-
-                    </p:wizard>  
+                    </p:wizard>
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog> 
             <!--Choix des information à afficher-->
@@ -184,8 +184,9 @@ and open the template in the editor.
                             <h:outputText value="Poste occupé depuis le : " />  
                             <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutPoste}" style="font-style: italic"/>    
                         </h:panelGrid>
-                        <p:commandButton value="Confirmer restauration" action="#{contractuelBean.restaureRetraite()}"  oncomplete="PF('dlgr').hide()" update=":tableForm:table"/> 
+                        <p:commandButton value="Confirmer restauration" action="#{contractuelBean.restaureRetraite()}"  oncomplete="PF('dlgr').hide()" update=":tableForm:table, messages"/> 
                     </p:panel>  
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog> 
 

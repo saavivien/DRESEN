@@ -90,11 +90,11 @@ and open the template in the editor.
                                     <h:outputText value="Date d'entrée au poste d'affectation :" />  
                                     <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateDebutPosteAffec}" style="font-style: italic"/>
 
-                                    <p:commandButton value="Confirmer Affectation" action="#{fonctionnaireBean.retourFonctionnaire()}"  oncomplete="PF('dlga').hide()" update=":tableForm:table"/>
+                                    <p:commandButton value="Confirmer Affectation" action="#{fonctionnaireBean.retourFonctionnaire()}"  oncomplete="PF('dlga').hide()" update=":tableForm:table, messages"/>
                                 </h:panelGrid> 
                             </p:panel>  
                         </p:tab>  
-
+                    <p:growl id="messages" showDetail="true"/> 
                     </p:wizard>  
                 </h:form>
             </p:dialog> 
@@ -184,8 +184,9 @@ and open the template in the editor.
                             <h:outputText value="Poste occupé depuis le : " />  
                             <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.dateDebutPoste}" style="font-style: italic"/>    
                         </h:panelGrid>
-                        <p:commandButton value="Confirmer restauration" action="#{fonctionnaireBean.restaureRetraite()}"  oncomplete="PF('dlgr').hide()" update=":tableForm:table"/> 
+                        <p:commandButton value="Confirmer restauration" action="#{fonctionnaireBean.restaureRetraite()}"  oncomplete="PF('dlgr').hide()" update=":tableForm:table, messages"/> 
                     </p:panel>  
+                    <p:growl id="messages" showDetail="true"/> 
                 </h:form>
             </p:dialog> 
 
