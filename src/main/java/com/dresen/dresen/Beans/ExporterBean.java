@@ -35,7 +35,6 @@ import com.dresen.dresen.entities.Poste;
 import com.dresen.dresen.entities.PosteStructure;
 import com.dresen.dresen.entities.Specialite;
 import com.dresen.dresen.entities.StructureAttache;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -48,6 +47,7 @@ import java.util.List;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -55,8 +55,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 import jxl.*;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
@@ -64,8 +62,6 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *

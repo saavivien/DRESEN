@@ -26,35 +26,36 @@ import org.hibernate.service.spi.ServiceException;
  */
 @ManagedBean
 @RequestScoped
-public class AffectationBean{
+public class AffectationBean {
+
     @ManagedProperty(value = "#{IAffectationService}")
     private IAffectationService iAffectationService;
-    
+
     @ManagedProperty(value = "#{IFonctionnaireService}")
     private IFonctionnaireService iFonctionnaireService;
-    
+
     @ManagedProperty(value = "#{IContractuelService}")
     private IContractuelService iContractuelService;
-    
+
     @ManagedProperty(value = "#{IStructureService}")
     private IStructureService iStructureService;
-    
+
     Affectation affectation = new Affectation();
-    
+
     List<Fonctionnaire> listFonctionnaire;
     List<Contractuel> listContractuel;
     List<StructureAttache> listStructure;
-    
+
     private long idFonctionnaire;
     private long idContractuel;
     private long idService;
     private long idStructure;
-    
-    public AffectationBean(){
-        idFonctionnaire=0L;
-        idContractuel=0L;
-        idService=0L;
-        idStructure=0L;    
+
+    public AffectationBean() {
+        idFonctionnaire = 0L;
+        idContractuel = 0L;
+        idService = 0L;
+        idStructure = 0L;
     }
 
     public IAffectationService getiAffectationService() {
@@ -106,7 +107,7 @@ public class AffectationBean{
     }
 
     public List<Contractuel> getListContractuel() {
-        return iContractuelService.findAllContractuel() ;
+        return iContractuelService.findAllContractuel();
     }
 
     public void setListContractuel(List<Contractuel> listContractuel) {
@@ -152,54 +153,65 @@ public class AffectationBean{
     public void setIdStructure(long idStructure) {
         this.idStructure = idStructure;
     }
-    
-    public Affectation creAffectation()throws ServiceException{
-       Agentp agent = new Agentp();
-       StructureAttache structureAttache = new StructureAttache();
-       agent = iContractuelService.findContractuelById(idContractuel);
-       if(agent==null)
-           agent = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
-       structureAttache = iStructureService.findStructureAttacheById(idStructure);
-       affectation.setAgent(agent);
-       affectation.setStructureAttache(structureAttache);
-       Affectation affectationOpened = this.findAffectationOpenByIdAgent();
-       if (affectationOpened!=null)
-           affectationOpened.setDateFinAffect(affectation.getDateDebutAffect());
-       return iAffectationService.createAffectation(affectation);
-        
+
+    public Affectation creAffectation() throws ServiceException {
+        Agentp agent = new Agentp();
+        StructureAttache structureAttache = new StructureAttache();
+        agent = iContractuelService.findContractuelById(idContractuel);
+        if (agent == null) {
+            agent = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
+        }
+        structureAttache = iStructureService.findStructureAttacheById(idStructure);
+        affectation.setAgent(agent);
+        affectation.setStructureAttache(structureAttache);
+        Affectation affectationOpened = this.findAffectationOpenByIdAgent();
+        if (affectationOpened != null) {
+            affectationOpened.setDateFinAffect(affectation.getDateDebutAffect());
+        }
+        return iAffectationService.createAffectation(affectation);
+
     }
-    public Affectation findAffectationById(){
+
+    public Affectation findAffectationById() {
         return iAffectationService.findAffectationById(affectation.getId());
     }
-    public Affectation updateAffectation(){
-       Agentp agent = new Agentp();
-       StructureAttache structureAttache = new StructureAttache();
-       agent = iContractuelService.findContractuelById(idContractuel);
-       if(agent==null)
-           agent = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
-       structureAttache = iStructureService.findStructureAttacheById(idStructure);
-       affectation.setAgent(agent);
-       affectation.setStructureAttache(structureAttache);
-       return iAffectationService.updateAffectation(affectation);
+
+    public Affectation updateAffectation() {
+        Agentp agent = new Agentp();
+        StructureAttache structureAttache = new StructureAttache();
+        agent = iContractuelService.findContractuelById(idContractuel);
+        if (agent == null) {
+            agent = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
+        }
+        structureAttache = iStructureService.findStructureAttacheById(idStructure);
+        affectation.setAgent(agent);
+        affectation.setStructureAttache(structureAttache);
+        return iAffectationService.updateAffectation(affectation);
     }
-    public List<Affectation> finAllAffectations(){
+
+    public List<Affectation> finAllAffectations() {
         return iAffectationService.findAllAffectation();
     }
-    public List<Affectation> findAffectationByIdAgent(){
-       Agentp agent = new Agentp();
-       agent = iContractuelService.findContractuelById(idContractuel);
-       if(agent==null)
-           agent = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
-       return iAffectationService.findAffectationByIdAgent(agent.getId());
+
+    public List<Affectation> findAffectationByIdAgent() {
+        Agentp agent = new Agentp();
+        agent = iContractuelService.findContractuelById(idContractuel);
+        if (agent == null) {
+            agent = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
+        }
+        return iAffectationService.findAffectationByIdAgent(agent.getId());
     }
-    public Affectation findAffectationOpenByIdAgent(){
-       Agentp agent = new Agentp();
-       agent = iContractuelService.findContractuelById(idContractuel);
-       if(agent==null)
-           agent = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
-       return iAffectationService.findAffectationOpenByIdAgent(agent.getId());
+
+    public Affectation findAffectationOpenByIdAgent() {
+        Agentp agent = new Agentp();
+        agent = iContractuelService.findContractuelById(idContractuel);
+        if (agent == null) {
+            agent = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
+        }
+        return iAffectationService.findAffectationOpenByIdAgent(agent.getId());
     }
-    public List<Affectation> findAllAffectationOpened(){
-        return iAffectationService.findAllAffectationOpen();       
+
+    public List<Affectation> findAllAffectationOpened() {
+        return iAffectationService.findAllAffectationOpen();
     }
 }

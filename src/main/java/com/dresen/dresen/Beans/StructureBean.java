@@ -27,21 +27,22 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @ViewScoped
-public class StructureBean implements Serializable{
+public class StructureBean implements Serializable {
+
     @ManagedProperty(value = "#{IStructureService}")
     private IStructureService iStructureService;
-  
+
     @ManagedProperty(value = "#{IArrondissementService}")
     private IArrondissementService iArrondissementService;
     private List<Arrondissement> listArrondissement;
     private Arrondissement arrondissement;
-    
+
     @ManagedProperty(value = "#{ICategorieStructureService}")
     private ICategorieStructureService iCategorieStructureService;
     private List<CategorieStructure> listCategorieStructure;
     private CategorieStructure categorieStructure;
-    
-    @ManagedProperty(value  ="#{IDepartementService}")
+
+    @ManagedProperty(value = "#{IDepartementService}")
     private IDepartementService iDepartementService;
     private List<Departement> listDepartement;
     private String intituleStructure;
@@ -50,7 +51,7 @@ public class StructureBean implements Serializable{
     private long idArrondissement;
     private long idCategorieStructure;
     private StructureAttache structureAttache;
-   
+
     public StructureBean() {
         idDepartement = 0L;
         idArrondissement = 0L;
@@ -80,7 +81,6 @@ public class StructureBean implements Serializable{
     public void setStructureAttache(StructureAttache structureAttache) {
         this.structureAttache = structureAttache;
     }
-    
 
     public IDepartementService getiDepartementService() {
         return iDepartementService;
@@ -113,7 +113,7 @@ public class StructureBean implements Serializable{
     public void setListCategorieStructure(List<CategorieStructure> listCategorieStructure) {
         this.listCategorieStructure = listCategorieStructure;
     }
-    
+
     public IStructureService getiStructureService() {
         return iStructureService;
     }
@@ -177,20 +177,22 @@ public class StructureBean implements Serializable{
     public void setCategorieStructure(CategorieStructure categorieStructure) {
         this.categorieStructure = categorieStructure;
     }
+
     /*
     this is to initialize the entity structureAttache before creating another
-    */
-    public void initStruct(){
+     */
+    public void initStruct() {
         idDepartement = 0L;
         idCategorieStructure = 0L;
         arrondissement = null;
-        structureAttache = new StructureAttache();   
+        structureAttache = new StructureAttache();
     }
+
     /*
     this is aim to initialize the oneMenu to nothing before updating
-    */
-    public void updateStruct(){
-        if (structureAttache==null) {
+     */
+    public void updateStruct() {
+        if (structureAttache == null) {
             idDepartement = 0L;
             idCategorieStructure = 0L;
             arrondissement = null;
@@ -201,7 +203,7 @@ public class StructureBean implements Serializable{
         }
     }
 
-    public StructureAttache createStructure()throws Exception{
+    public StructureAttache createStructure() throws Exception {
         try {
             arrondissement = iArrondissementService.findArrondissementById(idArrondissement);
             categorieStructure = iCategorieStructureService.findCategorieStructureById(idCategorieStructure);
@@ -217,10 +219,12 @@ public class StructureBean implements Serializable{
             throw e;
         }
     }
-    public StructureAttache findStructureById(){
+
+    public StructureAttache findStructureById() {
         return iStructureService.findStructureAttacheById(structureAttache.getId());
-    } 
-    public StructureAttache updateStructure()throws Exception{
+    }
+
+    public StructureAttache updateStructure() throws Exception {
         try {
             arrondissement = iArrondissementService.findArrondissementById(idArrondissement);
             categorieStructure = iCategorieStructureService.findCategorieStructureById(idCategorieStructure);
@@ -236,7 +240,8 @@ public class StructureBean implements Serializable{
             throw e;
         }
     }
-    public List<StructureAttache> findAllStructure(){
+
+    public List<StructureAttache> findAllStructure() {
         return iStructureService.findAllStructureAttache();
-    } 
+    }
 }

@@ -5,38 +5,39 @@
  */
 package com.dresen.dresen.Beans;
 
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 
 /**
  *
  * @author Vivien Saa
  */
 @ManagedBean
-@RequestScoped
-public class OrientationBean {
+@SessionScoped
+public class OrientationBean implements Serializable{
 
     public OrientationBean() {
     }
 
     public String affectation() {
-        return "Affectation";
+        return "/Parcours/Affectation";
     }
 
     public String arrondissement() {
-        return "Arrondissement";
+        return "/Parcours/Arrondissement";
     }
 
     public String departement() {
-        return "Departement";
+        return "/Parcours/Departement";
     }
 
     public String cadre() {
-        return "Cadre";
+        return "/Parcours/Cadre";
     }
 
     public String corps() {
-        return "Corps";
+        return "/Parcours/Corps";
     }
 
     public String specialite() {
@@ -44,68 +45,69 @@ public class OrientationBean {
     }
 
     public String promotion() {
-        return "Promotion";
+        return "/Parcours/Promotion";
     }
 
     public String poste() {
-        return "Poste";
+        return "/Parcours/Poste";
     }
 
     public String structureAttache() {
-        return "StructureAttache";
+        return "/Parcours/StructureAttache";
     }
 
     public String categorieStructure() {
-        return "CategorieStructure";
+        return "/Parcours/CategorieStructure";
     }
 
     public String gradeFonctio() {
-        return "GradeFonctionnaire";
+        return "/Parcours/GradeFonctionnaire";
     }
 
     public String gradeContract() {
-        return "GradeContractuel";
+        return "/Parcours/GradeContractuel";
     }
 
     //// MENU AGENT
     public String fonctionnaire() {
-        return "Fonctionnaire";
+        return "/Fonctionnaire/Fonctionnaire";
     }
 
     public String retraiteMensuelFonctio() {
-        return "FonctinnaireRetraiteMensuel";
+        return "/Fonctionnaire/FonctionnaireRetraiteMensuel";
     }
 
     public String retraiteFonctionnaire() {
-        return "FonctionnairesRetraites";
+        return "/Fonctionnaire/FonctionnairesRetraites";
     }
 
     public String horsRegionFonctionnaire() {
-        return "FonctionnairesHorsRegion";
+        return "/Fonctionnaire/FonctionnairesHorsRegion";
     }
 
     public String contractuel() {
-        return "Contractuel";
+        return "/Contractuel/Contractuel";
     }
-     public String retraiteMensuelContract() {
-        return "ContractuelRetraiteMensuel";
+
+    public String retraiteMensuelContract() {
+        return "/Contractuel/ContractuelRetraiteMensuel";
     }
 
     public String retraiteContractuel() {
-        return "ContractuelsRetraites";
+        return "/Contractuel/ContractuelsRetraites";
     }
 
     public String horsRegionContractuel() {
-        return "ContractuelsHorsRegion";
+        return "/Contractuel/ContractuelsHorsRegion";
     }
     //// MENU IMPORT EXPORT
 
     public String importation() {
-        return "Importation";
+        return "/ImportExport/Importation";
     }
 
     public String exportation() {
-        return "Exportation";
+        return "/ImportExport/Exportation";
     }
 
 }

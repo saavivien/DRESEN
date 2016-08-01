@@ -26,33 +26,34 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean
 @RequestScoped
 public class PromotionBean {
+
     @ManagedProperty(value = "#{IPromotionService}")
     private IPromotionService iPromotionService;
-    
+
     @ManagedProperty(value = "#{IContractuelService}")
     private IContractuelService iContractuelService;
-    
+
     @ManagedProperty(value = "#{IFonctionnaireService}")
     private IFonctionnaireService iFonctionnaireService;
-    
+
     @ManagedProperty(value = "#{IPosteService}")
     private IPosteService iPosteService;
-    
+
     private long idFonctionnaire;
     private long idContractuel;
     private long idPoste;
-     
+
     private Promotion promotion = new Promotion();
-     
+
     private List<Poste> listPoste;
     private List<Contractuel> listContractuel;
     private List<Fonctionnaire> listFonctionnaire;
-    
+
     private Agentp agent;
     private Poste poste;
     private Promotion promotion1;
-            
-     public PromotionBean() {
+
+    public PromotionBean() {
         idFonctionnaire = 0L;
         idContractuel = 0L;
         idPoste = 0L;
@@ -74,7 +75,6 @@ public class PromotionBean {
         this.poste = poste;
     }
 
-     
     public IPromotionService getiPromotionService() {
         return iPromotionService;
     }
@@ -146,7 +146,6 @@ public class PromotionBean {
     public void setPromotion1(Promotion promotion1) {
         this.promotion1 = promotion1;
     }
-    
 
     public List<Poste> getListPoste() {
         return iPosteService.findAllPoste();
@@ -171,47 +170,55 @@ public class PromotionBean {
     public void setListFonctionnaire(List<Fonctionnaire> listFonctionnaire) {
         this.listFonctionnaire = listFonctionnaire;
     }
-    
-    public Promotion createPromotion(){
+
+    public Promotion createPromotion() {
         agent = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
-        if (agent == null)
+        if (agent == null) {
             agent = iContractuelService.findContractuelById(idContractuel);
+        }
         poste = iPosteService.findPosteById(idPoste);
         promotion.setAgent(agent);
         promotion.setPoste(poste);
         return iPromotionService.createPromotion(promotion);
     }
-    public Promotion findPromotionById(){
+
+    public Promotion findPromotionById() {
         return iPromotionService.findPromotionById(promotion.getId());
     }
-    public Promotion updatePromotion(){
+
+    public Promotion updatePromotion() {
         agent = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
-        if (agent == null)
+        if (agent == null) {
             agent = iContractuelService.findContractuelById(idContractuel);
+        }
         // make sure that the promotion is not the current one before creating a new one.
         poste = iPosteService.findPosteById(idPoste);
         promotion1 = iPromotionService.findPromotionOpenByIdAgent(agent.getId());
-        if(!promotion.getPoste().equals(poste)){
-             promotion.setAgent(agent);
-             promotion.setPoste(poste);
-             return iPromotionService.updatePromotion(promotion);
+        if (!promotion.getPoste().equals(poste)) {
+            promotion.setAgent(agent);
+            promotion.setPoste(poste);
+            return iPromotionService.updatePromotion(promotion);
         }
         return promotion;
     }
-    public List<Promotion> findAllPromotion(){
+
+    public List<Promotion> findAllPromotion() {
         return iPromotionService.findAllPromotion();
-    } 
-    public Promotion findPromotionOpenByIdAgent(){
+    }
+
+    public Promotion findPromotionOpenByIdAgent() {
         agent = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
-        if (agent == null)
+        if (agent == null) {
             agent = iContractuelService.findContractuelById(idContractuel);
+        }
         poste = iPosteService.findPosteById(idPoste);
         promotion.setAgent(agent);
         promotion.setPoste(poste);
         return iPromotionService.findPromotionOpenByIdAgent(promotion.getId());
     }
-     public List<Promotion> findAllPromotionOpen(){
+
+    public List<Promotion> findAllPromotionOpen() {
         return iPromotionService.findAllPromotionOpen();
-    } 
-    
+    }
+
 }

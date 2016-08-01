@@ -20,6 +20,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
 /**
  *
  * @author Vivien Saa
@@ -27,15 +28,16 @@ import javax.faces.context.FacesContext;
 @ManagedBean
 @ViewScoped
 public class GradeFonctioBean {
+
     @ManagedProperty(value = "#{IGradeFonctioService}")
     private IGradeFonctioService IGradeFonctioService;
-    
+
     @ManagedProperty(value = "#{ICadreService}")
     private ICadreService iCadreService;
-    
+
     @ManagedProperty(value = "#{ICorpsService}")
     private ICorpsService iCorpsService;
-    
+
     private List<Corps> listCorps;
     private List<Cadre> listCadre;
     private List<Cadre> listAge;
@@ -43,6 +45,7 @@ public class GradeFonctioBean {
     private long idCorps;
     private GradeFonctio gradeFonctio = new GradeFonctio();
     private Cadre cadre = new Cadre();
+
     public GradeFonctioBean() {
         idCadre = 0L;
         idCorps = 0L;
@@ -64,7 +67,6 @@ public class GradeFonctioBean {
         this.iCadreService = iCadreService;
     }
 
-  
     public List<Cadre> getListCadre() {
         return iCadreService.findCadreByIdCorps(idCorps);
     }
@@ -116,11 +118,12 @@ public class GradeFonctioBean {
     public long getIdCorps() {
         return idCorps;
     }
-    
+
     public void setIdCorps(long idCorps) {
         this.idCorps = idCorps;
     }
-    public List ages(){
+
+    public List ages() {
         List listAges = new ArrayList();
         listAges.add(45);
         listAges.add(50);
@@ -129,37 +132,36 @@ public class GradeFonctioBean {
         listAges.add(65);
         return listAges;
     }
-    
-    public List<Categorie> categories(){
+
+    public List<Categorie> categories() {
         List<Categorie> listCategorie = new ArrayList<Categorie>();
         listCategorie.addAll(Arrays.asList(Categorie.values()));
         return listCategorie;
     }
-    
-     /*
+
+    /*
     this is to reinitialize/reinitialize the entity gradeFonctio before creating another
-    */
-    public void initGradeFonc(){
+     */
+    public void initGradeFonc() {
         idCorps = 0L;
         cadre = null;
-        gradeFonctio = new GradeFonctio();   
+        gradeFonctio = new GradeFonctio();
     }
+
     /*
     this is aim to initialize the oneMenu to nothing before updating
-    */
-    public void updateGradeFonc(){
+     */
+    public void updateGradeFonc() {
         if (gradeFonctio == null) {
             idCorps = 0L;
             cadre = null;
         } else {
             cadre = gradeFonctio.getCadre();
-            idCorps = cadre.getCorps().getId();          
+            idCorps = cadre.getCorps().getId();
         }
     }
 
-    
-    
-    public GradeFonctio createGradeFonction() throws Exception{
+    public GradeFonctio createGradeFonction() throws Exception {
         try {
             cadre = iCadreService.findCadreById(idCadre);
             gradeFonctio.setCadre(cadre);
@@ -173,10 +175,12 @@ public class GradeFonctioBean {
             throw e;
         }
     }
-    public GradeFonctio findGradeFonctionById(){
-        return IGradeFonctioService.findGradeFonctioById(gradeFonctio.getId());       
+
+    public GradeFonctio findGradeFonctionById() {
+        return IGradeFonctioService.findGradeFonctioById(gradeFonctio.getId());
     }
-    public GradeFonctio updateGradeFonction() throws Exception{
+
+    public GradeFonctio updateGradeFonction() throws Exception {
         try {
             cadre = iCadreService.findCadreById(idCadre);
             gradeFonctio.setCadre(cadre);
@@ -190,7 +194,8 @@ public class GradeFonctioBean {
             throw e;
         }
     }
-    public List<GradeFonctio> findAllGradeFonction(){
-        return IGradeFonctioService.findAllGradeFonctio();       
+
+    public List<GradeFonctio> findAllGradeFonction() {
+        return IGradeFonctioService.findAllGradeFonctio();
     }
 }

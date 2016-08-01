@@ -15,7 +15,6 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-
 /**
  *
  * @author Vivien Saa
@@ -23,27 +22,28 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean
 @RequestScoped
 public class RangerFonctioBean {
+
     @ManagedProperty(value = "#{IRangerFonctioService}")
     private IRangerFonctioService iRangerFonctioService;
-    
+
     @ManagedProperty(value = "#{IGradeFonctioService}")
-    private IGradeFonctioService iGradeFonctioService;   
-    
+    private IGradeFonctioService iGradeFonctioService;
+
     @ManagedProperty(value = "#IFonctionnaireService")
     private IFonctionnaireService iFonctionnaireService;
-   
+
     private long idGradeFonctio;
     private long idFonctionnaire;
     private List<Fonctionnaire> listFonctionnaire;
     private List<GradeFonctio> listGradeFonctio;
-    
+
     private Fonctionnaire fonctionnaire = new Fonctionnaire();
-    private GradeFonctio gradeFonctio= new GradeFonctio();
+    private GradeFonctio gradeFonctio = new GradeFonctio();
     private RangerFonctio rangerFonctio = new RangerFonctio();
 
     public RangerFonctioBean() {
         idGradeFonctio = 0L;
-        idFonctionnaire= 0L;
+        idFonctionnaire = 0L;
     }
 
     public IRangerFonctioService getiRangerFonctioService() {
@@ -125,39 +125,44 @@ public class RangerFonctioBean {
     public void setRangerFonctio(RangerFonctio rangerFonctio) {
         this.rangerFonctio = rangerFonctio;
     }
-    
-    
-    public RangerFonctio createRangerFonctio(){
+
+    public RangerFonctio createRangerFonctio() {
         gradeFonctio = iGradeFonctioService.findGradeFonctioById(idGradeFonctio);
         fonctionnaire = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
         rangerFonctio.setFonctionnaire(fonctionnaire);
         rangerFonctio.setGradeFonctio(gradeFonctio);
         return iRangerFonctioService.createRangerFonctio(rangerFonctio);
     }
-    public RangerFonctio findRangerFonctioById(){
+
+    public RangerFonctio findRangerFonctioById() {
         return iRangerFonctioService.findRangerFonctioById(rangerFonctio.getId());
     }
-     public RangerFonctio updateRangerFonctio(){
+
+    public RangerFonctio updateRangerFonctio() {
         gradeFonctio = iGradeFonctioService.findGradeFonctioById(idGradeFonctio);
         fonctionnaire = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
         rangerFonctio.setFonctionnaire(fonctionnaire);
         rangerFonctio.setGradeFonctio(gradeFonctio);
         return iRangerFonctioService.updateRangerFonctio(rangerFonctio);
     }
-    public List<RangerFonctio> findAllRangerFonctio(){
+
+    public List<RangerFonctio> findAllRangerFonctio() {
         return iRangerFonctioService.findAllRangerFonctio();
     }
-     public RangerFonctio findRangerFonctioOpenByIdAgent(){
+
+    public RangerFonctio findRangerFonctioOpenByIdAgent() {
         gradeFonctio = iGradeFonctioService.findGradeFonctioById(idGradeFonctio);
         fonctionnaire = iFonctionnaireService.findFonctionnaireById(idFonctionnaire);
         rangerFonctio.setFonctionnaire(fonctionnaire);
         rangerFonctio.setGradeFonctio(gradeFonctio);
         return iRangerFonctioService.findRangerFonctioOpenByIdAgent(rangerFonctio.getFonctionnaire().getId());
     }
-    public List<RangerFonctio> findAllRangerFonctioOpen(){
+
+    public List<RangerFonctio> findAllRangerFonctioOpen() {
         return iRangerFonctioService.findAllRangerFonctioOpen();
     }
-    public List<RangerFonctio> findRangerFonctioByIdAgent(){
+
+    public List<RangerFonctio> findRangerFonctioByIdAgent() {
         return iRangerFonctioService.findRangerFonctioByIdAgent(rangerFonctio.getFonctionnaire().getId());
     }
 

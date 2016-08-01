@@ -1,0 +1,1044 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/TemplateMenu.xhtml">
+        <ui:define name="body">
+            <f:view>
+                <!--Création du contractuel-->
+                <p:dialog widgetVar="dlg" header=" Enregistrer un nouveau Contractuel" hideEffect="explode" showEffect="explode" modal="true" appendTo="@(body)">
+                    <p:ajax event="close" oncomplete="PF('wizAjouter').loadStep(PF('wizAjouter').cfg.steps [0], true)"/>
+                    <h:form id="formAjouter" enctype="multipart/form-data"> 
+                        <p:wizard widgetVar="wizAjouter" flowListener="#{contractuelBean.onFlowProcessAjouter}" backLabel="retour" nextLabel="suivant">  
+                            <p:tab id="personnel" title="Informations personnelles" > 
+                                <p:panel id="panelAjouterInfoPerso" header="Informations personnelles" >
+                                    <h:panelGrid id="panelAjouterInfoPersoGrid" columns="4" cellspacing="5" style="text-align: right">
+                                        <p:outputLabel value="Nom :" for="nom" />  
+                                        <p:inputText id="nom" value="#{contractuelBean.contractuel.nom}" title="nom" required="true"/>
+                                        <p:outputLabel value="Région d'origine :" for="regionorigine" />  
+                                        <p:inputText id="regionorigine" value="#{contractuelBean.contractuel.regionOrigine}" title="regionorigine"/>
+
+                                        <p:outputLabel value="Prénom :" for="prenom" />  
+                                        <p:inputText id="prenom" value="#{contractuelBean.contractuel.prenom}" title="prenom"/>
+                                        <p:outputLabel value="Département d'origine :" for="departementorigine" />  
+                                        <p:inputText id="departementorigine" value="#{contractuelBean.contractuel.departementOrigine}" title="departementorigine"/>
+
+                                        <p:outputLabel value="Nom de jeune fille :" for="nomjeunefille" />  
+                                        <p:inputText id="nomjeunefille" value="#{contractuelBean.contractuel.nomJeuneFille}" title="nomjeunefille"/>
+                                        <p:outputLabel value="Arrondissement d'origine :" for="arrondissementorigine" />  
+                                        <p:inputText id="arrondissementorigine" value="#{contractuelBean.contractuel.arrondissementOrigine}" title="arrondissementorigine"/>
+
+                                        <p:outputLabel value="Né le :" for="datenaiss1" id="labNaiss1"/>
+                                        <p:inputMask id="datenaiss1" value="#{contractuelBean.dateNaissanceContract}" mask="99/99/9999" required="#{!contractuelBean.contractuel.isBornArround}" disabled="#{contractuelBean.contractuel.isBornArround}" />
+                                        <p:outputLabel value="Numéro de CNI :" for="numerocni" />  
+                                        <p:inputText id="numerocni" value="#{contractuelBean.contractuel.cni}" title="numero CNI" required="true"/>
+
+                                        <h:outputLabel value="Né vers: " for="datenaiss2" id="labNaiss2" />
+                                        <h:panelGrid columns="2">
+                                            <p:selectBooleanCheckbox value="#{contractuelBean.contractuel.isBornArround}">
+                                                <p:ajax update="datenaiss1, datenaiss2, labNaiss1, labNaiss2" />
+                                            </p:selectBooleanCheckbox>
+                                            <p:inputMask id="datenaiss2" value="#{contractuelBean.dateNaissanceContractVers}" mask="9999" required="#{contractuelBean.contractuel.isBornArround}" disabled="#{!contractuelBean.contractuel.isBornArround}" size="15" />
+                                        </h:panelGrid>
+                                        <p:outputLabel value="Date délivrance CNI :" for="datecni" />  
+                                        <p:inputMask id="datecni" value="#{contractuelBean.dateCni}" mask="99/99/9999" title="Date délivrance CNI" required="true"/>
+
+                                        <p:outputLabel value="Lieu de naissance :" for="lieunaissance" />  
+                                        <p:inputText id="lieunaissance" value="#{contractuelBean.contractuel.lieuNaissance}" title="lieunaissance" required="true"/>
+                                        <p:outputLabel value="Lieu délivrance CNI :" for="lieucni" />  
+                                        <p:inputText id="lieucni" value="#{contractuelBean.contractuel.lieuDelivranceCni}" title="Lieu de délivrance CNI" required="true"/>
+
+                                        <p:outputLabel value="Région de naissance :" for="regionnaissance" />  
+                                        <p:inputText id="regionnaissance" value="#{contractuelBean.contractuel.regionNaissance}" title="regionnaissance"/>
+                                        <p:outputLabel value="Diplome d'entrée à la contractuelBean publique:" for="diplomefoncpub" />  
+                                        <p:inputText id="diplomefoncpub" value="#{contractuelBean.contractuel.diplomeEntreeFoncPub}" title="diplomefoncpub"/>
+
+                                        <p:outputLabel value="Département naissance :" for="departnaissance" />  
+                                        <p:inputText id="departnaissance" value="#{contractuelBean.contractuel.departNaissance}" title="departnaissance"/>
+                                        <p:outputLabel value="Date d'entrée fonction publique:" for="dateentreefoncpub" />
+                                        <p:inputMask id="dateentreefoncpub" value="#{contractuelBean.dateEntreFoncPub}" mask="99/99/9999" required="true" />
+
+                                        <p:outputLabel value="Arrondissement naissance :" for="arrondnaissance" />  
+                                        <p:inputText id="arrondnaissance" value="#{contractuelBean.contractuel.arrondNaissance}" title="arrondnaissance"/>
+                                        <p:outputLabel value="matricule :" for="matricule" />  
+                                        <p:inputText id="matricule" value="#{contractuelBean.contractuel.matricule}" title="matricule"/>
+
+                                        <p:outputLabel value="Sexe :" for="sexe" /> 
+                                        <p:selectOneMenu  value="#{contractuelBean.contractuel.sexe}" label="sexe" id="sexe" filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                            <f:selectItem itemLabel="Selectionner le sexe" itemValue="" noSelectionOption="true"  />
+                                            <f:selectItems var="custe" value="#{contractuelBean.sexes()}"/>
+                                        </p:selectOneMenu>   
+                                        <p:outputLabel value="Numéro téléphone :" for="numtel" />  
+                                        <p:inputText id="numtel" value="#{contractuelBean.contractuel.numeroTel}" title="Numéro de téléphone"/>
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab> 
+                            <p:tab id="qualifications" title="Qualifications"> 
+                                <p:panel id="panelAjouterQualification" header="Qualifications">
+                                    <h:panelGrid id="panelAjouterQualificationGrid" columns="2" cellspacing="5">
+                                        <p:outputLabel value="Spécialité :" for="specialite" />
+                                        <p:selectOneMenu  value="#{contractuelBean.idSpecialite}" label="specialite" id="specialite"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <f:selectItem itemLabel="Selectionner la spécialité" itemValue="" noSelectionOption="true"  />
+                                            <f:selectItems var="custe1" value="#{contractuelBean.listSpecialite}"   itemLabel="#{custe1.intituleSpecialite}" itemValue="#{custe1.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Grade :" for="gradeContract" />
+                                        <p:selectOneMenu  value="#{contractuelBean.idGradeContract}" label="Grade de l'agent" id="gradeContract"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                            <f:selectItem itemLabel="Selectionner le grade" itemValue="" noSelectionOption="true"  />
+                                            <f:selectItems var="custe4" value="#{contractuelBean.listGradeContract}"   itemLabel="#{custe4.intituleGradeContract}" itemValue="#{custe4.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Date de l'obtention du grade :" for="dateobgrad" />                                   
+                                        <p:inputMask id="dateobgrad" value="#{contractuelBean.dateDebutGrade}" mask="99/99/9999" required="true" />
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab> 
+                            <p:tab id="promotion" title="Affectattion/Promotion"> 
+                                <p:panel id="panelAjouterAffectPromo" header="Affectattion/Promotion">
+                                    <h:panelGrid id="panelAjouterAffectPromoGrid" columns="2" cellspacing="5">
+                                        <p:outputLabel value="Département de la Structure :" for="departementStructure"/>       
+                                        <p:selectOneMenu  id="departementStructure" value="#{contractuelBean.idDepartement}" label="departementStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <p:ajax  event="change" update="arrondissementStructure" />
+                                            <f:selectItem itemLabel="Selectioner le département" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems var="custe5" value="#{contractuelBean.listDepartement}"   itemLabel="#{custe5.intituleDepartement}" itemValue="#{custe5.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Arrondissement de la Structure :" for="arrondissementStructure"/>       
+                                        <p:selectOneMenu  id="arrondissementStructure" value="#{contractuelBean.idArrondissement}" label="arrondissementStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <p:ajax  event="change" update="structureAttache" />
+                                            <f:selectItem itemLabel="Selectionner l'arrondissement" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems var="custe6" value="#{contractuelBean.listArrondissement}"   itemLabel="#{custe6.intituleArrondissement}" itemValue="#{custe6.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Type de la Structure :" for="categorieStructure"/>       
+                                        <p:selectOneMenu  id="categorieStructure" value="#{contractuelBean.idCategorieStructure}" label="categorieStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <p:ajax  event="change" update="structureAttache" />
+                                            <f:selectItem itemLabel="Selectionner la catégorie de la structure" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems var="custe7" value="#{contractuelBean.listCategorieStructure}"   itemLabel="#{custe7.intituleCategorieStructure}" itemValue="#{custe7.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Structure d'attache :" for="structureAttache"/>       
+                                        <p:selectOneMenu  id="structureAttache" value="#{contractuelBean.idStructure}" label="structure d'attache"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <p:ajax  event="change" update="fonction" />
+                                            <f:selectItem itemLabel="Selectionner la structure d'attache" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems var="custe8" value="#{contractuelBean.listStructureAttache}"   itemLabel="#{custe8.intituleStructure}" itemValue="#{custe8.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Fonction/Poste :" for="fonction"/>       
+                                        <p:selectOneMenu  id="fonction" value="#{contractuelBean.idPoste}" label="fonction"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <f:selectItem itemLabel="Selectionner la fonction" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems var="custe9" value="#{contractuelBean.listPoste}"   itemLabel="#{custe9.intitulePoste}" itemValue="#{custe9.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Date d'entrée en poste" for="datedebpost" />                                   
+                                        <p:inputMask id="datedebpost" value="#{contractuelBean.dateDebutPoste}" mask="99/99/9999" required="true" />
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab> 
+                            <p:tab id="confirmationTab" title="Confirmation"> 
+                                <p:panel header="Confirmation">  
+                                    <h:panelGrid id="confirmation" columns="4" cellspacing="5">  
+                                        <h:outputText value="Nom : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nom}" style="font-style: italic"/>
+                                        <h:outputText value="Spécialite : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.specialite.intituleSpecialite}" style="font-style: italic"/>
+
+                                        <h:outputText value="Prenom : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.prenom}" style="font-style: italic"/>
+                                        <h:outputText value="Grade : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.gradeContract.intituleGradeContract}" style="font-style: italic"/>
+
+                                        <h:outputText value="Nom jeune fille : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nomJeuneFille}" style="font-style: italic"/>
+                                        <h:outputText value="Date d'obtention du grade : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutGrade}" style="font-style: italic"/>      
+
+                                        <h:outputText value="Date de naissance: " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateNaissanceContract}" style="font-style: italic"/>
+                                        <h:outputText value="Département de la Structure : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.departement.intituleDepartement}" style="font-style: italic"/>
+
+                                        <h:outputText value="Lieu de naissance : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.lieuNaissance}" style="font-style: italic"/>
+                                        <h:outputText value="Arrondissement de la Structure : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.arrondissement.intituleArrondissement}" style="font-style: italic"/>  
+
+                                        <h:outputText value="Région de naissance : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.regionNaissance}" style="font-style: italic"/>
+                                        <h:outputText value="Numéro de CNI: " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.cni}" style="font-style: italic"/>
+
+                                        <h:outputText value="Département de naissance : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.departNaissance}" style="font-style: italic"/>   
+                                        <h:outputText value="Date délivrance CNI: " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateCni}" style="font-style: italic"/>
+
+                                        <h:outputText value="Arrondissement de naissance : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.arrondNaissance}" style="font-style: italic"/> 
+                                        <h:outputText value="Lieu délivrance CNI: " />  
+                                        <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.lieuDelivranceCni}" style="font-style: italic"/>
+
+                                        <h:outputText value="Sexe: " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.sexe}" style="font-style: italic"/>
+                                        <h:outputText value="Structure d'attache : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.structureAttache.intituleStructure}" style="font-style: italic"/>
+
+                                        <h:outputText value="Diplôme d'entrée fonction publique: " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.diplomeEntreeFoncPub}" style="font-style: italic"/>
+                                        <h:outputText value="Fonction/Poste : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.poste.intitulePoste}" style="font-style: italic"/> 
+
+                                        <h:outputText value="Date entrée fonc. pub. : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateEntreFoncPub}" style="font-style: italic"/>
+                                        <h:outputText value="Date d'entrée en poste : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutPoste}" style="font-style: italic"/>
+
+                                        <h:outputText value="matricule: " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.matricule}" style="font-style: italic"/>
+                                        <h:outputText value="Région d'origine : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.regionOrigine}" style="font-style: italic"/>
+
+                                        <h:outputText value="Numéro de Téléphone : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.numeroTel}" style="font-style: italic"/>
+                                        <h:outputText value="Département d'origine : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.departementOrigine}" style="font-style: italic"/>
+
+                                        <p:commandButton value="Enregistrer" action="#{contractuelBean.createContractuel()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table messages"/>
+                                        <h:outputText styleClass="outputLabel" value="" />
+                                        <h:outputText value="Arrondissement d'origine : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.arrondissementOrigine}" style="font-style: italic"/>
+
+                                    </h:panelGrid> 
+                                </p:panel>  
+                            </p:tab>  
+
+                        </p:wizard>  
+                        <p:growl id="messages" showDetail="true"/> 
+                    </h:form>
+                </p:dialog>
+
+                <!--Modification du Contractuel-->
+
+                <p:dialog widgetVar="dl" header=" Modifier un Contractuel" hideEffect="fold" showEffect="explode" resizable="true" modal="true" appendTo="@(body)">
+                    <p:ajax event="close" oncomplete="PF('wizModifier').loadStep(PF('wizModifier').cfg.steps [0], true)"/>
+                    <h:form id="formModifier" enctype="multipart/form-data">                
+                        <p:wizard widgetVar="wizModifier" flowListener="#{contractuelBean.onFlowProcessAjouter}" backLabel="retour" nextLabel="suivant">  
+                            <p:tab id="personnel" title="Informations personnelles"> 
+                                <p:panel id="panelModifierInfoPerso" header="Informations personnelles">
+                                    <h:panelGrid id="panelModifierInfoPersoGrid" columns="4" cellspacing="5" style="text-align: right">
+                                        <p:outputLabel value="Nom :" for="nom" />  
+                                        <p:inputText id="nom" value="#{contractuelBean.contractuel.nom}" title="nom" required="true"/>
+                                        <p:outputLabel value="Région d'origine :" for="regionorigine" />  
+                                        <p:inputText id="regionorigine" value="#{contractuelBean.contractuel.regionOrigine}" title="regionorigine"/>
+
+                                        <p:outputLabel value="Prénom :" for="prenom" />  
+                                        <p:inputText id="prenom" value="#{contractuelBean.contractuel.prenom}" title="prenom"/>
+                                        <p:outputLabel value="Département d'origine :" for="departementorigine" />  
+                                        <p:inputText id="departementorigine" value="#{contractuelBean.contractuel.departementOrigine}" title="departementorigine"/>
+
+                                        <p:outputLabel value="Nom de jeune fille :" for="nomjeunefille" />  
+                                        <p:inputText id="nomjeunefille" value="#{contractuelBean.contractuel.nomJeuneFille}" title="nomjeunefille"/>
+                                        <p:outputLabel value="Arrondissement d'origine :" for="arrondissementorigine" />  
+                                        <p:inputText id="arrondissementorigine" value="#{contractuelBean.contractuel.arrondissementOrigine}" title="arrondissementorigine"/>
+
+                                        <p:outputLabel value="Né le :" for="datenaiss1" id="labNaiss1"/>
+                                        <p:inputMask id="datenaiss1" value="#{contractuelBean.dateNaissanceContract}" mask="99/99/9999" required="#{!contractuelBean.contractuel.isBornArround}" disabled="#{contractuelBean.contractuel.isBornArround}" />
+                                        <p:outputLabel value="Numéro de CNI :" for="numerocni" />  
+                                        <p:inputText id="numerocni" value="#{contractuelBean.contractuel.cni}" title="numero CNI" required="true"/>
+
+                                        <h:outputLabel value="Né vers: " for="datenaiss2" id="labNaiss2" />
+                                        <h:panelGrid columns="2">
+                                            <p:selectBooleanCheckbox value="#{contractuelBean.contractuel.isBornArround}">
+                                                <p:ajax update="datenaiss1, datenaiss2, labNaiss1, labNaiss2" />
+                                            </p:selectBooleanCheckbox>
+                                            <p:inputMask id="datenaiss2" value="#{contractuelBean.dateNaissanceContractVers}" mask="9999" required="#{contractuelBean.contractuel.isBornArround}" disabled="#{!contractuelBean.contractuel.isBornArround}" size="15" />
+                                        </h:panelGrid>
+                                        <p:outputLabel value="Date délivrance CNI :" for="datecni" />  
+                                        <p:inputMask id="datecni" value="#{contractuelBean.dateCni}" mask="99/99/9999" title="Date délivrance CNI" required="true"/>
+
+                                        <p:outputLabel value="Lieu de naissance :" for="lieunaissance" />  
+                                        <p:inputText id="lieunaissance" value="#{contractuelBean.contractuel.lieuNaissance}" title="lieunaissance" required="true"/>
+                                        <p:outputLabel value="Lieu délivrance CNI :" for="lieucni" />  
+                                        <p:inputText id="lieucni" value="#{contractuelBean.contractuel.lieuDelivranceCni}" title="Lieu de délivrance CNI" required="true"/>
+
+                                        <p:outputLabel value="Région de naissance :" for="regionnaissance" />  
+                                        <p:inputText id="regionnaissance" value="#{contractuelBean.contractuel.regionNaissance}" title="regionnaissance"/>
+                                        <p:outputLabel value="Diplome d'entrée à la contractuelBean publique:" for="diplomefoncpub" />  
+                                        <p:inputText id="diplomefoncpub" value="#{contractuelBean.contractuel.diplomeEntreeFoncPub}" title="diplomefoncpub"/>
+
+                                        <p:outputLabel value="Département naissance :" for="departnaissance" />  
+                                        <p:inputText id="departnaissance" value="#{contractuelBean.contractuel.departNaissance}" title="departnaissance"/>
+                                        <p:outputLabel value="Date d'entrée fonction publique:" for="dateentreefoncpub" />
+                                        <p:inputMask id="dateentreefoncpub" value="#{contractuelBean.dateEntreFoncPub}" mask="99/99/9999" required="true" />
+
+                                        <p:outputLabel value="Arrondissement naissance :" for="arrondnaissance" />  
+                                        <p:inputText id="arrondnaissance" value="#{contractuelBean.contractuel.arrondNaissance}" title="arrondnaissance"/>
+                                        <p:outputLabel value="matricule :" for="matricule" />  
+                                        <p:inputText id="matricule" value="#{contractuelBean.contractuel.matricule}" title="matricule"/>
+
+                                        <p:outputLabel value="Sexe :" for="sexe" /> 
+                                        <p:selectOneMenu  value="#{contractuelBean.contractuel.sexe}" label="sexe" id="sexe" filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                            <f:selectItem itemLabel="Selectionner le sexe" itemValue="" noSelectionOption="true"  />
+                                            <f:selectItems var="custe" value="#{contractuelBean.sexes()}"/>
+                                        </p:selectOneMenu>   
+                                        <p:outputLabel value="Numéro téléphone :" for="numtel" />  
+                                        <p:inputText id="numtel" value="#{contractuelBean.contractuel.numeroTel}" title="Numéro de téléphone"/>
+                                        <h:inputHidden id="number" value="#{contractuelBean.contractuel.id}" />
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab> 
+                            <p:tab id="qualifications" title="Qualifications"> 
+                                <p:panel id="panelModifierQualification" header="Qualifications">
+                                    <h:panelGrid id="panelModifierQualificationGrid" columns="2" cellspacing="5">
+                                        <p:outputLabel value="Spécialité :" for="specialite" />
+                                        <p:selectOneMenu  value="#{contractuelBean.idSpecialite}" label="specialite" id="specialite"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <f:selectItem itemLabel="Selectionner la spécialité" itemValue="" noSelectionOption="true"  />
+                                            <f:selectItems var="custe1" value="#{contractuelBean.listSpecialite}"   itemLabel="#{custe1.intituleSpecialite}" itemValue="#{custe1.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Grade :" for="gradeContract" />
+                                        <p:selectOneMenu  value="#{contractuelBean.idGradeContract}" label="Grade de l'agent" id="gradeContract"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                            <f:selectItem itemLabel="Selectionner le grade" itemValue="" noSelectionOption="true"  />
+                                            <f:selectItems var="custe4" value="#{contractuelBean.listGradeContract}"   itemLabel="#{custe4.intituleGradeContract}" itemValue="#{custe4.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Date de l'obtention du grade :" for="dateobgrad" />                                   
+                                        <p:inputMask id="dateobgrad" value="#{contractuelBean.dateDebutGrade}" mask="99/99/9999" required="true" />
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab> 
+                            <p:tab id="promotion" title="Affectattion/Promotion"> 
+                                <p:panel id="panelModifierAffectPromo" header="Affectattion/Promotion">
+                                    <h:panelGrid id="panelModifierAffectPromoGrid" columns="2" cellspacing="5">
+                                        <p:outputLabel value="Département de la Structure :" for="departementStructure"/>       
+                                        <p:selectOneMenu  id="departementStructure" value="#{contractuelBean.idDepartement}" label="departementStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <p:ajax  event="change" update="arrondissementStructure" />
+                                            <f:selectItem itemLabel="Selectioner le département" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems var="custe5" value="#{contractuelBean.listDepartement}"   itemLabel="#{custe5.intituleDepartement}" itemValue="#{custe5.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Arrondissement de la Structure :" for="arrondissementStructure"/>       
+                                        <p:selectOneMenu  id="arrondissementStructure" value="#{contractuelBean.idArrondissement}" label="arrondissementStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <p:ajax  event="change" update="structureAttache" />
+                                            <f:selectItem itemLabel="Selectionner l'arrondissement" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems var="custe6" value="#{contractuelBean.listArrondissement}"   itemLabel="#{custe6.intituleArrondissement}" itemValue="#{custe6.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Type de la Structure :" for="categorieStructure"/>       
+                                        <p:selectOneMenu  id="categorieStructure" value="#{contractuelBean.idCategorieStructure}" label="categorieStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <p:ajax  event="change" update="structureAttache" />
+                                            <f:selectItem itemLabel="Selectionner la catégorie de la structure" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems var="custe7" value="#{contractuelBean.listCategorieStructure}"   itemLabel="#{custe7.intituleCategorieStructure}" itemValue="#{custe7.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Structure d'attache :" for="structureAttache"/>       
+                                        <p:selectOneMenu  id="structureAttache" value="#{contractuelBean.idStructure}" label="structure d'attache"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <p:ajax  event="change" update="fonction" />
+                                            <f:selectItem itemLabel="Selectionner la structure d'attache" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems var="custe8" value="#{contractuelBean.listStructureAttache}"   itemLabel="#{custe8.intituleStructure}" itemValue="#{custe8.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Fonction/Poste :" for="fonction"/>       
+                                        <p:selectOneMenu  id="fonction" value="#{contractuelBean.idPoste}" label="fonction"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <f:selectItem itemLabel="Selectionner la fonction" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems var="custe9" value="#{contractuelBean.listPoste}"   itemLabel="#{custe9.intitulePoste}" itemValue="#{custe9.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Date d'entrée en poste" for="datedebpost" />                                   
+                                        <p:inputMask id="datedebpost" value="#{contractuelBean.dateDebutPoste}" mask="99/99/9999" required="true" />
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab> 
+                            <p:tab id="confirmationTab" title="Confirmation">  
+                                <p:panel header="Confirmation">  
+                                    <h:panelGrid id="confirmation" columns="4" cellspacing="10">  
+                                        <h:outputText value="Nom : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nom}" style="font-style: italic"/>
+                                        <h:outputText value="Spécialite : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.specialite.intituleSpecialite}" style="font-style: italic"/>
+
+                                        <h:outputText value="Prenom : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.prenom}" style="font-style: italic"/>
+                                        <h:outputText value="Grade : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.gradeContract.intituleGradeContract}" style="font-style: italic"/>
+
+                                        <h:outputText value="Nom jeune fille : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nomJeuneFille}" style="font-style: italic"/>
+                                        <h:outputText value="Date d'obtention du grade : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutGrade}" style="font-style: italic"/>      
+
+                                        <h:outputText value="Date de naissance: " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateNaissanceContract}" style="font-style: italic"/>
+                                        <h:outputText value="Département de la Structure : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.departement.intituleDepartement}" style="font-style: italic"/>
+
+                                        <h:outputText value="Lieu de naissance : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.lieuNaissance}" style="font-style: italic"/>
+                                        <h:outputText value="Arrondissement de la Structure : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.arrondissement.intituleArrondissement}" style="font-style: italic"/>  
+
+                                        <h:outputText value="Région de naissance : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.regionNaissance}" style="font-style: italic"/>
+                                        <h:outputText value="Numéro de CNI: " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.cni}" style="font-style: italic"/>
+
+                                        <h:outputText value="Département de naissance : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.departNaissance}" style="font-style: italic"/>   
+                                        <h:outputText value="Date délivrance CNI: " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateCni}" style="font-style: italic"/>
+
+                                        <h:outputText value="Arrondissement de naissance : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.arrondNaissance}" style="font-style: italic"/> 
+                                        <h:outputText value="Lieu délivrance CNI: " />  
+                                        <h:outputText styleClass="outputLabel" value="#{fonctionnaireBean.fonctionnaire.lieuDelivranceCni}" style="font-style: italic"/>
+
+                                        <h:outputText value="Sexe: " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.sexe}" style="font-style: italic"/>
+                                        <h:outputText value="Structure d'attache : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.structureAttache.intituleStructure}" style="font-style: italic"/>
+
+                                        <h:outputText value="Diplôme d'entrée fonction publique: " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.diplomeEntreeFoncPub}" style="font-style: italic"/>
+                                        <h:outputText value="Fonction/Poste : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.poste.intitulePoste}" style="font-style: italic"/> 
+
+                                        <h:outputText value="Date entrée fonc. pub. : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateEntreFoncPub}" style="font-style: italic"/>
+                                        <h:outputText value="Date d'entrée en poste : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutPoste}" style="font-style: italic"/>
+
+                                        <h:outputText value="matricule: " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.matricule}" style="font-style: italic"/>
+                                        <h:outputText value="Région d'origine : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.regionOrigine}" style="font-style: italic"/>
+
+                                        <h:outputText value="Numéro de Téléphone : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.numeroTel}" style="font-style: italic"/>
+                                        <h:outputText value="Département d'origine : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.departementOrigine}" style="font-style: italic"/>
+
+                                        <p:commandButton value="Modifier" action="#{contractuelBean.updateContractuel()}"  oncomplete="PF('dl').hide()" update=":tableForm:table, messages"/>
+                                        <h:outputText styleClass="outputLabel" value="" />
+                                        <h:outputText value="Arrondissement d'origine : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.arrondissementOrigine}" style="font-style: italic"/>
+
+                                    </h:panelGrid> 
+                                </p:panel>  
+                            </p:tab>  
+                        </p:wizard>  
+                        <p:growl id="messages" showDetail="true"/> 
+                    </h:form>
+                </p:dialog> 
+                <!--Choix des information à afficher-->
+
+                <p:dialog widgetVar="dlgc" header=" Choisir les informations à afficher" hideEffect="explode" showEffect="explode" modal="true" appendTo="@(body)">
+                    <h:form id="formChoix" enctype="multipart/form-data"> 
+                        <p:panel id="panelChoix" header="Choix des informations">
+                            <h:panelGrid id="infoToDisplay" columns="2">
+                                <p:selectManyCheckbox id="infoToDisplayS1" value="#{contractuelBean.listInformationToDisplay}" layout="pageDirection"  style="font-style: italic">  
+                                    <p:ajax update="selectall" listener="#{contractuelBean.selectAllCancel}"/>
+                                    <f:selectItem itemLabel="Matricule" itemValue="matricule" />
+                                    <f:selectItem itemLabel="Nom" itemValue="nom"/>
+                                    <f:selectItem itemLabel="Prénom" itemValue="prenom"/>
+                                    <f:selectItem itemLabel="Nom de jeune fille" itemValue="nomjeunefille"/>
+                                    <f:selectItem itemLabel="Date de Naissance" itemValue="datenaissance"/>
+                                    <f:selectItem itemLabel="Lieu de Naissance" itemValue="lieunaissance"/>
+                                    <f:selectItem itemLabel="Région de Naissance" itemValue="regionnaissance"/>
+                                    <f:selectItem itemLabel="Département de Naissance" itemValue="departnaissance"/>
+                                    <f:selectItem itemLabel="Arrondissement de Naissance" itemValue="arrondnaissance"/>
+                                    <f:selectItem itemLabel="Région d'origine" itemValue="regionorigine"/>
+                                    <f:selectItem itemLabel="Département d'origine" itemValue="departementorigine"/>
+                                    <f:selectItem itemLabel="Arrondissement d'origine" itemValue="arrondissementorigine"/>
+                                    <f:selectItem itemLabel="Age" itemValue="age"/>
+                                    <f:selectItem itemLabel="Sexe" itemValue="sexe"/>
+                                </p:selectManyCheckbox>
+                                <p:selectManyCheckbox id="infoToDisplayS2" value="#{contractuelBean.listInformationToDisplay1}" layout="pageDirection"  style="font-style: italic">
+                                    <p:ajax update="selectall" listener="#{contractuelBean.selectAllCancel}"/>
+                                    <f:selectItem itemLabel="Numéro de CNI" itemValue="numerocni"/>
+                                    <f:selectItem itemLabel="Grade" itemValue="grade"/>
+                                    <f:selectItem itemLabel="Spécialité" itemValue="specialite"/>
+                                    <f:selectItem itemLabel="Diplôme entrée fonction publique" itemValue="diplomefoncpub"/>
+                                    <f:selectItem itemLabel="Date entrée fonction publique" itemValue="dateentreefoncpub"/>
+                                    <f:selectItem itemLabel="Structure d'attache" itemValue="structureattache"/>
+                                    <f:selectItem itemLabel="Poste" itemValue="poste"/>
+                                    <f:selectItem itemLabel="Ancienneté au Poste" itemValue="ancienneteposte"/> 
+                                    <f:selectItem itemLabel="Département structure d'attache" itemValue="departstructureattache"/>
+                                    <f:selectItem itemLabel="Arrondissement structure d'attache" itemValue="arrondstructureattache"/>
+                                    <f:selectItem itemLabel="Numéro de téléphone" itemValue="numtel"/>
+                                    <f:selectItem itemLabel="Date de délivrance de la CNI" itemValue="datecni"/>
+                                    <f:selectItem itemLabel="Lieu de délivrance de la CNI" itemValue="lieucni"/>
+
+                                </p:selectManyCheckbox>
+                                <p:selectBooleanCheckbox id="selectall" value="#{contractuelBean.selectAll}" itemLabel="Tout cocher">  
+                                    <p:ajax update="infoToDisplayS1, infoToDisplayS2" listener="#{contractuelBean.selectAllMethod}"/>  
+                                </p:selectBooleanCheckbox>  
+                            </h:panelGrid>                       
+                            <p:commandButton id="btn" update=":tableForm:table" actionListener="#{contractuelBean.createDynamicColumns()}" value="Afficher" oncomplete="PF('dlgc').hide()" process="@parent"/>     
+                        </p:panel>
+                    </h:form>
+                </p:dialog>
+
+                <!--Affectation du contractuel-->
+                <p:dialog widgetVar="dlga" header=" Affecter un contractuel" hideEffect="fold" showEffect="explode" resizable="true" modal="true" appendTo="@(body)">
+                    <p:ajax event="close" oncomplete="PF('wizAffecter').loadStep(PF('wizAffecter').cfg.steps [0], true)"/>
+                    <h:form id="formAffecter" enctype="multipart/form-data">                
+                        <p:wizard widgetVar="wizAffecter" flowListener="#{contractuelBean.onFlowProcessAffectation}" backLabel="retour" nextLabel="suivant">  
+                            <p:tab id="promotionAffectation" title="New Affectattion/Promotion"> 
+                                <p:panel id="panelNewAffectPromo" header="Affectattion/Promotion">
+                                    <h:panelGrid id="panelNewAffectPromoGrid" columns="2" cellspacing="5">
+                                        <p:outputLabel value="Département de la Structure d'affectation:" for="departementStructure"/>       
+                                        <p:selectOneMenu  id="departementStructure" value="#{contractuelBean.idDepartement}" label="departementStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <p:ajax  event="change" update="arrondissementStructure" />
+                                            <f:selectItem itemLabel="Selectioner le département" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems var="custe5" value="#{contractuelBean.listDepartement}"   itemLabel="#{custe5.intituleDepartement}" itemValue="#{custe5.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Arrondissement de la Structure d'affectation:" for="arrondissementStructure"/>       
+                                        <p:selectOneMenu  id="arrondissementStructure" value="#{contractuelBean.idArrondissement}" label="arrondissementStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <p:ajax  event="change" update="structureAttache" />
+                                            <f:selectItem itemLabel="Selectionner l'arrondissement" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems var="custe6" value="#{contractuelBean.listArrondissement}"   itemLabel="#{custe6.intituleArrondissement}" itemValue="#{custe6.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Type de la Structure D'affectation:" for="categorieStructure"/>       
+                                        <p:selectOneMenu  id="categorieStructure" value="#{contractuelBean.idCategorieStructure}" label="categorieStructure"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <p:ajax  event="change" update="structureAttache" />
+                                            <f:selectItem itemLabel="Selectionner la catégorie de la structure" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems var="custe7" value="#{contractuelBean.listCategorieStructure}"   itemLabel="#{custe7.intituleCategorieStructure}" itemValue="#{custe7.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Structure d'affectation:" for="structureAttache"/>       
+                                        <p:selectOneMenu  id="structureAttache" value="#{contractuelBean.idStructure}" label="structure d'attache"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <p:ajax  event="change" update="fonction" />
+                                            <f:selectItem itemLabel="Selectionner la structure d'attache" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems var="custe8" value="#{contractuelBean.listStructureAttache}"   itemLabel="#{custe8.intituleStructure}" itemValue="#{custe8.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Fonction/Poste:" for="fonction"/>       
+                                        <p:selectOneMenu  id="fonction" value="#{contractuelBean.idPoste}" label="fonction"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px">
+                                            <f:selectItem itemLabel="Selectionner la fonction" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems var="custe9" value="#{contractuelBean.listPoste}"   itemLabel="#{custe9.intitulePoste}" itemValue="#{custe9.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Date d'entrée en poste" for="datedebpost" />                                   
+                                        <p:inputMask id="datedebpost" value="#{contractuelBean.dateDebutPosteAffec}" mask="99/99/9999" required="true" />
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab> 
+                            <p:tab id="confirmationTabAffect" title="Confirmation affectation">  
+                                <p:panel header="Confirmation">  
+                                    <h:panelGrid id="confirmationAffect" columns="4" cellspacing="5">  
+                                        <h:outputText value="Nom : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nom}" style="font-style: italic"/>
+                                        <h:outputText value="Prenom : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.prenom}" style="font-style: italic"/>
+
+                                        <h:outputText value="Numéro de CNI : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.cni}" style="font-style: italic"/>
+                                        <h:outputText value="matricule : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.matricule}" style="font-style: italic"/>
+
+                                        <h:outputText value="     Département de la Structure courrante : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.departement.intituleDepartement}" style="font-style: italic"/>
+                                        <h:outputText value="     Département de la Structure d'affectation : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.departementAffec.intituleDepartement}" style="font-style: italic"/>
+
+                                        <h:outputText value="     Arrondissement de la Structure courrante : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.arrondissement.intituleArrondissement}" style="font-style: italic"/>
+                                        <h:outputText value="     Arrondissement de la Structure d'affectation : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.arrondissementAffec.intituleArrondissement}" style="font-style: italic"/>
+
+                                        <h:outputText value="     Catégorie de la Structure courrante : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.categorieStructure.intituleCategorieStructure}" style="font-style: italic"/>
+                                        <h:outputText value="     Catégorie de la Structure d'affectation : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.categorieStructureAffec.intituleCategorieStructure}" style="font-style: italic"/>
+
+                                        <h:outputText value="     Structure d'attache courrante : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.structureAttache.intituleStructure}" style="font-style: italic"/>
+                                        <h:outputText value="     Structure d'attache d'affectation : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.structureAttacheAffec.intituleStructure}" style="font-style: italic"/>
+
+                                        <h:outputText value="     Fonction/Poste courrant : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.poste.intitulePoste}" style="font-style: italic"/> 
+                                        <h:outputText value="     nouvelle Fonction/Poste : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.posteAffec.intitulePoste}" style="font-style: italic"/> 
+
+                                        <h:outputText value="     Date d'entrée au poste courrant :" />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutPoste}" style="font-style: italic"/>
+                                        <h:outputText value="     Date d'entrée au poste d'affectation :" />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutPosteAffec}" style="font-style: italic"/>
+
+                                        <p:commandButton value="Confirmer Affectation" action="#{contractuelBean.affecterContractuel()}"  oncomplete="PF('dlga').hide()" update=":tableForm:table, messages"/>
+                                    </h:panelGrid> 
+                                </p:panel>  
+                            </p:tab>  
+
+                        </p:wizard> 
+                        <p:growl id="messages" showDetail="true"/> 
+                    </h:form>
+                </p:dialog> 
+                <!--Chager le grade du contractuel-->
+                <p:dialog widgetVar="dlgcg" header=" Changer le grade d'un contractuel" hideEffect="fold" showEffect="explode" resizable="true" modal="true" appendTo="@(body)">
+                    <p:ajax event="close" oncomplete="PF('wizChangerGrade').loadStep(PF('wizChangerGrade').cfg.steps [0], true)"/>
+                    <h:form id="formChangerGrade" enctype="multipart/form-data">  
+                        <p:wizard widgetVar="wizChangerGrade" flowListener="#{contractuelBean.onFlowProcessChangerGrade}" backLabel="retour" nextLabel="suivant">  
+                            <p:tab id="formChangerGradeTab" title="New Grade"> 
+                                <p:panel id="panelChangerGrade" header="Changer grade">
+                                    <h:panelGrid id="panelChangerGradeGrid" columns="2" cellspacing="5">
+                                        <p:outputLabel value="Nouveau grade:" for="gradeContract" />
+                                        <p:selectOneMenu  value="#{contractuelBean.idGradeContract}" label="nouveaur grade du contractuel" id="gradeContract"  filter="true" filterMatchMode="startsWith" panelStyle="width:220px" required="true">
+                                            <f:selectItem itemLabel="Selectionner le grade" itemValue="" noSelectionOption="true"  />
+                                            <f:selectItems var="custe4" value="#{contractuelBean.listGradeContract}"   itemLabel="#{custe4.intituleGradeContract}" itemValue="#{custe4.id}" itemLabelEscaped="true" />
+                                        </p:selectOneMenu>
+                                        <p:outputLabel value="Date d'obtention du nouveau grade" for="dateobgrad" />                                   
+                                        <p:inputMask id="dateobgrad" value="#{contractuelBean.dateDebutGradeChangerGrade}" mask="99/99/9999" required="true" />
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab> 
+                            <p:tab id="confirmationTabChangerGrade" title="Confirmation du nouveau grade">  
+                                <p:panel header="Confirmation">  
+                                    <h:panelGrid id="confirmationChangerGrade" columns="4" cellspacing="5">  
+                                        <h:outputText value="Nom : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nom}" style="font-style: italic"/>
+                                        <h:outputText value="Prenom : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.prenom}" style="font-style: italic"/>
+
+                                        <h:outputText value="Numéro de CNI du contractuel " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.cni}" style="font-style: italic"/>
+                                        <h:outputText value="matricule : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.matricule}" style="font-style: italic"/>
+
+                                        <h:outputText value="     Grade courrant : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.gradeContract.intituleGradeContract}" style="font-style: italic"/>
+                                        <h:outputText value="     Nouveau grade : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.gradeChangerGrade.intituleGradeContract}" style="font-style: italic"/>
+
+                                        <h:outputText value="     Date d'obtention du grade courrant :" />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutGrade}" />
+                                        <h:outputText value="     Date d'obtention du nouveau grade :" />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutGradeChangerGrade}" />
+
+                                        <p:commandButton value="Valider nouveau grade" action="#{contractuelBean.ChagerGradecontractuel()}"  oncomplete="PF('dlgcg').hide()" update=":tableForm:table, messages"/>
+                                    </h:panelGrid> 
+                                </p:panel>  
+                            </p:tab>  
+                        </p:wizard>  
+                        <p:growl id="messages" showDetail="true"/> 
+                    </h:form>
+                </p:dialog> 
+                <!--Profil  du contractuel-->
+                <p:dialog widgetVar="dlgp" header=" Profil" hideEffect="explode" showEffect="explode" modal="true" width="850" appendTo="@(body)">
+                    <h:form id="formProfil" enctype="multipart/form-data"> 
+                        <p:panel id="panelProfil" header="Profil du contractuel">
+                            <h:panelGrid id="profilGrid1" columns="4" cellspacing="5">
+                                <h:outputText value="Nom : " />  
+                                <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nom}" style="font-style: italic"/>
+                                <h:outputText value="Prenom : " />  
+                                <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.prenom}" style="font-style: italic"/>
+
+                                <h:outputText value="Sexe : "/>  
+                                <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.sexe}" style="font-style: italic"/>   
+                                <h:outputText value="Nom de jeune fille : " />  
+                                <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nomJeuneFille}" style="font-style: italic"/>
+
+                                <h:outputText value="Date de naissance : " />  
+                                <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateNaissanceContract}" style="font-style: italic"/>
+                                <h:outputText value="Lieu de naissance : " />  
+                                <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.lieuNaissance}" style="font-style: italic"/>
+
+                                <h:outputText value="matricule : " />  
+                                <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.matricule}" style="font-style: italic"/>
+                                <h:outputText value="Numéro de CNI : " />  
+                                <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.cni}" style="font-style: italic"/>
+
+                                <h:outputText value="Date entrée fonc. pub. : " />
+                                <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.dateEntreFonctionPub}" style="font-style: italic"/>
+                                <h:outputText value="     Spécialite : " />  
+                                <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.specialite.intituleSpecialite}" style="font-style: italic"/>
+
+                                <h:outputText value="Région d'origine : " />  
+                                <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.regionOrigine}" style="font-style: italic"/>   
+                                <h:outputText value="Département d'origine : " />  
+                                <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.departementOrigine}" style="font-style: italic"/> 
+                                <h:outputText value="Arrondissement d'origine : " />  
+                                <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.arrondissementOrigine}" style="font-style: italic"/>
+                            </h:panelGrid>
+                            <h5>Différents poste occupés</h5> 
+
+                            <p:dataTable var="affectationPromotion" value="#{contractuelBean.listAffectationsPromotions}" id="parcours" resizableColumns="true">  
+
+                                <p:column  headerText="Du" width="100">  
+                                    #{affectationPromotion.a.dateDebutAffect}
+                                </p:column>  
+                                <p:column  headerText="Au" width="100">  
+                                    #{affectationPromotion.a.dateFinAffect}
+                                </p:column>  
+
+                                <p:column  headerText="Structure d'attache">  
+                                    #{affectationPromotion.a.structureAttache.intituleStructure}
+                                </p:column>  
+                                <p:column  headerText="Poste/Fonction">  
+                                    #{affectationPromotion.p.poste.intitulePoste}
+                                </p:column>  
+                            </p:dataTable> 
+
+                            <h5>Grades</h5>  
+                            <p:dataTable var="rangerContract" value="#{contractuelBean.listRangerContracts}" resizableColumns="true" liveResize="true">  
+                                <p:column headerText="Du" width="100"> 
+                                    <h:outputText value="#{rangerContract.dateDebutRangerContract}" />
+                                </p:column>  
+
+                                <p:column headerText="Au" width="100"> 
+                                    <h:outputText value="#{rangerContract.dateFinRangerContract}" />
+                                </p:column>  
+
+                                <p:column headerText="Grade">  
+                                    <h:outputText value="#{rangerContract.gradeContract.intituleGradeContract}" />  
+                                </p:column>   
+                            </p:dataTable>    
+
+                        </p:panel>
+                    </h:form>
+                </p:dialog>
+                <!--Retraite du contractuel  du contractuel-->
+                <p:dialog widgetVar="dlgr" header=" Retraite" hideEffect="explode" showEffect="explode" modal="true" appendTo="@(body)">
+                    <p:ajax event="close" oncomplete="PF('wizRetraite').loadStep(PF('wizRetraite').cfg.steps [0], true)"/>
+                    <h:form id="formRetraite" enctype="multipart/form-data"> 
+                        <p:wizard widgetVar="wizRetraite" flowListener="#{contractuelBean.onFlowProcessRetraite}" backLabel="retour" nextLabel="suivant">  
+                            <p:tab id="formRetraiteTab" title="Mise en retraite"> 
+                                <p:panel id="panelRetraite" header="Mise en retraite">
+                                    <h:panelGrid id="panelRetraiteGrid" columns="2" cellspacing="5">
+                                        <p:outputLabel value="Date de mise en retraite" for="dateRetraite" />                                   
+                                        <p:inputMask id="dateRetraite" value="#{contractuelBean.dateRetraite}" mask="99/99/9999" required="true" />
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab> 
+                            <p:tab id="confirmationRetraite" title="confirmation retraite">
+                                <p:panel id="panelProfil" header="Retraite du contractuel">
+                                    <h:panelGrid id="retraiteGridRetraite" columns="4" cellspacing="5">
+                                        <h:outputText value="Nom : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nom}" style="font-style: italic"/>
+                                        <h:outputText value="Prenom : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.prenom}" style="font-style: italic"/>
+
+                                        <h:outputText value="Sexe : "/>  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.sexe}" style="font-style: italic"/>   
+                                        <h:outputText value="Nom de jeune fille : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nomJeuneFille}" style="font-style: italic"/>
+
+                                        <h:outputText value="Date de naissance : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateNaissanceContract}" style="font-style: italic"/>
+                                        <h:outputText value="Lieu de naissance : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.lieuNaissance}" style="font-style: italic"/>
+
+                                        <h:outputText value="matricule : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.matricule}" style="font-style: italic"/>
+                                        <h:outputText value="Numéro de CNI : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.cni}" style="font-style: italic"/>
+
+                                        <h:outputText value="Date d'entrée à la fonction publique: " />
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.dateEntreFonctionPub}" style="font-style: italic"/>
+                                        <h:outputText value="Spécialite : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.specialite.intituleSpecialite}" style="font-style: italic"/>
+
+                                        <h:outputText value="Actuellement en service à(au) : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.structureAttache.intituleStructure}" style="font-style: italic"/>
+                                        <h:outputText value="Au poste de : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.poste.intitulePoste}" style="font-style: italic"/>
+
+                                        <h:outputText value="Arrondissement de : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.arrondissement.intituleArrondissement}" style="font-style: italic"/>
+                                        <h:outputText value="Département : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.departement.intituleDepartement}" style="font-style: italic"/>
+                                        <h:outputText value="Poste occupé depuis le : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutPoste}" style="font-style: italic"/>    
+                                    </h:panelGrid>
+                                    <p:commandButton value="Valider la mise en retraite" action="#{contractuelBean.retraite()}"  oncomplete="PF('dlgr').hide()" update=":tableForm:table, messages"/>
+                                </p:panel>
+                            </p:tab>
+                        </p:wizard> 
+                        <p:growl id="messages" showDetail="true"/> 
+                    </h:form>
+                </p:dialog>
+                <!--Sortie du contractuel  de la région-->
+                <p:dialog widgetVar="dlgs" header="Affectation hors de la région" hideEffect="explode" showEffect="explode" modal="true" appendTo="@(body)">
+                    <p:ajax event="close" oncomplete="PF('wizSortie').loadStep(PF('wizSortie').cfg.steps [0], true)"/>
+                    <h:form id="formSortie" enctype="multipart/form-data"> 
+                        <p:wizard widgetVar="wizSortie" flowListener="#{contractuelBean.onFlowProcessRetraite}" backLabel="retour" nextLabel="suivant">  
+                            <p:tab id="formSortieTab" title="Date"> 
+                                <p:panel id="panelSortie" header="Date affectation">
+                                    <h:panelGrid id="panelSortieGrid" columns="2" cellspacing="5">
+                                        <p:outputLabel value="Date d'affectation" for="dateSortie" />                                   
+                                        <p:inputMask id="dateSortie" value="#{contractuelBean.dateRetraite}" mask="99/99/9999" required="true" />
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab> 
+                            <p:tab id="confirmationRetraite" title="confirmation Affectation hors région">
+                                <p:panel id="panelProfil" header="Affectation du contractuel hors de la région">
+                                    <h:panelGrid id="retraiteGridSortie" columns="4" cellspacing="5">
+                                        <h:outputText value="Nom : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nom}" style="font-style: italic"/>
+                                        <h:outputText value="Prenom : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.prenom}" style="font-style: italic"/>
+
+                                        <h:outputText value="Sexe : "/>  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.sexe}" style="font-style: italic"/>   
+                                        <h:outputText value="Nom de jeune fille : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.nomJeuneFille}" style="font-style: italic"/>
+
+                                        <h:outputText value="Date de naissance : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateNaissanceContract}" style="font-style: italic"/>
+                                        <h:outputText value="Lieu de naissance : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.lieuNaissance}" style="font-style: italic"/>
+
+                                        <h:outputText value="matricule : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.matricule}" style="font-style: italic"/>
+                                        <h:outputText value="Numéro de CNI : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.cni}" style="font-style: italic"/>
+
+                                        <h:outputText value="Date d'entrée à la fonction publique: " />
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.dateEntreFonctionPub}" style="font-style: italic"/>
+                                        <h:outputText value="     Spécialite : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.contractuel.specialite.intituleSpecialite}" style="font-style: italic"/>
+
+                                        <h:outputText value="     Actuellement en service à(au) : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.structureAttache.intituleStructure}" style="font-style: italic"/>
+                                        <h:outputText value="     Au poste de : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.poste.intitulePoste}" style="font-style: italic"/>
+
+                                        <h:outputText value="     Arrondissement de : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.arrondissement.intituleArrondissement}" style="font-style: italic"/>
+                                        <h:outputText value="     Département : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.departement.intituleDepartement}" style="font-style: italic"/>
+                                        <h:outputText value="     Poste occupé depuis le : " />  
+                                        <h:outputText styleClass="outputLabel" value="#{contractuelBean.dateDebutPoste}" style="font-style: italic"/>    
+                                    </h:panelGrid>
+                                    <p:commandButton value="Valider la sortie de la région" action="#{contractuelBean.sortieRegion()}"  oncomplete="PF('dlgs').hide()" update=":tableForm:table, messages"/>
+                                </p:panel>
+                            </p:tab>
+                        </p:wizard> 
+                        <p:growl id="messages" showDetail="true"/> 
+                    </h:form>
+                </p:dialog>
+            </f:view>
+            <!--Tableau  du contractuel-->
+            <f:view>
+                <h:form id='tableForm'>
+                    <p:contextMenu for="table">  
+                            <p:menuitem value="Nouveau contractuel" actionListener="#{contractuelBean.initContract()}" update=":formAjouter" onclick="PF('dlg').show();" icon="ui-icon-plus"/>
+                        <p:menuitem value="Modifier contractuel" actionListener="#{contractuelBean.beforeUpdateContract()}" update=":formModifier" onclick="PF('dl').show()" icon="ui-icon-pencil"/>  
+                        <p:submenu label="Nouvel affectattion" icon="ui-icon-arrowrefresh-1-w">  
+                            <p:menuitem value="Dans la région" oncomplete="PF('dlga').show()"/>
+                            <p:menuitem value="Hors de la région" oncomplete="PF('dlgs').show()" icon="ui-icon-trash"/>
+                        </p:submenu>  
+                        <p:menuitem value="Nouveau grade" oncomplete="PF('dlgcg').show()" icon="ui-icon-arrowrefresh-1-w"/>
+                        <p:menuitem value="Profil" actionListener="#{contractuelBean.beforeDisplayProfil()}" update=":formProfil" oncomplete="PF('dlgp').show()" icon="ui-icon-search"/>
+                        <p:menuitem value="Départ en retraite"  onclick="PF('dlgr').show();" icon="ui-icon-trash"  />
+
+                    </p:contextMenu> 
+
+                    <p:dataTable value="#{contractuelBean.findContractuelsActifs()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " resizableColumns="true" liveResize="true" id="table" scrollable="true" draggableColumns="true" rowsPerPageTemplate="10,15" selectionMode="single" selection="#{contractuelBean.contractuel}" rowKey="#{item.id}">
+                        <f:facet name="header">
+                            La liste des contractuels
+                        </f:facet>
+
+                        <p:column rendered="#{contractuelBean.boolMat}" filterBy="#{item.matricule}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Matricule"/>
+                            </f:facet>
+                            <h:outputText value="#{item.matricule}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolNom}" filterBy="#{item.nom}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Nom"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nom}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolPrenom}" filterBy="#{item.prenom}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Prénom"/>
+                            </f:facet>
+                            <h:outputText value="#{item.prenom}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolNomJeunFille}" filterBy="#{item.nomJeuneFille}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Nom jeune fille"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nomJeuneFille}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolDateNaiss}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Date naissance"/>
+                            </f:facet>
+                            <h:outputText value="#{contractuelBean.currentDateNaissance(item)}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolAge}" filterBy="#{contractuelBean.currentAgeContract(item)}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Age"/>
+                            </f:facet>
+                            <h:outputText value="#{contractuelBean.currentAgeContract(item)}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolLieuNaiss}" filterBy="#{item.lieuNaissance}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Lieu Naissance"/>
+                            </f:facet>
+                            <h:outputText value="#{item.lieuNaissance}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolRegionNaiss}" filterBy="#{item.regionNaissance}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Région Naissance"/>
+                            </f:facet>
+                            <h:outputText value="#{item.regionNaissance}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolDepartNaiss}" filterBy="#{item.departNaissance}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Départem. Naissance"/>
+                            </f:facet>
+                            <h:outputText value="#{item.departNaissance}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolArrondNaiss}" filterBy="#{item.arrondNaissance}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Arrondiss. Naissance"/>
+                            </f:facet>
+                            <h:outputText value="#{item.arrondNaissance}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolSexe}" filterBy="#{item.sexe}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Sexe"/>
+                            </f:facet>
+                            <h:outputText value="#{item.sexe}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolTel}" filterBy="#{item.numeroTel}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Numéro tél."/>
+                            </f:facet>
+                            <h:outputText value="#{item.numeroTel}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolCni}" filterBy="#{item.cni}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Numéro CNI"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cni}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolLieuCni}" filterBy="#{item.lieuDelivranceCni}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Lieu délivrance CNI"/>
+                            </f:facet>
+                            <h:outputText value="#{item.lieuDelivranceCni}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolDateCni}" filterBy="#{contractuelBean.currentDateCni(item)}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Date délivrance CNI"/>
+                            </f:facet>
+                            <h:outputText value="#{contractuelBean.currentDateCni(item)}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolRegOri}" filterBy="#{item.regionOrigine}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Région Origine"/>
+                            </f:facet>
+                            <h:outputText value="#{item.regionOrigine}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolDepOri}" filterBy="#{item.departementOrigine}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Départem. Origine"/>
+                            </f:facet>
+                            <h:outputText value="#{item.departementOrigine}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolArrOro}" filterBy="#{item.arrondissementOrigine}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Arrondiss. Origine"/>
+                            </f:facet>
+                            <h:outputText value="#{item.arrondissementOrigine}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolGrade}" filterBy="#{contractuelBean.currentGradeContract(item)}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Grade"/>
+                            </f:facet>
+                            <h:outputText value="#{contractuelBean.currentGradeContract(item)}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolSpecial}" filterBy="#{item.specialite.intituleSpecialite}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Spécialité"/>
+                            </f:facet>
+                            <h:outputText value="#{item.specialite.intituleSpecialite}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolDiplomeEntre}" filterBy="#{item.diplomeEntreeFoncPub}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Diplôme entrée fonct. pub."/>
+                            </f:facet>
+                            <h:outputText value="#{item.diplomeEntreeFoncPub}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolDateEntreeFoncPub}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Date entrée fonc. pub."/>
+                            </f:facet>
+                            <h:outputText value="#{contractuelBean.currentDateEntreeFonctionPub(item)}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolStrucAttach}" filterBy="#{contractuelBean.currentStructureAttache(item)}" width="200">
+                            <f:facet name="header">
+                                <h:outputText value="Structure Attache"/>
+                            </f:facet>
+                            <h:outputText value="#{contractuelBean.currentStructureAttache(item)}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolPoste}" filterBy="#{contractuelBean.currentPoste(item)}" width="200">
+                            <f:facet name="header">
+                                <h:outputText value="Poste"/>
+                            </f:facet>
+                            <h:outputText value="#{contractuelBean.currentPoste(item)}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolDateAffec}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Ancienneté au poste"/>
+                            </f:facet>
+                            <h:outputText value="#{contractuelBean.currentDateAffect(item)}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolArronStruct}" filterBy="#{contractuelBean.currentArrondissement(item)}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Arrondiss. Structure"/>
+                            </f:facet>
+                            <h:outputText value="#{contractuelBean.currentArrondissement(item)}"/>
+                        </p:column>
+
+                        <p:column rendered="#{contractuelBean.boolDepartStruct}" filterBy="#{contractuelBean.currentDepartement(item)}" width="150">
+                            <f:facet name="header">
+                                <h:outputText value="Départem. Structure"/>
+                            </f:facet>
+                            <h:outputText value="#{contractuelBean.currentDepartement(item)}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <h:panelGrid columns="2">  
+                        <p:panel header="Exporter sous Excel">  
+                            <h:commandLink>  
+                                <p:graphicImage value="/images/excel.png" />  
+                                <p:dataExporter type="xls" target="table" fileName="listArrondissement" postProcessor="#{excelDocumentBean.postProcessXLS}"/>  
+                            </h:commandLink>  
+                        </p:panel> 
+                    </h:panelGrid>  
+
+                    <p:toolbar>
+                        <f:facet name="left">
+                            <p:commandButton type="push" actionListener="#{contractuelBean.initContract()}" update=":formAjouter" onclick="PF('dlg').show();" value="Nouveau contractuel" icon="ui-icon-disk"/>                      
+                            <p:commandButton type="push" actionListener="#{contractuelBean.initListColumn()}" onclick="PF('dlgc').show();" value="Choix des colonnes à afficher" icon="ui-icon-disk"/>                      
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            <p:commandButton type="push" title="Save" icon="ui-icon-disk" />
+                            <p:commandButton type="push" title="Update" icon="ui-icon-arrowrefresh-1-w"/>
+                            <p:commandButton type="push" title="Print" icon="ui-icon-print"/>
+                        </f:facet>
+                    </p:toolbar>
+                </h:form>
+            </f:view>
+        </ui:define>
+    </ui:composition>
+</html>

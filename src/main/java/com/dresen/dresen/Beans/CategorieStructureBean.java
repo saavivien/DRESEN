@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import com.dresen.dresen.ServiceInterface.ICategorieStructureService;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -26,6 +27,11 @@ public class CategorieStructureBean {
     private ICategorieStructureService iCategorieStructureService;
 
     private CategorieStructure categorieSturcture = new CategorieStructure();
+
+    @PostConstruct
+    void initialiseSession() {
+        FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+    }
 
     public ICategorieStructureService getiCategorieStructureService() {
         return iCategorieStructureService;

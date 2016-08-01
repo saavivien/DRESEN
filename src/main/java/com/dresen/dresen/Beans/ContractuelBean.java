@@ -88,10 +88,6 @@ public class ContractuelBean implements Serializable {
     private Promotion promotionAffec;
     private Poste poste = new Poste(), posteAffec;
     private Specialite specialite = new Specialite();
-//    private GradeContract gradeContract;
-//    private RangerContract rangerContract;
-//    private Promotion promotion;
-//    private Poste poste;
     private Arrondissement arrondissement, arrondissementAffec;
     private Departement departement, departementAffec;
     private CategorieStructure categorieStructure, categorieStructureAffec;
@@ -111,7 +107,6 @@ public class ContractuelBean implements Serializable {
     private List<AffectationPromotion> listAffectationsPromotions;
     private List<String> listInformationToDisplay, listInformationToDisplay1;
     private String dateNaissanceContract, dateNaissanceContractVers, dateEntreFoncPub, dateDebutGrade, dateDebutPoste, dateDebutPosteAffec, dateDebutAffec, dateRetraite, dateDebutGradeChangerGrade, dateCni;
-    ;
     private long idGradeContract, idRangerContract, idStructure, idPoste, idDepartement, idArrondissement, idCategorieStructure, idSpecialite;
     // ces variable permettent de contrôler les colonnes à afficher dans le dataTable
     private boolean boolMat, boolNom = true, boolPrenom = true, boolNomJeunFille, boolDateSortie, boolDateNaiss, boolRegionNaiss, boolAge, boolDepartNaiss, boolArrondNaiss, boolLieuNaiss, boolDiplomeEntre, boolSexe, boolCni, boolRegOri, boolDepOri, boolArrOro, boolGrade, boolSpecial, boolDateRetraite, boolDateEntreeFoncPub, boolStrucAttach, boolPoste, boolDateAffec, boolArronStruct, boolDepartStruct, boolLieuCni, boolDateCni, boolTel;
@@ -1487,7 +1482,7 @@ public class ContractuelBean implements Serializable {
             iRangerContractService.updateRangerContract(rangerContract);
             iPromotionService.updatePromotion(promotion);
             iContractuelService.updateContractuel(contractuel);
-            FacesMessage msg = new FacesMessage("Modification du contractuel effectuée avec succès vérifier les informations");
+            FacesMessage msg = new FacesMessage("Modification du contractuel effectuée avec succès");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             return contractuel;
         } catch (Exception e) {

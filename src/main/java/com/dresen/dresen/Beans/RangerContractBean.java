@@ -15,6 +15,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -23,22 +24,23 @@ import javax.faces.bean.RequestScoped;
 @ManagedBean
 @RequestScoped
 public class RangerContractBean {
+
     @ManagedProperty(value = "#{IRangerContractService}")
     private IRangerContractService iRangerContractService;
-    
+
     @ManagedProperty(value = "#{IGradeContractService}")
-    private IGradeContractService iGradeContractService;   
-    
+    private IGradeContractService iGradeContractService;
+
     @ManagedProperty(value = "#IContractuelService")
     private IContractuelService iContractuelService;
-   
+
     private long idGradeContract;
     private long idContractuel;
     private List<Contractuel> listContractuel;
     private List<GradeContract> listGradeContract;
-    
+
     private Contractuel contractuel = new Contractuel();
-    private GradeContract gradeContract= new GradeContract();
+    private GradeContract gradeContract = new GradeContract();
     private RangerContract rangerContract = new RangerContract();
 
     public RangerContractBean() {
@@ -125,40 +127,45 @@ public class RangerContractBean {
     public void setRangerContract(RangerContract rangerContract) {
         this.rangerContract = rangerContract;
     }
-    
-    
-    public RangerContract createRangerContract(){
+
+    public RangerContract createRangerContract() {
         gradeContract = iGradeContractService.findGradeContractById(idGradeContract);
         contractuel = iContractuelService.findContractuelById(idContractuel);
         rangerContract.setContratuel(contractuel);
         rangerContract.setGradeContract(gradeContract);
         return iRangerContractService.createRangerContract(rangerContract);
     }
-    public RangerContract findRangerContractById(){
+
+    public RangerContract findRangerContractById() {
         return iRangerContractService.findRangerContractById(rangerContract.getId());
     }
-    public RangerContract updateRangerContract(){
+
+    public RangerContract updateRangerContract() {
         gradeContract = iGradeContractService.findGradeContractById(idGradeContract);
         contractuel = iContractuelService.findContractuelById(idContractuel);
         rangerContract.setContratuel(contractuel);
         rangerContract.setGradeContract(gradeContract);
         return iRangerContractService.updateRangerContract(rangerContract);
     }
-    public List<RangerContract> findAllRangerContract(){
+
+    public List<RangerContract> findAllRangerContract() {
         return iRangerContractService.findAllRangerContract();
     }
-    public RangerContract findRangerContractOpenByIdAgent(){
+
+    public RangerContract findRangerContractOpenByIdAgent() {
         gradeContract = iGradeContractService.findGradeContractById(idGradeContract);
         contractuel = iContractuelService.findContractuelById(idContractuel);
         rangerContract.setContratuel(contractuel);
         rangerContract.setGradeContract(gradeContract);
         return iRangerContractService.findRangerContractOpenByIdAgent(rangerContract.getContratuel().getId());
     }
-    public List<RangerContract> findAllRangerContractOpen(){
+
+    public List<RangerContract> findAllRangerContractOpen() {
         return iRangerContractService.findAllRangerContractOpen();
     }
-    public List<RangerContract> findRangerContractByIdAgent(){
+
+    public List<RangerContract> findRangerContractByIdAgent() {
         return iRangerContractService.findRangerContractByIdAgent(rangerContract.getContratuel().getId());
     }
-    
+
 }

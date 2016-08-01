@@ -12,9 +12,9 @@
      <navigation-rule>
         <from-view-id>*</from-view-id>
         <navigation-case>
-            <from-outcome>index</from-outcome>
-            <to-view-id>/index.xhtml</to-view-id>
-            <redirect>/templateindex.xhtml</redirect>
+            <from-outcome>menu</from-outcome>
+            <to-view-id>/Menu.xhtml</to-view-id>
+            <redirect>/TemplateMenu.xhtml</redirect>
         </navigation-case>
        
     </navigation-rule>

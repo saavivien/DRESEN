@@ -128,20 +128,6 @@ public class PosteBean {
         this.listCategorieStructureSelectedString = listCategorieStructureSelectedString;
     }
 
-    /*
-    this is aim to initialize the oneMenu to nothing before updating
-//    */
-//    public void updatePoste(){
-//        if (structureAttache==null) {
-//            idDepartement = 0L;
-//            idCategorieStructure = 0L;
-//            arrondissement = null;
-//        } else {
-//            arrondissement = structureAttache.getArrondissement();
-//            idDepartement = arrondissement.getDepartement().getId();
-//            idCategorieStructure = structureAttache.getCategorieStructure().getId();
-//        }
-//    }
     public void initPost() {
         poste = new Poste();
     }

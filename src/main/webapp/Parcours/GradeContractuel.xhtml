@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/TemplateMenu.xhtml">
+        <ui:define name="body">
+            <f:view>
+
+                <p:dialog widgetVar="dlg" header=" Enregistrer un nouveau Grade pour les contractuels" hideEffect="explode" showEffect="explode" modal="true" appendTo="@(body)">
+                    <h:form id="formAjouter" enctype="multipart/form-data" >
+                        <h:panelGrid id="panelAjouter" columns="2" cellspacing="5">
+                            <p:outputLabel value="Intitulé du Grade:" for="intitule" />
+                            <p:inputText id="intitule" value="#{gradeContractBean.gradeContract.intituleGradeContract}" title="Intitule" required="true"/>
+                            <h:outputLabel value="Age de départ à la retraite: " for="age"/>  
+                            <p:selectOneMenu id="age" value="#{gradeContractBean.gradeContract.retraite}" effect="fold" editable="true" required="true">  
+                                <f:selectItem itemLabel="Selectionner un age" itemValue="" />  
+                                <f:selectItems var="age" value="#{gradeContractBean.ages()}" itemLabelEscaped="true"/> 
+                            </p:selectOneMenu>  
+
+                        </h:panelGrid>
+                        <p:commandButton value="Enregistrer" action="#{gradeContractBean.createGradeContract()}"  oncomplete="PF('dlg').hide()" update=":tableForm:table, messages"/>
+                        <p:growl id="messages" showDetail="true"/> 
+                    </h:form>
+                </p:dialog>
+                <p:dialog widgetVar="dl" header=" Modifier un Grade pour les contractuels" hideEffect="fold" showEffect="explode" resizable="true" modal="true" appendTo="@(body)">
+                    <h:form id="formModifier" enctype="multipart/form-data">                
+                        <h:panelGrid columns="2" id="panelGModifier" cellspacing="5">
+                            <p:outputLabel value="Intitulé du Grade:" for="intitule" />
+                            <p:inputText id="intitule" value="#{gradeContractBean.gradeContract.intituleGradeContract}" title="Intitule" required="true" />
+                            <h:outputLabel value="Age de départ à la retraite: " for="age"/>  
+                            <p:selectOneMenu id="age" value="#{gradeContractBean.gradeContract.retraite}" effect="fold" editable="true" required="true">  
+                                <f:selectItem itemLabel="Selectionner un age" itemValue="" />  
+                                <f:selectItems var="age" value="#{gradeContractBean.ages()}" itemLabelEscaped="true"/> 
+                            </p:selectOneMenu>  
+                            <h:inputHidden id="number" value="#{gradeContractBean.gradeContract.id}" />
+                        </h:panelGrid>
+                        <p:commandButton value="Modifier" action="#{gradeContractBean.updateGradeContract()}"  oncomplete="PF('dl').hide()" update=":tableForm:table, messages" />
+                        <p:growl id="messages" showDetail="true"/> 
+                    </h:form>
+                </p:dialog> 
+            </f:view>
+
+
+            <f:view>
+                <h:form id='tableForm'>
+                    <p:contextMenu for="table">  
+                        <p:menuitem value="New"  oncomplete="PF('dlg').show()"/>
+                        <p:menuitem value="Update" update=":formModifier:panelGModifier" oncomplete="PF('dl').show()"/>  
+                    </p:contextMenu> 
+                    <p:dataTable value="#{gradeContractBean.findAllGradeContract()}" var="item" paginator="true" rows="10" paginatorTemplate=" {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} " id="table" rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{gradeContractBean.gradeContract}" rowKey="#{item.id}">
+                        <f:facet name="header">
+                            La liste des Grades réservés au contractuels
+                        </f:facet>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Intitulé des grades pour les contractuels"/>
+                            </f:facet>
+                            <h:outputText value="#{item.intituleGradeContract}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Age de départ à la retraite "/>
+                            </f:facet>
+                            <h:outputText value="#{item.retraite}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                    <p:toolbar>
+                        <f:facet name="left">
+                            <p:commandButton type="push" onclick="PF('dlg').show();" value="Nouveau Grade Contractuel" icon="ui-icon-disk">
+                                <p:ajax update=":formAjouter:panelAjouter" resetValues="true" />
+                            </p:commandButton>
+
+                            <span class="ui-separator">
+                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                            </span>
+                            <p:commandButton type="push" title="Save" image="ui-icon-disk" />
+                            <p:commandButton type="push" title="Update" icon="ui-icon-arrowrefresh-1-w"/>
+                            <p:commandButton type="push" title="Print" image="ui-icon-print"/>
+                        </f:facet>
+                    </p:toolbar>
+                </h:form>
+            </f:view>
+
+        </ui:define>
+    </ui:composition>
+</html>

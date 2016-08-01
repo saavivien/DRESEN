@@ -117,7 +117,7 @@ public class ImporterBean implements Serializable {
     NativeUploadedFile file;
     private String importDirectoryPath;
     private String importFilePath;
-    private Integer progress; 
+    private Integer progress;
 
     public IDepartementService getiDepartementService() {
         return iDepartementService;
@@ -303,15 +303,13 @@ public class ImporterBean implements Serializable {
         this.importFilePath = exportFilePath;
     }
 
-     public Integer getProgress() {
-        if(progress == null) {
+    public Integer getProgress() {
+        if (progress == null) {
             progress = 0;
+        } else if (progress > 100) {
+            progress = 100;
         }
-        else {
-            if(progress > 100)
-                progress = 100;
-        }
-         
+
         return progress;
     }
 
@@ -355,7 +353,7 @@ public class ImporterBean implements Serializable {
             importDirectoryPath = file2.getAbsolutePath() + "/";
             importFilePath = importDirectoryPath + event.getFile().getFileName();
             copyFile(event.getFile().getInputstream());
-            progress = progress + 3;  
+            progress = progress + 3;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -395,7 +393,7 @@ public class ImporterBean implements Serializable {
                     System.out.println("Extraction du fichier " + entry.getName());
                     fichier = new File(importDirectoryPath + entry.getName());
                     int i = 0;
-                    byte[] bytes = new byte[1024*2];
+                    byte[] bytes = new byte[1024 * 2];
                     BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(fichier));
                     BufferedInputStream in = new BufferedInputStream(zipFile.getInputStream(entry));
                     while ((i = in.read(bytes)) != -1) {
@@ -410,7 +408,7 @@ public class ImporterBean implements Serializable {
                 }
             }
             zipFile.close();
-            progress = progress + 12;  
+            progress = progress + 12;
         } catch (FileNotFoundException fnfe) {
             throw fnfe;
         } catch (IOException ioe) {
@@ -437,7 +435,7 @@ public class ImporterBean implements Serializable {
                     iDepartementService.createDepartement(departementImport);
                 }
             }
-            progress = progress + 5;  
+            progress = progress + 5;
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -470,7 +468,7 @@ public class ImporterBean implements Serializable {
                     }
                 }
             }
-            progress = progress + 5;  
+            progress = progress + 5;
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -495,7 +493,7 @@ public class ImporterBean implements Serializable {
                     iCategorieStructureService.createCategorieStructure(categorieStructureImport);
                 }
             }
-            progress = progress + 5;  
+            progress = progress + 5;
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -549,7 +547,7 @@ public class ImporterBean implements Serializable {
                 }
 
             }
-            progress = progress + 5;  
+            progress = progress + 5;
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -592,7 +590,7 @@ public class ImporterBean implements Serializable {
                     iStructureService.createStructureAttache(structureAttacheImport);
                 }
             }
-            progress = progress + 5;  
+            progress = progress + 5;
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -617,7 +615,7 @@ public class ImporterBean implements Serializable {
                     iSpecialiteService.createSpecialite(specialiteImport);
                 }
             }
-            progress = progress + 5;  
+            progress = progress + 5;
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -642,7 +640,7 @@ public class ImporterBean implements Serializable {
                     iCorpsService.createCorps(corpsImport);
                 }
             }
-            progress = progress + 5;  
+            progress = progress + 5;
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -675,7 +673,7 @@ public class ImporterBean implements Serializable {
                     iCadreService.createCadre(cadreImport);
                 }
             }
-            progress = progress + 5;  
+            progress = progress + 5;
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -709,7 +707,7 @@ public class ImporterBean implements Serializable {
                     iGradeFonctioService.createGradeFonctio(gradeFonctioImport);
                 }
             }
-            progress = progress + 5;  
+            progress = progress + 5;
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -734,7 +732,7 @@ public class ImporterBean implements Serializable {
                     iGradeContractService.createGradeContract(gradeContractImport);
                 }
             }
-            progress = progress + 5;  
+            progress = progress + 5;
         } catch (IOException | BiffException ioe) {
             throw ioe;
         }
@@ -748,7 +746,7 @@ public class ImporterBean implements Serializable {
             Sheet sheet = workbook.getSheet(0);
             List<Fonctionnaire> listAllFonctionnaires;
             if (typeImport == 1) {
-                for(Fonctionnaire fonc: iFonctionnaireService.findFonctionnaireActif()){
+                for (Fonctionnaire fonc : iFonctionnaireService.findFonctionnaireActif()) {
                     Promotion prom = iPromotionService.findPromotionOpenByIdAgent(fonc.getId());
                     Affectation affec = iAffectationService.findAffectationOpenByIdAgent(fonc.getId());
                     Date date = new Date();
@@ -931,7 +929,7 @@ public class ImporterBean implements Serializable {
 
                 }
             }
-            progress = progress + 25;  
+            progress = progress + 25;
         } catch (IOException | BiffException | ParseException ioe) {
             throw ioe;
         }
@@ -945,7 +943,7 @@ public class ImporterBean implements Serializable {
             Sheet sheet = workbook.getSheet(0);
             List<Contractuel> listAllContractuels;
             if (typeImport == 1) {
-                for(Contractuel contract : iContractuelService.findContractuelActif()){
+                for (Contractuel contract : iContractuelService.findContractuelActif()) {
                     Promotion prom = iPromotionService.findPromotionOpenByIdAgent(contract.getId());
                     Affectation affect = iAffectationService.findAffectationOpenByIdAgent(contract.getId());
                     Date date = new Date();
@@ -1127,7 +1125,7 @@ public class ImporterBean implements Serializable {
 
                 }
             }
-            progress = progress + 10;  
+            progress = progress + 10;
         } catch (IOException | BiffException | ParseException ioe) {
             throw ioe;
         }
@@ -1174,10 +1172,11 @@ public class ImporterBean implements Serializable {
             throw ioe;
         }
     }
+
     public void onComplete() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Importation terminé"));
     }
-     
+
     public void cancel() {
         progress = null;
     }
